@@ -1,4 +1,4 @@
-import { Hashtag } from "../hashtag/hashtag.model";
+import { MiniHashtagDto } from "../hashtag/mini-hashtag-dto.model";
 import { MiniUserDto } from "../user/mini-user-dto.model";
 
 export interface Kvitter{
@@ -6,5 +6,5 @@ export interface Kvitter{
     message: string;
     miniUserDTO: MiniUserDto;
     createdDateAndTime: string;
-    hashtags: Hashtag[];
+    hashtags: MiniHashtagDto[];
 }

@@ -5,7 +5,7 @@ import { Kvitter } from '../kvitter/kvitter.model';
 @Injectable({
   providedIn: 'root',
 })
-export class LatestKvitterService {
+export class KvitterService {
   private backendURL = 'http://localhost:8080/';
   private httpClient = inject(HttpClient);
   private destroyRef = inject(DestroyRef);

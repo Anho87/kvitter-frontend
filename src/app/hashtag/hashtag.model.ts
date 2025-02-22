@@ -1,7 +1,7 @@
-import { Kvitter } from "../kvitter/kvitter.model";
+import { MiniKvitterDto } from "../kvitter/mini-kvitter-dto.model";
 
 export interface Hashtag{
     id: string;
     hashtag: string;
-    kvitters: Kvitter[];
+    kvitters: MiniKvitterDto[];
 }

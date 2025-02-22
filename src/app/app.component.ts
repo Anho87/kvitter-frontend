@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
-import { LatestKvitterComponent } from "./latest-kvitter/latest-kvitter.component";
+import { KvitterComponent } from "./kvitter/kvitter.component";
+import { ContentComponent } from "./content/content.component";
+import { HeaderComponent } from "./header/header.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [LatestKvitterComponent],
+  imports: [ContentComponent, HeaderComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })

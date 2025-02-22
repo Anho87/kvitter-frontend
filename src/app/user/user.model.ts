@@ -1,9 +1,9 @@
-import { Kvitter } from "../kvitter/kvitter.model";
+import { MiniKvitterDto } from "../kvitter/mini-kvitter-dto.model";
 
 export interface User {
     id: string;
     email: string;
-    firstName: string;
-    lastName: string;
-    kvitterList: Kvitter[];
+    userName: string;
+    kvitterList: MiniKvitterDto[];
+    token: string;
 }
