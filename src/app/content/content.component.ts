@@ -3,9 +3,9 @@ import { WelcomeContentComponent } from '../welcome-content/welcome-content.comp
 import { LoginFormComponent } from '../login-form/login-form.component';
 import { AxiosService } from '../axios.service';
 import { ButtonsComponent } from '../buttons/buttons.component';
-import { AuthContentComponent } from '../auth-content/auth-content.component';
 import { CommonModule } from '@angular/common';
 import { KvitterComponent } from "../kvitter/kvitter.component";
+import { AddKvitterComponent } from "../add-kvitter/add-kvitter.component";
 
 @Component({
   selector: 'app-content',
@@ -14,9 +14,9 @@ import { KvitterComponent } from "../kvitter/kvitter.component";
     LoginFormComponent,
     ButtonsComponent,
     WelcomeContentComponent,
-    AuthContentComponent,
     CommonModule,
-    KvitterComponent
+    KvitterComponent,
+    AddKvitterComponent
 ],
   templateUrl: './content.component.html',
   styleUrl: './content.component.css',

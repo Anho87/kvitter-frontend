@@ -7,6 +7,6 @@
     (onSubmitLoginEvent)="onLogin($event)"
     (onSubmitRegisterEvent)="onRegister($event)"
     />
-    <app-auth-content *ngIf="componentToShow == 'messages'" />
+    <app-add-kvitter *ngIf="componentToShow == 'index'" />
     <app-kvitter *ngIf="componentToShow == 'index'" />
 </div>
