@@ -1,6 +1,6 @@
 <div>
     <ul class="list-container">
-        @for (kvitter of kvitters(); track kvitter.id) {
+        @for (kvitter of kvitters; track kvitter.id) {
             <li>
                 <p>{{kvitter.miniUserDTO.userName}}</p>
                 <p>{{kvitter.message}}</p>

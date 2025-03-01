@@ -14,7 +14,7 @@ export class AuthContentComponent implements OnInit {
 
   ngOnInit(): void {
     this.axiosService
-      .request('GET', '/messages')
+      .request('GET', '/index')
       .then((response) => (this.data = response.data));
   }
 }
