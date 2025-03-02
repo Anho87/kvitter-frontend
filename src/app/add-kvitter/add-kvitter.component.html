@@ -3,6 +3,8 @@
         <label for="kvitter">Enter your kvitter:</label><br>
         <textarea id="kvitter" name="kvitter" style="width: 500px; height: 100px;"
             placeholder="Type your kvitter here..." [(ngModel)]="message"></textarea>
+        <label for="hashtags">Hashtags</label>
+        <input type="text" id="hashtags" name="hashtags" placeholder="#" [(ngModel)]="hashtags">
         <button type="submit" class="btn btn-success">Kvitt!</button>
     </form>
 </div>

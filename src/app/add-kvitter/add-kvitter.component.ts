@@ -1,6 +1,5 @@
 import { Component, inject, Output } from '@angular/core';
 import { AxiosService } from '../axios.service';
-import { Hashtag } from '../hashtag/hashtag.model';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -13,12 +12,14 @@ import { FormsModule } from '@angular/forms';
 export class AddKvitterComponent {
   private axiosService = inject(AxiosService);
   message: string = '';
-  hashtags: Hashtag[] = [];
+  hashtags: string = '';
+  hashtaglist: string[] = [];
 
   kvitt(): void {
+    this.splitHashtags();
     let data = {
       message: this.message,
-      hashtags: this.hashtags,
+      hashtags: this.hashtaglist,
     }
     this.axiosService
     .request('POST', '/postKvitter', data) 
@@ -29,4 +30,10 @@ export class AddKvitterComponent {
       console.error('Error posting kvitter', error);
     });
   }
+
+  splitHashtags(): void {
+    this.hashtaglist = this.hashtags.split(/\s+/).map(hashtag => hashtag.trim()).filter(hashtag => hashtag.length > 0);
+  }
 }
+
+
