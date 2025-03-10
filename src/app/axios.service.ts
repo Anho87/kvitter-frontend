@@ -10,30 +10,41 @@ export class AxiosService {
     axios.defaults.headers.post['Content-Type'] = 'application/json';
   }
 
-
   getAuthToken(): string | null {
-    return window.localStorage.getItem("auth_token");
+    return window.localStorage.getItem('auth_token');
   }
 
   setAuthToken(token: string | null): void {
-    if(token !== null){
-      window.localStorage.setItem("auth_token", token);
-    }else{
-      window.localStorage.removeItem("auth_token");
+    if (token !== null) {
+      window.localStorage.setItem('auth_token', token);
+    } else {
+      window.localStorage.removeItem('auth_token');
+    }
+  }
+
+  getRefreshToken(): string | null {
+    return window.localStorage.getItem('refresh_token');
+  }
+
+  setRefreshToken(token: string | null): void {
+    if (token !== null) {
+      window.localStorage.setItem('refresh_token', token);
+    } else {
+      window.localStorage.removeItem('refresh_token');
     }
   }
 
   request(method: string, url: string, data?: any): Promise<any> {
     let headers = {};
-    if(this.getAuthToken() !== null){
-      headers = {"Authorization": "Bearer " + this.getAuthToken()};
+    if (this.getAuthToken() !== null) {
+      headers = { Authorization: 'Bearer ' + this.getAuthToken() };
     }
 
     return axios({
       method: method,
       url: url,
       data: data,
-      headers: headers
+      headers: headers,
     });
   }
 }

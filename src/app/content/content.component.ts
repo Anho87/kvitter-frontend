@@ -36,8 +36,9 @@ export class ContentComponent {
         userName: input.userName,
         password: input.password,
       })
-      .then((respone) => {
-        this.axiosService.setAuthToken(respone.data.token);
+      .then((response) => {
+        this.axiosService.setAuthToken(response.data.accessToken);
+        this.axiosService.setRefreshToken(response.data.refreshToken);
         this.componentToShow = "index";
       });
   }
@@ -47,8 +48,9 @@ export class ContentComponent {
       email: input.email,
       userName: input.userName,
       password: input.password,
-    }).then((respone) => {
-      this.axiosService.setAuthToken(respone.data.token);
+    }).then((response) => {
+      this.axiosService.setAuthToken(response.data.accessToken);
+      this.axiosService.setRefreshToken(response.data.refreshToken);
       this.componentToShow = "index";
     });
   }
