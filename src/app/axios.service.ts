@@ -1,25 +1,34 @@
 import { Injectable } from '@angular/core';
 import axios from 'axios';
+import { retry } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AxiosService {
+  private accessToken: string | null = null;
+
   constructor() {
     axios.defaults.baseURL = 'http://localhost:8080';
     axios.defaults.headers.post['Content-Type'] = 'application/json';
 
+    axios.defaults.withCredentials = true;
+
     axios.interceptors.response.use(
-      response => response,
-      async error => {
+      (response) => response,
+      async (error) => {
         if (error.response) {
           if (error.response.status === 401) {
             console.log('Access token expired. Attempting to refresh...');
             return this.handleTokenRefresh(error);
           } else if (error.response.status === 403) {
-            console.error('Refresh token is invalid or expired. Logging out user.', error);
+            console.log('im hereeeeeeeee?!?!?!');
+            console.error(
+              'Refresh token is invalid or expired. Logging out user.',
+              error
+            );
             this.logoutUser();
-            return Promise.reject(error); 
+            return Promise.reject(error);
           }
         }
         return Promise.reject(error);
@@ -27,57 +36,67 @@ export class AxiosService {
     );
   }
 
-  
-
-  getAuthToken(): string | null {
-    return window.localStorage.getItem('auth_token');
+  getAccessToken(): string | null {
+    return this.accessToken;
   }
 
-  setAuthToken(token: string | null): void {
-    if (token !== null) {
-      window.localStorage.setItem('auth_token', token);
-    } else {
-      window.localStorage.removeItem('auth_token');
-    }
+  setAccessToken(token: string): void {
+    this.accessToken = token;
   }
 
-  getRefreshToken(): string | null {
-    return window.localStorage.getItem('refresh_token');
-  }
-
-  setRefreshToken(token: string | null): void {
-    if (token !== null) {
-      window.localStorage.setItem('refresh_token', token);
-    } else {
-      window.localStorage.removeItem('refresh_token');
-    }
+  clearAccessToken(): void {
+    this.accessToken = null;
   }
 
   logoutUser(): void {
-    console.warn("Refresh token is invalid or expired. Logging out user.");
-    this.setAuthToken(null);
-    this.setRefreshToken(null);
-    window.location.href = "/login"; 
+    console.warn('User logged out');
+    this.clearAccessToken();
+  }
+
+  async autoLogin(): Promise<boolean> {
+    try {
+      const response = await axios.post('/refresh-token');
+      const { accessToken } = response.data;
+      this.setAccessToken(accessToken);
+      return true;
+    } catch (error) {
+      console.warn('Auto-login failed:', error);
+      this.logoutUser();
+      return false;
+    }
+  }
+
+  async logout(): Promise<void> {
+    try {
+      const response = await axios.post(
+        'logout',
+        {},
+        { withCredentials: true }
+      );
+      this.logoutUser();
+    } catch (error) {
+      console.error('Error logging out:', error);
+    }
   }
 
   async handleTokenRefresh(error: any): Promise<any> {
     try {
-      const refreshToken = this.getRefreshToken();
-      if (!refreshToken) {
-        console.error('No refresh token found. User must log in again.');
-        this.logoutUser();
-        return Promise.reject(error);
-      }
-
-      const response = await axios.post('/refresh-token', { refreshToken });
+      const response = await axios.post(
+        '/refresh-token',
+        {},
+        { withCredentials: true }
+      );
       const { accessToken } = response.data;
 
-      this.setAuthToken(accessToken);
+      this.setAccessToken(accessToken);
 
       error.config.headers['Authorization'] = 'Bearer ' + accessToken;
       return axios(error.config);
     } catch (refreshError) {
-      console.error('Refresh token is invalid. Logging out user.', refreshError);
+      console.error(
+        'Refresh token is invalid. Logging out user.',
+        refreshError
+      );
       this.logoutUser();
       return Promise.reject(refreshError);
     }
@@ -85,8 +104,8 @@ export class AxiosService {
 
   request(method: string, url: string, data?: any): Promise<any> {
     let headers = {};
-    if (this.getAuthToken() !== null) {
-      headers = { Authorization: 'Bearer ' + this.getAuthToken() };
+    if (this.getAccessToken() !== null) {
+      headers = { Authorization: 'Bearer ' + this.getAccessToken() };
     }
 
     return axios({
