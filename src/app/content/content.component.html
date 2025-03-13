@@ -1,16 +1,21 @@
 <div>
     <div>
-        <app-buttons (loginEvent)="showComponent('login')" (logoutEvent)="onLogout()" />
+        <app-welcome-buttons *ngIf="componentToShow == 'welcome' || componentToShow == 'login' || componentToShow == 'register'" 
+        (loginEvent)="showComponent('login')" (registerEvent)="showComponent('register')" />
     </div>
     <div>
-
+        <app-login-form *ngIf="componentToShow == 'login'" (onSubmitLoginEvent)="onLogin($event)"/>
+        <app-register-form *ngIf="componentToShow == 'register'"(onSubmitRegisterEvent)="onRegister($event)"/>
+    </div>
+        
+    
+    <div>
         <app-welcome-content *ngIf="componentToShow == 'welcome'" />
     </div>
+    
     <div>
-
-        <app-login-form *ngIf="componentToShow == 'login'" (onSubmitLoginEvent)="onLogin($event)"
-            (onSubmitRegisterEvent)="onRegister($event)" />
         <app-add-kvitter *ngIf="componentToShow == 'index'" />
         <app-kvitter *ngIf="componentToShow == 'index'" />
     </div>
+
 </div>
