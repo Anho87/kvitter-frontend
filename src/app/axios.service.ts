@@ -22,7 +22,6 @@ export class AxiosService {
             console.log('Access token expired. Attempting to refresh...');
             return this.handleTokenRefresh(error);
           } else if (error.response.status === 403) {
-            console.log('im hereeeeeeeee?!?!?!');
             console.error(
               'Refresh token is invalid or expired. Logging out user.',
               error
