@@ -1,11 +1,12 @@
 import { Component, inject, Output } from '@angular/core';
-import { AxiosService } from '../axios.service';
+import { AxiosService } from '../services/axios.service';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-add-kvitter',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule,CommonModule],
   templateUrl: './add-kvitter.component.html',
   styleUrl: './add-kvitter.component.css',
 })
@@ -25,6 +26,7 @@ export class AddKvitterComponent {
     .request('POST', '/postKvitter', data) 
     .then((response) => {
       console.log('Kvitter posted successfully', response);
+      this.axiosService.updateKvitterList();
     })
     .catch((error) => {
       console.error('Error posting kvitter', error);

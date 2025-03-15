@@ -25,7 +25,8 @@
     font-style: italic;
     font-size: medium;
     max-width: 100%;  
-    white-space: normal; 
+    white-space: normal;
+    word-wrap: break-word; 
 }
 
 .hashtags {
@@ -48,5 +49,6 @@
     font-size: 14px;
     white-space: nowrap; 
 }
+
 
 

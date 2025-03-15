@@ -1,7 +1,7 @@
 import { Component, EventEmitter, inject, Output } from '@angular/core';
 import { AddKvitterComponent } from '../add-kvitter/add-kvitter.component';
 import { ButtonComponent } from '../button/button.component';
-import { AxiosService } from '../axios.service';
+import { AxiosService } from '../services/axios.service';
 import { KvitterListComponent } from "../kvitter-list/kvitter-list.component";
 
 @Component({

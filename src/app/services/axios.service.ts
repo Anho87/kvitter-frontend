@@ -1,12 +1,14 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
+import { Kvitter } from '../kvitter/kvitter.model';
 import axios from 'axios';
-import { retry } from 'rxjs';
+import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AxiosService {
   private accessToken: string | null = null;
+  kvitterList = signal<Kvitter[]>([]);
 
   constructor() {
     axios.defaults.baseURL = 'http://localhost:8080';
@@ -35,8 +37,29 @@ export class AxiosService {
     );
   }
 
+  updateKvitterList(mode?: string): void{
+    this.request('GET', '/index')
+    .then((response) => (this.kvitterList.set(response.data)));
+  }
+
   getAccessToken(): string | null {
     return this.accessToken;
+  }
+
+  getUsernameFromToken(): string{
+    const token = this.getAccessToken();
+  if (!token) {
+    console.error("No access token found");
+    return '';
+  }
+
+  try {
+    const decodedToken: any = jwtDecode(token);
+    return decodedToken.iss || '';  
+  } catch (error) {
+    console.error("Error decoding token:", error);
+    return '';
+  }
   }
 
   setAccessToken(token: string): void {
@@ -115,3 +138,7 @@ export class AxiosService {
     });
   }
 }
+function jwt_decode(arg0: string | null): any {
+  throw new Error('Function not implemented.');
+}
+

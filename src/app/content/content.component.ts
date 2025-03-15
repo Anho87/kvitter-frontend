@@ -1,7 +1,7 @@
 import { Component, computed, inject } from '@angular/core';
 import { WelcomeContentComponent } from '../welcome-content/welcome-content.component';
 import { LoginFormComponent } from '../login-form/login-form.component';
-import { AxiosService } from '../axios.service';
+import { AxiosService } from '../services/axios.service';
 import { CommonModule } from '@angular/common';
 import { RegisterFormComponent } from "../register-form/register-form.component";
 import { ButtonComponent } from "../button/button.component";

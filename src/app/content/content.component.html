@@ -1,19 +1,16 @@
 <div class="display-flex justify-content-center">
-
-    <div class="container">
         <div class="row">
-            <div class="col">
+            <div class="col-6 d-flex justify-content-end">
                 <app-button
                     *ngIf="componentToShow == 'welcome' || componentToShow == 'login' || componentToShow == 'register'"
                     [buttonColor]="'primary'" [buttonText]="'Login'" (buttonEvent)="showComponent('login')" />
             </div>
-            <div class="col">
+            <div class="col-6 d-flex justify-content-start">
                 <app-button
                     *ngIf="componentToShow == 'welcome' || componentToShow == 'login' || componentToShow == 'register'"
                     [buttonColor]="'success'" [buttonText]="'Register'" (buttonEvent)="showComponent('register')" />
             </div>
         </div>
-    </div>
 
     <div>
         <app-login-form *ngIf="componentToShow == 'login'" (onSubmitLoginEvent)="onLogin($event)" />
@@ -21,12 +18,12 @@
     </div>
 
 
-    <div >
+    <div>
         <app-welcome-content *ngIf="componentToShow == 'welcome'" />
     </div>
 
-    <div class="display-flex justify-content-center">
-        <app-logged-in *ngIf="componentToShow == 'index'" (logoutEvent)="showComponent($event)" />
-    </div>
+</div>
 
+<div>
+    <app-logged-in *ngIf="componentToShow == 'index'" (logoutEvent)="showComponent($event)" />
 </div>
