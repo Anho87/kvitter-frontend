@@ -1,0 +1,8 @@
+<div>
+    <ul class="list-container">
+        @for (kvitter of kvitters; track kvitter.id) {
+        <app-kvitter [username]="kvitter.miniUserDTO.userName" [message]="kvitter.message" [hashtags]="kvitter.hashtags"
+            [createdDateAndTime]="kvitter.createdDateAndTime" />
+        }
+    </ul>
+</div>

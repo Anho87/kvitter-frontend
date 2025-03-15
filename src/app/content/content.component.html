@@ -1,21 +1,32 @@
-<div>
-    <div>
-        <app-welcome-buttons *ngIf="componentToShow == 'welcome' || componentToShow == 'login' || componentToShow == 'register'" 
-        (loginEvent)="showComponent('login')" (registerEvent)="showComponent('register')" />
+<div class="display-flex justify-content-center">
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <app-button
+                    *ngIf="componentToShow == 'welcome' || componentToShow == 'login' || componentToShow == 'register'"
+                    [buttonColor]="'primary'" [buttonText]="'Login'" (buttonEvent)="showComponent('login')" />
+            </div>
+            <div class="col">
+                <app-button
+                    *ngIf="componentToShow == 'welcome' || componentToShow == 'login' || componentToShow == 'register'"
+                    [buttonColor]="'success'" [buttonText]="'Register'" (buttonEvent)="showComponent('register')" />
+            </div>
+        </div>
     </div>
+
     <div>
-        <app-login-form *ngIf="componentToShow == 'login'" (onSubmitLoginEvent)="onLogin($event)"/>
-        <app-register-form *ngIf="componentToShow == 'register'"(onSubmitRegisterEvent)="onRegister($event)"/>
+        <app-login-form *ngIf="componentToShow == 'login'" (onSubmitLoginEvent)="onLogin($event)" />
+        <app-register-form *ngIf="componentToShow == 'register'" (onSubmitRegisterEvent)="onRegister($event)" />
     </div>
-        
-    
-    <div>
+
+
+    <div >
         <app-welcome-content *ngIf="componentToShow == 'welcome'" />
     </div>
-    
-    <div>
-        <app-add-kvitter *ngIf="componentToShow == 'index'" />
-        <app-kvitter *ngIf="componentToShow == 'index'" />
+
+    <div class="display-flex justify-content-center">
+        <app-logged-in *ngIf="componentToShow == 'index'" (logoutEvent)="showComponent($event)" />
     </div>
 
 </div>

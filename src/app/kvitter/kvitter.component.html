@@ -1,18 +1,24 @@
 <div>
-    <ul class="list-container">
-        @for (kvitter of kvitters; track kvitter.id) {
-            <li>
-                <p>{{kvitter.miniUserDTO.userName}}</p>
-                <p>{{kvitter.message}}</p>
-                <ul class="list-container">
-                    @for (hashtag of kvitter.hashtags; track hashtag.id) {
-                        <li>
-                            <p>{{hashtag.hashtag}}</p>
-                        </li>
-                    }
-                </ul>
-                <p>{{kvitter.createdDateAndTime}}</p>
-            </li>
-        }
-    </ul>
+    <li class="container">
+
+        <div class="row">
+            <p class="username">{{username}}</p>
+        </div>
+
+        <div class="row">
+            <p class="message">{{message}}</p>
+        </div>
+
+        <div class="row">
+            <ul class="hashtags">
+                @for (hashtag of hashtags; track hashtag.id) {
+                <li><app-hashtag [hashtag]="hashtag.hashtag" /> </li>
+                }
+            </ul>
+        </div>
+        <div class="row">
+            <p class="date">{{ createdDateAndTime | date: 'HH:mm dd-MM-yy' }}</p>
+        </div>
+
+    </li>
 </div>

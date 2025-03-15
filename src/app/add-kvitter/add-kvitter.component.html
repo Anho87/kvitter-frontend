@@ -1,10 +1,18 @@
-<div>
+<div class="container one">
     <form (ngSubmit)="kvitt()" #kvittForm="ngForm">
-        <label for="kvitter">Enter your kvitter:</label><br>
-        <textarea id="kvitter" name="kvitter" style="width: 500px; height: 100px;"
-            placeholder="Type your kvitter here..." [(ngModel)]="message"></textarea>
-        <label for="hashtags">Hashtags</label>
-        <input type="text" id="hashtags" name="hashtags" placeholder="#" [(ngModel)]="hashtags">
-        <button type="submit" class="btn btn-success">Kvitt!</button>
+        <div class="row two">
+            <label for="kvitter">Enter your kvitter:</label><br>
+            <textarea id="kvitter" name="kvitter" placeholder="Type your kvitter here..."
+                [(ngModel)]="message"></textarea>
+        </div>
+        <div class="row three">
+            <label for="hashtags">Hashtags</label>
+            <div class="col-8 four">
+                <input type="text" id="hashtags" name="hashtags" placeholder="#" [(ngModel)]="hashtags">
+            </div>
+            <div class="col-4 d-flex justify-content-end five">
+                <button type="submit" class="btn btn-success">Kvitt!</button>
+            </div>
+        </div>
     </form>
 </div>

@@ -1,36 +1,18 @@
-import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
-import { KvitterService } from './kvitter.service';
-import { Kvitter } from './kvitter.model';
-import { AxiosService } from '../axios.service';
+import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MiniHashtagDto } from '../hashtag/mini-hashtag-dto.model';
+import { HashtagComponent } from "../hashtag/hashtag.component";
 
 @Component({
   selector: 'app-kvitter',
   standalone: true,
-  imports: [],
+  imports: [CommonModule, HashtagComponent,HashtagComponent],
   templateUrl: './kvitter.component.html',
   styleUrl: './kvitter.component.css'
 })
-export class KvitterComponent implements OnInit{
- private destroyRef = inject(DestroyRef);
-  private latestKvitterService = inject(KvitterService);
-  // kvitters = signal<Kvitter[]>([]);
-  kvitters: Kvitter[] = [];
-  private axiosService = inject(AxiosService);
-
-ngOnInit(): void {
-   this.axiosService
-    .request('GET', '/index')
-    .then((response) => (this.kvitters = response.data));
-}
-
-  // ngOnInit() {
-  //   const subscription = this.latestKvitterService.loadAllKvitters().subscribe({
-  //     next: (kvitter) => {
-  //       this.kvitters.set(kvitter);
-  //     },
-  //   });
-  //   this.destroyRef.onDestroy(() => {
-  //     subscription.unsubscribe();
-  //   });
-  // }
+export class KvitterComponent{
+  @Input() username = '';
+  @Input() message = '';
+  @Input() hashtags: MiniHashtagDto[] = [];
+  @Input() createdDateAndTime = '';
 }

@@ -2,23 +2,21 @@ import { Component, computed, inject } from '@angular/core';
 import { WelcomeContentComponent } from '../welcome-content/welcome-content.component';
 import { LoginFormComponent } from '../login-form/login-form.component';
 import { AxiosService } from '../axios.service';
-import { WelcomeButtonsComponent } from '../welcome-buttons/welcome-buttons.component';
 import { CommonModule } from '@angular/common';
-import { KvitterComponent } from '../kvitter/kvitter.component';
-import { AddKvitterComponent } from '../add-kvitter/add-kvitter.component';
 import { RegisterFormComponent } from "../register-form/register-form.component";
+import { ButtonComponent } from "../button/button.component";
+import { LoggedInComponent } from "../logged-in/logged-in.component";
 
 @Component({
   selector: 'app-content',
   standalone: true,
   imports: [
     LoginFormComponent,
-    WelcomeButtonsComponent,
     WelcomeContentComponent,
     CommonModule,
-    KvitterComponent,
-    AddKvitterComponent,
-    RegisterFormComponent
+    RegisterFormComponent,
+    ButtonComponent,
+    LoggedInComponent
 ],
   templateUrl: './content.component.html',
   styleUrl: './content.component.css',
@@ -31,12 +29,6 @@ export class ContentComponent {
   showComponent(componentToShow: string): void {
     this.componentToShow = componentToShow;
   }
-
-  onLogout() {
-    this.axiosService.logout();
-    this.componentToShow = 'welcome';
-  }
-
   onLogin(input: any) {
     this.axiosService
       .request('POST', '/login', {

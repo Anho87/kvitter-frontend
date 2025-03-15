@@ -1,0 +1,52 @@
+.list-container {
+    list-style: none;
+}
+
+.container {
+    border: 1px solid #cccccc;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    width: 100%; 
+}
+
+.username {
+    font-weight: bold;
+}
+
+.message {
+    font-style: italic;
+    font-size: medium;
+    max-width: 100%;  
+    white-space: normal; 
+}
+
+.hashtags {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 10px;
+    width: auto;      
+}
+
+.hashtags li {
+    background: lightblue;
+    padding: 5px 5px;
+    border-radius: 5px;
+}
+
+.date {
+    text-align: right;
+    color: gray;
+    font-size: 14px;
+    white-space: nowrap; 
+}
+
+

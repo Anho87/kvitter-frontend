@@ -1,0 +1,45 @@
+.container {
+    display: flex;
+    justify-content: center; 
+}
+
+label {
+    font-size: 16px;
+    font-weight: bold;
+    display: block;
+}
+
+
+textarea {
+    width: 100%; 
+    height: 120px;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #cccccc;
+    background-color: #fff;
+    resize: none; 
+    box-sizing: border-box; 
+}
+
+
+input[type="text"] {
+    width: 100%; 
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #cccccc;
+    background-color: #fff;
+    box-sizing: border-box;
+}
+
+button {
+    margin-bottom: 20px;
+}
+
+.five {
+    background-color: black;
+}
+
+
+
