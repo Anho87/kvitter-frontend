@@ -26,7 +26,7 @@ export class AddKvitterComponent {
     .request('POST', '/postKvitter', data) 
     .then((response) => {
       console.log('Kvitter posted successfully', response);
-      this.axiosService.updateKvitterList();
+      this.axiosService.updateAllKvitterList();
     })
     .catch((error) => {
       console.error('Error posting kvitter', error);

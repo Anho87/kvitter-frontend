@@ -1,5 +1,5 @@
 <div>
-    <li class="container">
+    <li class="container {{class}}">
 
         <div class="row">
             <div class="col-6">
@@ -7,7 +7,7 @@
                 <p class="username">{{username}}</p>
             </div>
             <div class="col-6 d-flex justify-content-end">
-                <app-button *ngIf="showButtoncomponent == true" [buttonColor]="'danger'" [buttonText]="'Remove'" (buttonEvent)="removeKvitter()" />
+                <app-button *ngIf="showButtoncomponent == true" [buttonText]="'Remove'" (buttonEvent)="removeKvitter()" />
             </div>
         </div>
 

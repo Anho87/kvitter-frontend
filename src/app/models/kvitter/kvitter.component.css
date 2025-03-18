@@ -1,5 +1,6 @@
 .list-container {
     list-style: none;
+    width: 100%;
 }
 
 .container {
@@ -38,17 +39,22 @@
 }
 
 .hashtags li {
-    background: lightblue;
-    padding: 5px 5px;
+    background: rebeccapurple;
+    color: white;
+    padding: 3px 3px;
     border-radius: 5px;
 }
 
 .date {
     text-align: right;
-    color: gray;
+    color: black;
     font-size: 14px;
     white-space: nowrap; 
 }
 
+.transparent{
+    background-color: rgba(0, 0, 0, 0.5);
+    
+}
 
 

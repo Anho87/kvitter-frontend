@@ -2,8 +2,8 @@ import { Component, inject, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MiniHashtagDto } from '../hashtag/mini-hashtag-dto.model';
 import { HashtagComponent } from "../hashtag/hashtag.component";
-import { ButtonComponent } from "../button/button.component";
-import { AxiosService } from '../services/axios.service';
+import { ButtonComponent } from "../../button/button.component";
+import { AxiosService } from '../../services/axios.service';
 
 @Component({
   selector: 'app-kvitter',
@@ -19,6 +19,7 @@ export class KvitterComponent implements OnInit{
   @Input() hashtags: MiniHashtagDto[] = [];
   @Input() createdDateAndTime = '';
   @Input() id = '';
+  @Input() class = '';
   
   showButtoncomponent: boolean = false;
   
@@ -30,7 +31,7 @@ export class KvitterComponent implements OnInit{
     this.axiosService.request('DELETE', '/removeKvitter' ,data)
     .then((response) => {
       console.log('Kvitter removed successfully', response);
-      this.axiosService.updateKvitterList();
+      this.axiosService.updateAllKvitterList();
     })
     .catch((error) => {
       console.error('Error removed kvitter', error);

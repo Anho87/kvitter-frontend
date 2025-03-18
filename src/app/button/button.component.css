@@ -1,0 +1,26 @@
+.styled-btn {
+    background-color: indigo;
+    color: white;
+    margin: 10px;
+    padding: 10px 15px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.styled-btn:hover {
+    background-color: rebeccapurple; 
+    transform: scale(1.05); 
+}
+
+.styled-btn:active {
+    background-color: blueviolet; 
+    transform: scale(0.98); 
+}
+
+.max-width {
+    width: 1000px;
+}

@@ -1,17 +1,19 @@
 import { Injectable, signal } from '@angular/core';
-import { Kvitter } from '../kvitter/kvitter.model';
+import { Kvitter } from '../models/kvitter/kvitter.model';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
+import { environment } from 'src/environments/environment'; 
 
 @Injectable({
   providedIn: 'root',
 })
 export class AxiosService {
   private accessToken: string | null = null;
-  kvitterList = signal<Kvitter[]>([]);
+  allKvitterList = signal<Kvitter[]>([]);
+  tenMostPopularAndPublicKvitterList = signal<Kvitter[]>([]);
 
   constructor() {
-    axios.defaults.baseURL = 'http://localhost:8080';
+    axios.defaults.baseURL = environment.apiUrl;
     axios.defaults.headers.post['Content-Type'] = 'application/json';
 
     axios.defaults.withCredentials = true;
@@ -21,13 +23,13 @@ export class AxiosService {
       async (error) => {
         if (error.response) {
           if (error.response.status === 401) {
-            console.log('Access token expired. Attempting to refresh...');
+            // console.log('Access token expired. Attempting to refresh...');
             return this.handleTokenRefresh(error);
           } else if (error.response.status === 403) {
-            console.error(
-              'Refresh token is invalid or expired. Logging out user.',
-              error
-            );
+            // console.error(
+            //   'Refresh token is invalid or expired. Logging out user.',
+            //   error
+            // );
             this.logoutUser();
             return Promise.reject(error);
           }
@@ -37,9 +39,14 @@ export class AxiosService {
     );
   }
 
-  updateKvitterList(mode?: string): void{
+  updateTenMostPopularAndPublicKvitterList(mode?: string): void{
+    this.request('GET', '/startPageKvitterList')
+    .then((response) => (this.tenMostPopularAndPublicKvitterList.set(response.data)));
+  }
+
+  updateAllKvitterList(mode?: string): void{
     this.request('GET', '/index')
-    .then((response) => (this.kvitterList.set(response.data)));
+    .then((response) => (this.allKvitterList.set(response.data)));
   }
 
   getAccessToken(): string | null {
@@ -49,7 +56,7 @@ export class AxiosService {
   getUsernameFromToken(): string{
     const token = this.getAccessToken();
   if (!token) {
-    console.error("No access token found");
+    // console.error("No access token found");  
     return '';
   }
 
@@ -71,18 +78,19 @@ export class AxiosService {
   }
 
   logoutUser(): void {
-    console.warn('User logged out');
+    // console.warn('User logged out');
     this.clearAccessToken();
   }
 
   async autoLogin(): Promise<boolean> {
+    // console.log('autologin triggerd');
     try {
       const response = await axios.post('/refresh-token');
       const { accessToken } = response.data;
       this.setAccessToken(accessToken);
       return true;
     } catch (error) {
-      console.warn('Auto-login failed:', error);
+      // console.warn('Auto-login failed:', error);
       this.logoutUser();
       return false;
     }
@@ -138,7 +146,5 @@ export class AxiosService {
     });
   }
 }
-function jwt_decode(arg0: string | null): any {
-  throw new Error('Function not implemented.');
-}
+
 

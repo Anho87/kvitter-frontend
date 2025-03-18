@@ -1,8 +1,8 @@
 import { Component, computed, inject, OnInit } from '@angular/core';
 import { AxiosService } from '../services/axios.service';
 import { CommonModule } from '@angular/common';
-import { Kvitter } from '../kvitter/kvitter.model';
-import { KvitterComponent } from '../kvitter/kvitter.component';
+import { Kvitter } from '../models/kvitter/kvitter.model';
+import { KvitterComponent } from '../models/kvitter/kvitter.component';
 
 @Component({
   selector: 'app-kvitter-list',
@@ -13,12 +13,9 @@ import { KvitterComponent } from '../kvitter/kvitter.component';
 })
 export class KvitterListComponent implements OnInit {
   private axiosService = inject(AxiosService);
-  kvitters = computed<Kvitter[]>(() => this.axiosService.kvitterList());
+  kvitters = computed<Kvitter[]>(() => this.axiosService.allKvitterList());
 
   ngOnInit(): void {
-    this.axiosService.updateKvitterList();
-    // this.axiosService
-    //   .request('GET', '/index')
-    //   .then((response) => (this.kvitters = response.data));
+    this.axiosService.updateAllKvitterList();
   }
 }

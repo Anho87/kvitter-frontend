@@ -1,29 +1,27 @@
-<div class="display-flex justify-content-center">
-        <div class="row">
-            <div class="col-6 d-flex justify-content-end">
-                <app-button
-                    *ngIf="componentToShow == 'welcome' || componentToShow == 'login' || componentToShow == 'register'"
-                    [buttonColor]="'primary'" [buttonText]="'Login'" (buttonEvent)="showComponent('login')" />
-            </div>
-            <div class="col-6 d-flex justify-content-start">
-                <app-button
-                    *ngIf="componentToShow == 'welcome' || componentToShow == 'login' || componentToShow == 'register'"
-                    [buttonColor]="'success'" [buttonText]="'Register'" (buttonEvent)="showComponent('register')" />
-            </div>
-        </div>
-
-    <div>
-        <app-login-form *ngIf="componentToShow == 'login'" (onSubmitLoginEvent)="onLogin($event)" />
-        <app-register-form *ngIf="componentToShow == 'register'" (onSubmitRegisterEvent)="onRegister($event)" />
-    </div>
-
-
-    <div>
-        <app-welcome-content *ngIf="componentToShow == 'welcome'" />
-    </div>
-
+<div class="title" *ngIf="componentToShow == 'welcome' || componentToShow == 'login' || componentToShow == 'register' || componentToShow == 'index'">
+    <h1>Kvitter</h1>
 </div>
 
+<div *ngIf="componentToShow == 'welcome' || componentToShow == 'login' || componentToShow == 'register'"
+    class="buttons">
+    <app-button [buttonText]="'Register'" (buttonEvent)="showComponent('register')" />
+    <app-button [buttonText]="'Login'" (buttonEvent)="showComponent('login')" />
+</div>
+    
+<div *ngIf="componentToShow == 'login' || componentToShow == 'register'" class="forms">
+    <app-login-register-form [formToShow]="componentToShow" (onSubmitLoginEvent)="onLogin($event)"
+        (navigateToRegisterEvent)="showComponent($event)" />
+</div>
+
+
 <div>
-    <app-logged-in *ngIf="componentToShow == 'index'" (logoutEvent)="showComponent($event)" />
+    <app-logged-in *ngIf="componentToShow == 'index'" (logoutEvent)="onLogOut($event)" />
+</div>
+
+<div *ngIf="componentToShow == 'welcome' || componentToShow == 'login' || componentToShow == 'register'"
+    class="kvitters">
+    <app-kvitter *ngIf="currentKvitter" [username]="currentKvitter.miniUserDTO.userName"
+        [message]="currentKvitter.message" [hashtags]="currentKvitter.hashtags"
+        [createdDateAndTime]="currentKvitter.createdDateAndTime" [class]="'transparent'">
+    </app-kvitter>
 </div>

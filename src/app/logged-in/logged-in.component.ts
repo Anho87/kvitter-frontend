@@ -16,6 +16,6 @@ export class LoggedInComponent {
   @Output() logoutEvent = new EventEmitter<string>();
   onLogout() {
     this.axiosService.logout();
-    this.logoutEvent.emit('welcome')
+    this.logoutEvent.emit('login')
   }
 }

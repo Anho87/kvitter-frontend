@@ -1,0 +1,51 @@
+<div class="form-container">
+    <form *ngIf="formToShow == 'login'" class="custom-form" (ngSubmit)="onSubmitLogin()" #loginForm="ngForm">
+        <h1>Welcome back!</h1>
+        <p>
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" [(ngModel)]="userName" />
+        </p>
+
+        <p>
+            <label for="login-password">Password</label>
+            <input type="password" id="password" name="password" [(ngModel)]="password" />
+        </p>
+
+        <button type="submit">Sign in</button>
+
+        <h6>
+            Not signed up yet?
+            <a href="#" class="register-link" (click)="navigateToRegister()">Register here!</a>
+        </h6>
+    </form>
+
+
+    <form *ngIf="formToShow == 'register'" class="custom-form" (ngSubmit)="onSubmitRegister()">
+        <h1>Register</h1>
+        <p>
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" [(ngModel)]="email" required />
+        </p>
+
+        <p>
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" [(ngModel)]="userName" required />
+        </p>
+
+        <p>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" [(ngModel)]="password" (input)="checkPasswords()" required />
+        </p>
+
+        <p>
+            <label for="re-enter-password">Re-enter Password</label>
+            <input type="password" id="re-enter-password" name="reEnterPassword" [(ngModel)]="reEnterPassword" (input)="checkPasswords()" required />
+        </p>
+
+        <button type="submit" [disabled]="isMismatch">Register</button>
+        <h6>
+            Already have an account?
+            <a href="#" class="login-link" (click)="navigateToRegister()">Login here!</a>
+        </h6>
+    </form>
+</div>

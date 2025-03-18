@@ -1,0 +1,80 @@
+.custom-form {
+    width: 400px;
+    height: 100%;
+    margin: 10px;
+    margin-right: 5em;
+    padding: 15px; 
+    background: #fff;
+    border-radius: 6px; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+  }
+
+  h1{
+    font-size: 30px;
+    font-weight: bold;
+    color: indigo;
+    font-family: 'Poppins', sans-serif;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  
+  .custom-form label {
+    display: block;
+    font-weight: bold;
+    margin: 3px 0; 
+    font-size: 14px; 
+  }
+  
+  .custom-form input {
+    width: 100%;
+    padding: 6px; 
+    margin-bottom: 3px; 
+    border: 1px solid #ccc;
+    border-radius: 4px; 
+    font-size: 14px;
+  }
+  
+  .custom-form input:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 3px rgba(0, 123, 255, 0.4); 
+  }
+  
+  .custom-form button {
+    background-color: indigo;
+    color: white;
+    width: 90%;
+    margin: 10px;
+    padding: 10px 15px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+  
+  .custom-form button:hover {
+    background-color: rebeccapurple; 
+    transform: scale(1.05); 
+  }
+
+  .custom-form button:active {
+    background-color: blueviolet; 
+    transform: scale(0.98); 
+}
+  
+
+  .form-container {
+    display: flex;
+    flex-flow: row-reverse;
+  }
+  
+
+  @media (max-width: 550px) {
+    .custom-form {
+        width: auto;
+        height: auto;
+        margin-right: 0em;
+    }
+  }

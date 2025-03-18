@@ -1,44 +1,65 @@
 .container {
-    display: flex;
-    justify-content: center; 
+  display: flex;
+  justify-content: center;
 }
 
 label {
-    font-size: 16px;
-    font-weight: bold;
-    display: block;
-}
+  /* font-size: 16px;
+  font-weight: bold;
+  display: block; */
 
+  font-size: 16px;
+  font-weight: bold;
+  color: indigo;
+  font-family: 'Poppins', sans-serif;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
 
 textarea {
-    width: 100%; 
-    height: 120px;
-    padding: 10px;
-    font-size: 16px;
-    border-radius: 5px;
-    border: 1px solid #cccccc;
-    background-color: #fff;
-    resize: none; 
-    box-sizing: border-box; 
+  width: 100%;
+  height: 120px;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #cccccc;
+  background-color: #fff;
+  resize: none;
+  box-sizing: border-box;
 }
 
-
 input[type="text"] {
-    width: 100%; 
-    margin: 0px;
-    padding: 10px;
-    font-size: 16px;
-    border-radius: 5px;
-    border: 1px solid #cccccc;
-    background-color: #fff;
-    box-sizing: border-box;
+  width: 100%;
+  margin: 0px;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #cccccc;
+  background-color: #fff;
+  box-sizing: border-box;
 }
 
 button {
-    margin-bottom: 20px;
+  background-color: indigo;
+  color: white;
+  width: 90%;
+  margin: 10px;
+  margin-bottom: 20px;
+  padding: 10px 15px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
 }
 
+button:hover {
+  background-color: rebeccapurple;
+  transform: scale(1.05);
+}
 
-
-
-
+button:active {
+  background-color: blueviolet;
+  transform: scale(0.98);
+}

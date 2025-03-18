@@ -1,4 +1,4 @@
-import { MiniKvitterDto } from "../kvitter/mini-kvitter-dto.model";
+import { MiniKvitterDto } from "../models/kvitter/mini-kvitter-dto.model";
 
 export interface User {
     id: string;
