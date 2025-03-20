@@ -1,60 +1,56 @@
-.list-container {
-    list-style: none;
-    width: 100%;
-}
-
 .container {
-    border: 1px solid #cccccc;
-    padding: 10px;
-    margin-bottom: 15px;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-}
-
-.row {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    width: 100%; 
+  width: 100%;
+  border: 1px solid indigo;
+  padding: 10px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  background-color: white;
 }
 
 .username {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .message {
-    font-style: italic;
-    font-size: medium;
-    max-width: 100%;  
-    white-space: normal;
-    word-wrap: break-word; 
+  font-style: italic;
+  font-size: medium;
+  max-width: 100%;
+  white-space: normal;
+  word-wrap: break-word;
 }
 
 .hashtags {
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap; 
-    gap: 10px;
-    width: auto;      
-}
-
-.hashtags li {
-    background: rebeccapurple;
-    color: white;
-    padding: 3px 3px;
-    border-radius: 5px;
+  list-style: none;
+  display: flex;
+  justify-content: start;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0px;
+  padding: 0px;
+  width: auto;
+  height: 30px;
 }
 
 .date {
-    text-align: right;
-    color: black;
-    font-size: 14px;
-    white-space: nowrap; 
+  margin: 0px;
+  padding: 0px;
+  color: black;
+  font-size: 14px;
+  white-space: nowrap;
+}
+.five {
+  background-color: red;
 }
 
-.transparent{
-    background-color: rgba(0, 0, 0, 0.5);
-    
+.four {
+  background-color: blue;
 }
 
+.three {
+  background-color: chartreuse;
+}
 
+.transparent {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+}

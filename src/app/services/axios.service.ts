@@ -1,13 +1,15 @@
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { Kvitter } from '../models/kvitter/kvitter.model';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { environment } from 'src/environments/environment'; 
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AxiosService {
+  private router = inject(Router);
   private accessToken: string | null = null;
   allKvitterList = signal<Kvitter[]>([]);
   tenMostPopularAndPublicKvitterList = signal<Kvitter[]>([]);
@@ -23,13 +25,13 @@ export class AxiosService {
       async (error) => {
         if (error.response) {
           if (error.response.status === 401) {
-            // console.log('Access token expired. Attempting to refresh...');
+            console.log('Access token expired. Attempting to refresh...');
             return this.handleTokenRefresh(error);
           } else if (error.response.status === 403) {
-            // console.error(
-            //   'Refresh token is invalid or expired. Logging out user.',
-            //   error
-            // );
+            console.error(
+              'Refresh token is invalid or expired. Logging out user.',
+              error
+            );
             this.logoutUser();
             return Promise.reject(error);
           }
@@ -56,7 +58,7 @@ export class AxiosService {
   getUsernameFromToken(): string{
     const token = this.getAccessToken();
   if (!token) {
-    // console.error("No access token found");  
+    console.error("No access token found");  
     return '';
   }
 
@@ -78,19 +80,20 @@ export class AxiosService {
   }
 
   logoutUser(): void {
-    // console.warn('User logged out');
+    console.warn('User logged out');
     this.clearAccessToken();
+    this.router.navigate(['/welcome']);
   }
 
   async autoLogin(): Promise<boolean> {
-    // console.log('autologin triggerd');
+    console.log('autologin triggerd');
     try {
       const response = await axios.post('/refresh-token');
       const { accessToken } = response.data;
       this.setAccessToken(accessToken);
       return true;
     } catch (error) {
-      // console.warn('Auto-login failed:', error);
+      console.warn('Auto-login failed:', error);
       this.logoutUser();
       return false;
     }

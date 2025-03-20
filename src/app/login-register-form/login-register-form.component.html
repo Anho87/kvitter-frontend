@@ -8,14 +8,14 @@
 
         <p>
             <label for="login-password">Password</label>
-            <input type="password" id="password" name="password" [(ngModel)]="password" />
+            <input type="password" id="login-password" name="login-password" [(ngModel)]="password" />
         </p>
 
         <button type="submit">Sign in</button>
 
         <h6>
             Not signed up yet?
-            <a href="#" class="register-link" (click)="navigateToRegister()">Register here!</a>
+            <a href="javascript:void(0)" class="register-link" (click)="navigateToRegister()">Register here!</a>
         </h6>
     </form>
 
@@ -34,18 +34,20 @@
 
         <p>
             <label for="password">Password</label>
-            <input type="password" id="password" name="password" [(ngModel)]="password" (input)="checkPasswords()" required />
+            <input type="password" id="password" name="password" [(ngModel)]="password" (input)="checkPasswords()"
+                required />
         </p>
 
         <p>
             <label for="re-enter-password">Re-enter Password</label>
-            <input type="password" id="re-enter-password" name="reEnterPassword" [(ngModel)]="reEnterPassword" (input)="checkPasswords()" required />
+            <input type="password" id="re-enter-password" name="reEnterPassword" [(ngModel)]="reEnterPassword"
+                (input)="checkPasswords()" required />
         </p>
 
         <button type="submit" [disabled]="isMismatch">Register</button>
         <h6>
             Already have an account?
-            <a href="#" class="login-link" (click)="navigateToRegister()">Login here!</a>
+            <a href="javascript:void(0)" class="login-link" (click)="navigateToRegister()">Login here!</a>
         </h6>
     </form>
 </div>

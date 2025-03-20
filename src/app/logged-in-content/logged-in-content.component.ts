@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Output } from '@angular/core';
+import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
 import { AddKvitterComponent } from '../add-kvitter/add-kvitter.component';
 import { ButtonComponent } from '../button/button.component';
 import { AxiosService } from '../services/axios.service';
@@ -8,10 +8,10 @@ import { KvitterListComponent } from "../kvitter-list/kvitter-list.component";
   selector: 'app-logged-in',
   standalone: true,
   imports: [AddKvitterComponent, ButtonComponent, KvitterListComponent],
-  templateUrl: './logged-in.component.html',
-  styleUrl: './logged-in.component.css'
+  templateUrl: './logged-in-content.component.html',
+  styleUrl: './logged-in-content.component.css'
 })
-export class LoggedInComponent {
+export class LoggedInContentComponent{
   private axiosService = inject(AxiosService);
   @Output() logoutEvent = new EventEmitter<string>();
   onLogout() {

@@ -4,6 +4,7 @@ import { MiniHashtagDto } from '../hashtag/mini-hashtag-dto.model';
 import { HashtagComponent } from "../hashtag/hashtag.component";
 import { ButtonComponent } from "../../button/button.component";
 import { AxiosService } from '../../services/axios.service';
+import { Kvitter } from './kvitter.model';
 
 @Component({
   selector: 'app-kvitter',
@@ -14,19 +15,14 @@ import { AxiosService } from '../../services/axios.service';
 })
 export class KvitterComponent implements OnInit{
   private axiosService = inject(AxiosService);
-  @Input() username = '';
-  @Input() message = '';
-  @Input() hashtags: MiniHashtagDto[] = [];
-  @Input() createdDateAndTime = '';
-  @Input() id = '';
+  @Input({required:true}) kvitter!: Kvitter;
   @Input() class = '';
   
   showButtoncomponent: boolean = false;
   
   removeKvitter() {
-    console.log(this.id);
     let data = {
-      id: this.id,
+      id: this.kvitter.id,
     }
     this.axiosService.request('DELETE', '/removeKvitter' ,data)
     .then((response) => {
@@ -39,7 +35,7 @@ export class KvitterComponent implements OnInit{
   } 
   
   ngOnInit(): void {
-    if(this.axiosService.getUsernameFromToken() === this.username){
+    if(this.axiosService.getUsernameFromToken() === this.kvitter.user.userName){
       this.showButtoncomponent = true
     }
   }

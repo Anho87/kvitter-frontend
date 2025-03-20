@@ -1,0 +1,17 @@
+.content{
+    width: 500px;
+}
+
+.add-kvitter{
+    height: auto;
+}
+
+@media (max-width: 550px) {
+    .content{
+        width: auto;
+    }
+    
+    .add-kvitter{
+      width: auto;  
+    }
+  }

@@ -1,0 +1,14 @@
+<div class="buttons">
+    <app-button [buttonText]="'Register'" (buttonEvent)="showForm('register')" />
+    <app-button [buttonText]="'Login'" (buttonEvent)="showForm('login')" />
+</div>
+    
+<div class="forms">
+    <app-login-register-form [formToShow]="formToShow" (onSubmitLoginEvent)="onLogin($event)"
+        (navigateToRegisterEvent)="showForm($event)" />
+</div>
+
+<div class="kvitters">
+    <app-kvitter *ngIf="currentKvitter" [class]="'transparent'" [kvitter]="currentKvitter">
+    </app-kvitter>
+</div>

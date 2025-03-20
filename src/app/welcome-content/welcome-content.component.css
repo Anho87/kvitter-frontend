@@ -2,9 +2,6 @@
     display: flex;
     flex-flow: row-reverse;
 }
-.five{
-    background-color: black;
-}
 .buttons{
     display: flex;
     flex-flow: row-reverse;
@@ -21,20 +18,6 @@
 }
 
 
-.title{
-    position:absolute;
-    margin-top: 10px;
-    margin-left: 10px;
-
-    font-size: 40px;
-    font-weight: bold;
-    color: indigo;
-    font-family: 'Poppins', sans-serif;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-}
-
-
 @media (max-width: 550px) {
     .forms {
         flex-flow: none;
@@ -44,14 +27,6 @@
         flex-flow: none;
         justify-content: center;
         margin-right: 0em;
-    }
-    .title{
-        position: relative;
-        display: flex;
-        justify-content: center;
-        margin-left: 0em;
-        background-color: indigo;
-        color: white;
     }
   }
 

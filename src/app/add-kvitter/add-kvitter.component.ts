@@ -15,12 +15,14 @@ export class AddKvitterComponent {
   message: string = '';
   hashtags: string = '';
   hashtaglist: string[] = [];
+  private: boolean = true;
 
   kvitt(): void {
     this.splitHashtags();
     let data = {
       message: this.message,
       hashtags: this.hashtaglist,
+      private: this.private,
     }
     this.axiosService
     .request('POST', '/postKvitter', data) 
@@ -31,6 +33,8 @@ export class AddKvitterComponent {
     .catch((error) => {
       console.error('Error posting kvitter', error);
     });
+    this.message = '';
+    this.hashtags = '';
   }
 
   splitHashtags(): void {

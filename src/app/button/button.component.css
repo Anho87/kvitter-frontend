@@ -2,10 +2,10 @@
     background-color: indigo;
     color: white;
     margin: 10px;
-    padding: 10px 15px;
+    padding: 10px 15px; 
     font-size: 16px;
     font-weight: bold;
-    border: none;
+    border: 1px solid black;
     border-radius: 5px;
     cursor: pointer;
     transition: background 0.3s ease, transform 0.2s ease;
@@ -23,4 +23,27 @@
 
 .max-width {
     width: 1000px;
+}
+
+  .style-small {
+    background-color: indigo;
+    color: white;
+    margin: 10px;
+    padding: 6px 10px;
+    font-size: 10px; 
+    font-weight: bold;
+    border: 1px solid black;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.style-small:hover {
+    background-color: rebeccapurple; 
+    transform: scale(1.05); 
+}
+
+.style-small:active {
+    background-color: blueviolet; 
+    transform: scale(0.98); 
 }

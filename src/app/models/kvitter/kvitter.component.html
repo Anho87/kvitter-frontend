@@ -1,30 +1,23 @@
-<div>
-    <li class="container {{class}}">
+<li class="container {{class}}">
+    <div class="d-flex justify-content-between">
+        <p class="username">{{kvitter.user.userName}}</p>
+        <app-button *ngIf="showButtoncomponent == true" [buttonClass]="'style-small'" [buttonText]="'Remove'" (buttonEvent)="removeKvitter()" />
+    </div>
 
-        <div class="row">
-            <div class="col-6">
+    <div class="">
+        <p class="message">{{kvitter.message}}</p>
+    </div>
 
-                <p class="username">{{username}}</p>
-            </div>
-            <div class="col-6 d-flex justify-content-end">
-                <app-button *ngIf="showButtoncomponent == true" [buttonText]="'Remove'" (buttonEvent)="removeKvitter()" />
-            </div>
+    <div class="d-flex justify-content-between">
+        <ul class="hashtags">
+            @for (hashtag of kvitter.hashtags; track hashtag.id) {
+            <li><app-hashtag [hashtag]="hashtag" /> </li>
+            }
+        </ul>
+
+        <div class="d-flex align-items-end">
+            <p class="date">{{ kvitter.createdDateAndTime | date: 'HH:mm dd-MM-yy' }}</p>
         </div>
 
-        <div class="row">
-            <p class="message">{{message}}</p>
-        </div>
-
-        <div class="row">
-            <ul class="hashtags">
-                @for (hashtag of hashtags; track hashtag.id) {
-                <li><app-hashtag [hashtag]="hashtag.hashtag" /> </li>
-                }
-            </ul>
-        </div>
-        <div class="row">
-            <p class="date">{{ createdDateAndTime | date: 'HH:mm dd-MM-yy' }}</p>
-        </div>
-
-    </li>
-</div>
+    </div>
+</li>

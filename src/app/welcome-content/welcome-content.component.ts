@@ -2,10 +2,10 @@ import { Component, computed, inject, OnDestroy, OnInit } from '@angular/core';
 import { AxiosService } from '../services/axios.service';
 import { CommonModule } from '@angular/common';
 import { ButtonComponent } from '../button/button.component';
-import { LoggedInComponent } from '../logged-in/logged-in.component';
 import { LoginRegisterFormComponent } from '../login-register-form/login-register-form.component';
 import { KvitterComponent } from "../models/kvitter/kvitter.component";
 import { Kvitter } from '../models/kvitter/kvitter.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-content',
@@ -13,20 +13,20 @@ import { Kvitter } from '../models/kvitter/kvitter.model';
   imports: [
     CommonModule,
     ButtonComponent,
-    LoggedInComponent,
     LoginRegisterFormComponent,
     KvitterComponent,
 ],
-  templateUrl: './content.component.html',
-  styleUrl: './content.component.css',
+  templateUrl: './welcome-content.component.html',
+  styleUrl: './welcome-content.component.css',
 })
-export class ContentComponent implements OnInit, OnDestroy {
+export class WelcomeContentComponent implements OnInit, OnDestroy {
   private axiosService = inject(AxiosService);
+  private router = inject(Router);
   kvitters = computed<Kvitter[]>(() => this.axiosService.tenMostPopularAndPublicKvitterList());
   private dataLoaded = false;
   currentKvitterIndex: number = 0;
   private intervalId: any;
-  componentToShow: string = 'login';
+  formToShow: string = 'login';
 
   ngOnInit(): void {
     if (!this.dataLoaded) {
@@ -45,18 +45,13 @@ export class ContentComponent implements OnInit, OnDestroy {
   startInterval(){
     this.intervalId = setInterval(() => {
       this.cycleThroughKvitter();
-    }, 1000);
-  }
-
-  onLogOut(componentToShow: string){
-    this.componentToShow = componentToShow;
-    this.startInterval();
+    }, 5000);
   }
 
   cycleThroughKvitter(): void {
     if (this.kvitters().length > 0) {
       this.currentKvitterIndex = (this.currentKvitterIndex + 1) % this.kvitters().length;
-      // console.log(this.currentKvitterIndex);
+      console.log(this.currentKvitterIndex);
     }
   }
 
@@ -64,8 +59,8 @@ export class ContentComponent implements OnInit, OnDestroy {
     return this.kvitters()[this.currentKvitterIndex];
   }
 
-  showComponent(componentToShow: string): void {
-    this.componentToShow = this.componentToShow === componentToShow ? 'welcome' : componentToShow;
+  showForm(inFormToShow: string): void {
+    this.formToShow = this.formToShow === inFormToShow ? 'welcome' : inFormToShow;
   }
 
   onLogin(input: any) {
@@ -84,8 +79,9 @@ export class ContentComponent implements OnInit, OnDestroy {
       })
       .then((response) => {
         this.axiosService.setAccessToken(response.data.accessToken);
+        let userName = this.axiosService.getUsernameFromToken();
         this.ngOnDestroy()
-        this.componentToShow = 'index';
+        this.router.navigate([`user/${userName}`]);
       });
   }
 
@@ -98,8 +94,9 @@ export class ContentComponent implements OnInit, OnDestroy {
       })
       .then((response) => {
         this.axiosService.setAccessToken(response.data.accessToken);
+        let userName = this.axiosService.getUsernameFromToken();
         this.ngOnDestroy()
-        this.componentToShow = 'index';
+        this.router.navigate([`user/${userName}`]);
       });
   }
 }

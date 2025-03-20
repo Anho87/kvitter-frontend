@@ -1,25 +1,23 @@
 import { Component, inject, OnInit, ViewChild } from '@angular/core';
-import { ContentComponent } from "./content/content.component";
 import { AxiosService } from './services/axios.service';
+import { RouterOutlet } from '@angular/router';
+import { HeaderComponent } from "./header/header.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [ContentComponent],
+  imports: [RouterOutlet, HeaderComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
 export class AppComponent implements OnInit{
   private axiosService = inject(AxiosService);
-  @ViewChild(ContentComponent) contentComponent!: ContentComponent;
   ngOnInit(): void {
     this.axiosService.autoLogin().then(loggedIn => {
       if (loggedIn) {
-        this.contentComponent.componentToShow = "index";
-        this.contentComponent.ngOnDestroy();
-        // console.log('User successfully auto-logged in.');
+        console.log('User successfully auto-logged in.');
       } else {
-        // console.log('User not logged in.');
+        console.log('User not logged in.');
       }
     });
   }
