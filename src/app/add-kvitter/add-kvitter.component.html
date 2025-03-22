@@ -1,23 +1,29 @@
-
-    
-    <form (ngSubmit)="kvitt()" #kvittForm="ngForm">
-        <div class="row  text-area">
-            <label class="enter-label" for="kvitter">Enter your kvitter:</label><br>
+<form (ngSubmit)="kvitt()" #kvittForm="ngForm">
+    <div class="upper-area">
+        <div class="row text-area">
+            <label class="enter-label" for="kvitter">Enter your kvitter:</label>
             <textarea id="kvitter" name="kvitter" placeholder="Type your kvitter here..."
-                [(ngModel)]="message" maxlength="280" required #kvitter="ngModel"></textarea>
-            <p class="kvitter-size" >{{ message.length }} / 280</p>
+            [(ngModel)]="message" maxlength="280" required #kvitter="ngModel"></textarea>
         </div>
         
-        <div class="row ">
-            
-            <div class="col-8">
-                <label for="hashtags">Hashtags</label>
-                <input type="text" id="hashtags" name="hashtags" placeholder="#" [(ngModel)]="hashtags" maxlength="20">
+        <div class="row info-area">
+            <p class="kvitter-size col-6">{{ message.length }} / 280</p>
+            <div class="private-checkbox col-6">
+                <label>
+                    <input type="checkbox" [(ngModel)]="private" name="private"> Private
+                </label>
             </div>
-            
-            <div class="col-4 button-div">
-                <button type="submit" class="" [disabled]="kvittForm.invalid">Kvitt!</button>
-            </div>
-            
         </div>
-    </form>
+    </div>
+        
+    <div class="row lower-area">
+        <div class="col-8 hashtags-div">
+            <label class="hashtag-label" for="hashtags">Hashtags</label>
+            <input type="text" id="hashtags" name="hashtags" placeholder="#" [(ngModel)]="hashtags" maxlength="20">
+        </div>
+        
+        <div class="col-4 button-div">
+            <button type="submit" [disabled]="kvittForm.invalid">Kvitt!</button>
+        </div>
+    </div>
+</form>

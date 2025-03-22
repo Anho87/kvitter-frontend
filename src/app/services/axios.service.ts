@@ -2,7 +2,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { Kvitter } from '../models/kvitter/kvitter.model';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
-import { environment } from 'src/environments/environment'; 
+import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -11,8 +11,8 @@ import { Router } from '@angular/router';
 export class AxiosService {
   private router = inject(Router);
   private accessToken: string | null = null;
-  allKvitterList = signal<Kvitter[]>([]);
-  tenMostPopularAndPublicKvitterList = signal<Kvitter[]>([]);
+  kvitterList = signal<Kvitter[]>([]);
+  tenPublicKvitterList = signal<Kvitter[]>([]);
 
   constructor() {
     axios.defaults.baseURL = environment.apiUrl;
@@ -41,34 +41,43 @@ export class AxiosService {
     );
   }
 
-  updateTenMostPopularAndPublicKvitterList(mode?: string): void{
-    this.request('GET', '/startPageKvitterList')
-    .then((response) => (this.tenMostPopularAndPublicKvitterList.set(response.data)));
+  welcomePageKvitter(mode?: string): void {
+    this.request('GET', '/welcomePageKvitterList').then((response) =>
+      this.tenPublicKvitterList.set(response.data)
+    );
   }
 
-  updateAllKvitterList(mode?: string): void{
-    this.request('GET', '/index')
-    .then((response) => (this.allKvitterList.set(response.data)));
+  getKvitterList(userName?: string): void {
+    const queryParams = userName ? `?userId=${userName}` : '';
+
+    this.request('GET', '/kvitterList' + queryParams)
+      .then((response) => {
+        this.kvitterList.set(response.data); 
+        // console.log(this.kvitterList());
+      })
+      .catch((error) => {
+        console.error('Error fetching kvitters:', error);
+      });
   }
 
   getAccessToken(): string | null {
     return this.accessToken;
   }
 
-  getUsernameFromToken(): string{
+  getUsernameFromToken(): string {
     const token = this.getAccessToken();
-  if (!token) {
-    console.error("No access token found");  
-    return '';
-  }
+    if (!token) {
+      console.error('No access token found');
+      return '';
+    }
 
-  try {
-    const decodedToken: any = jwtDecode(token);
-    return decodedToken.iss || '';  
-  } catch (error) {
-    console.error("Error decoding token:", error);
-    return '';
-  }
+    try {
+      const decodedToken: any = jwtDecode(token);
+      return decodedToken.iss || '';
+    } catch (error) {
+      console.error('Error decoding token:', error);
+      return '';
+    }
   }
 
   setAccessToken(token: string): void {
@@ -149,5 +158,3 @@ export class AxiosService {
     });
   }
 }
-
-

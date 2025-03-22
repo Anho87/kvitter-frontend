@@ -16,6 +16,7 @@ import { Kvitter } from './kvitter.model';
 export class KvitterComponent implements OnInit{
   private axiosService = inject(AxiosService);
   @Input({required:true}) kvitter!: Kvitter;
+  @Input({required:true}) showPrivateMark!: boolean;
   @Input() class = '';
   
   showButtoncomponent: boolean = false;
@@ -27,7 +28,7 @@ export class KvitterComponent implements OnInit{
     this.axiosService.request('DELETE', '/removeKvitter' ,data)
     .then((response) => {
       console.log('Kvitter removed successfully', response);
-      this.axiosService.updateAllKvitterList();
+      this.axiosService.getKvitterList();
     })
     .catch((error) => {
       console.error('Error removed kvitter', error);

@@ -1,6 +1,7 @@
 import { MiniHashtagDto } from "../hashtag/mini-hashtag-dto.model";
 import { MiniLikeDto } from "../like/mini-like-dto.model";
 import { MiniReplyDto } from "../reply/mini-reply-dto.model";
+import { MiniRetweetDto } from "../retweet/mini-retweet-dto.models";
 import { MiniUserDto } from "../user/mini-user-dto.model";
 
 export interface Kvitter{
@@ -9,7 +10,8 @@ export interface Kvitter{
     user: MiniUserDto;
     createdDateAndTime: string;
     hashtags: MiniHashtagDto[];
-    isPrivate: boolean;
+    private: boolean;
     likes: MiniLikeDto[];
     replies: MiniReplyDto[];
+    retweets: MiniRetweetDto[];
 }

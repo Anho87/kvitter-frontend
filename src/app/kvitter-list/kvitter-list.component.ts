@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit } from '@angular/core';
+import { Component, computed, inject, Input, OnInit } from '@angular/core';
 import { AxiosService } from '../services/axios.service';
 import { CommonModule } from '@angular/common';
 import { Kvitter } from '../models/kvitter/kvitter.model';
@@ -12,10 +12,11 @@ import { KvitterComponent } from '../models/kvitter/kvitter.component';
   styleUrl: './kvitter-list.component.css',
 })
 export class KvitterListComponent implements OnInit {
+  @Input()userName: string = "";
   private axiosService = inject(AxiosService);
-  kvitters = computed<Kvitter[]>(() => this.axiosService.allKvitterList());
+  kvitters = computed<Kvitter[]>(() => this.axiosService.kvitterList());
 
   ngOnInit(): void {
-    this.axiosService.updateAllKvitterList();
+    this.axiosService.getKvitterList(this.userName);
   }
 }

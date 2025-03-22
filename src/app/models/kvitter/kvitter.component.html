@@ -1,8 +1,11 @@
 <li class="container {{class}}">
     <div class="d-flex justify-content-between">
         <p class="username">{{kvitter.user.userName}}</p>
-        <app-button *ngIf="showButtoncomponent == true" [buttonClass]="'style-small'" [buttonText]="'Remove'" (buttonEvent)="removeKvitter()" />
+        <app-button *ngIf="showButtoncomponent == true" [buttonClass]="'style-small'" [buttonText]="'Remove'"
+            (buttonEvent)="removeKvitter()" />
     </div>
+
+    
 
     <div class="">
         <p class="message">{{kvitter.message}}</p>
@@ -17,6 +20,11 @@
 
         <div class="d-flex align-items-end">
             <p class="date">{{ kvitter.createdDateAndTime | date: 'HH:mm dd-MM-yy' }}</p>
+            <div *ngIf="showPrivateMark && kvitter.private">
+                <div class="private-mark">
+                    P
+                </div>
+            </div>
         </div>
 
     </div>

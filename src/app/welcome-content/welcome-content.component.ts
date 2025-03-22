@@ -22,7 +22,7 @@ import { Router } from '@angular/router';
 export class WelcomeContentComponent implements OnInit, OnDestroy {
   private axiosService = inject(AxiosService);
   private router = inject(Router);
-  kvitters = computed<Kvitter[]>(() => this.axiosService.tenMostPopularAndPublicKvitterList());
+  kvitters = computed<Kvitter[]>(() => this.axiosService.tenPublicKvitterList());
   private dataLoaded = false;
   currentKvitterIndex: number = 0;
   private intervalId: any;
@@ -30,7 +30,7 @@ export class WelcomeContentComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     if (!this.dataLoaded) {
-      this.axiosService.updateTenMostPopularAndPublicKvitterList(); 
+      this.axiosService.welcomePageKvitter(); 
       this.dataLoaded = true;
     }
     this.startInterval();

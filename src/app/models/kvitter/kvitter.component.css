@@ -11,6 +11,24 @@
   font-weight: bold;
 }
 
+
+.private-mark {
+  width: 16px;     
+  height: 16px;
+  background-color: indigo; 
+  border-radius: 50%;    
+  display: flex;
+  margin-left: 5px;
+  justify-content: center;
+  align-items: center;
+  font-size: 10px;       
+  font-weight: bold;
+  color: white;       
+  text-align: center;
+  line-height: 16px;
+  font-family: Arial, sans-serif;
+}
+
 .message {
   font-style: italic;
   font-size: medium;
