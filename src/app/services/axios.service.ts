@@ -47,18 +47,46 @@ export class AxiosService {
     );
   }
 
-  getKvitterList(userName?: string): void {
-    const queryParams = userName ? `?userId=${userName}` : '';
+  followUser(email?: string):void{
+    this.request('POST','/followUser',{
+      userEmail: email
+    }).then((response) => {
+      console.log('Succesfully following user',response);
+    }).catch((error) => {
+      console.error('Error following user:', error);
+    });
+  }
 
-    this.request('GET', '/kvitterList' + queryParams)
+  postReply(message: string, kvitterId: string, parentReplyId: string | null = null): Promise<void> {
+    const data = {
+        message: message,
+        kvitterId: kvitterId,
+        parentReplyId: parentReplyId,
+    };
+
+    return this.request('POST', 'postReply', data)
+        .then((response) => {
+            console.log('Successfully posted reply', response);
+            this.getKvitterList()
+        })
+        .catch((error) => {
+            console.error('Error posting reply', error); 
+        });
+}
+
+  getKvitterList(userName?: string): void {
+    const queryParams = userName ? `?userName=${userName}` : '';
+
+    this.request('GET', `/kvitterList${queryParams}`)
       .then((response) => {
-        this.kvitterList.set(response.data); 
-        // console.log(this.kvitterList());
+        this.kvitterList.set(response.data);
+        console.log(this.kvitterList());
       })
       .catch((error) => {
         console.error('Error fetching kvitters:', error);
       });
-  }
+}
+
 
   getAccessToken(): string | null {
     return this.accessToken;

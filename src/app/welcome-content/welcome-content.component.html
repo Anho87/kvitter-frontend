@@ -2,13 +2,14 @@
     <app-button [buttonText]="'Register'" (buttonEvent)="showForm('register')" />
     <app-button [buttonText]="'Login'" (buttonEvent)="showForm('login')" />
 </div>
-    
+
 <div class="forms">
     <app-login-register-form [formToShow]="formToShow" (onSubmitLoginEvent)="onLogin($event)"
         (navigateToRegisterEvent)="showForm($event)" />
 </div>
 
-<div class="kvitters">
-    <app-kvitter *ngIf="currentKvitter" [class]="'transparent'" [showPrivateMark]="false" [kvitter]="currentKvitter">
+<div class=" five kvitters">
+    <app-kvitter *ngIf="currentKvitter" [class]="'transparent'" [showPrivateMark]="false" [kvitter]="currentKvitter"
+        [showFollowButton]="false" [showRemoveButton]="false" [showReplyButton]="false">
     </app-kvitter>
 </div>

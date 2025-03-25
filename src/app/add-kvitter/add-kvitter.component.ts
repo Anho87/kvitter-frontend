@@ -15,14 +15,15 @@ export class AddKvitterComponent {
   message: string = '';
   hashtags: string = '';
   hashtaglist: string[] = [];
-  private: boolean = false;
+  private: Boolean = false;
 
   kvitt(): void {
     this.splitHashtags();
+    console.log(this.private);
     let data = {
       message: this.message,
       hashtags: this.hashtaglist,
-      private: this.private,
+      isPrivate: this.private,
     }
     this.axiosService
     .request('POST', '/postKvitter', data) 

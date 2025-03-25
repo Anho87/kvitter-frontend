@@ -1,1 +1,36 @@
-<p>reply works!</p>
+<div class="container">
+    <div class="d-flex justify-content-between w-100">
+        <a href="javascript:void(0)" class="username" (click)="navigateToUserInfo()">{{ reply.user.userName }}</a>
+        <div class="d-flex justify-content-end">
+            <app-button *ngIf="showReplyButton" [buttonClass]="'style-small'" [buttonText]="'Reply'"
+                (buttonEvent)="showReplyBar()" />
+            <app-button *ngIf="showRemoveButton" [buttonClass]="'style-small'" [buttonText]="'Remove'"
+                (buttonEvent)="removeReply()" />
+            <app-button *ngIf="showFollowButton" [buttonClass]="'style-small'" [buttonText]="'Follow'"
+                (buttonEvent)="followUser()" />
+        </div>
+    </div>
+
+    <div class="">
+        <p class="message">{{reply.message}}</p>
+    </div>
+
+        <div class="d-flex justify-content-end">
+            <p class="date">{{ reply.createdDateAndTime | date: 'HH:mm dd-MM-yy' }}</p>
+        </div>
+
+        <div *ngIf="showReplyBarContent" class="d-flex justify-content-between align-items-center w-100">
+            <input type="text" id="reply" name="reply" placeholder="Reply" class="reply-input" [(ngModel)]="replyToSend">
+            <app-button [buttonClass]="'style-small'" [buttonText]="'Send'" (buttonEvent)="sendReply()" />
+        </div>
+
+        <div class="reply-div">
+            @for (reply of reply.replies; track reply.id){
+            <li>
+                {{reply.message}}
+                <!-- <app-reply [reply]="reply"/> -->
+            </li>
+            }
+        </div>
+    </div>
+

@@ -1,0 +1,9 @@
+.content{
+    width: 500px;
+}
+
+@media (max-width: 550px) {
+    .content{
+        width: auto;
+    }
+  }

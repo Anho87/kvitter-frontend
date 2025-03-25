@@ -1,4 +1,4 @@
-import { Component, computed, inject, Input, OnInit } from '@angular/core';
+import { Component, computed, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { AxiosService } from '../services/axios.service';
 import { CommonModule } from '@angular/common';
 import { Kvitter } from '../models/kvitter/kvitter.model';
@@ -13,6 +13,7 @@ import { KvitterComponent } from '../models/kvitter/kvitter.component';
 })
 export class KvitterListComponent implements OnInit {
   @Input()userName: string = "";
+  @Output() userClicked = new EventEmitter<string>();
   private axiosService = inject(AxiosService);
   kvitters = computed<Kvitter[]>(() => this.axiosService.kvitterList());
 

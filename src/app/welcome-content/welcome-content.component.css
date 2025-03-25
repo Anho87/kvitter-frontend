@@ -1,37 +1,46 @@
-.forms{
-    display: flex;
-    flex-flow: row-reverse;
+.forms {
+  display: flex;
+  flex-flow: row-reverse;
 }
-.buttons{
-    display: flex;
-    flex-flow: row-reverse;
-    margin-right: 5em;
-}
-
-.kvitters{
-    width: 400px;
-    list-style: none;
-    position:absolute;
-    bottom: 10px;
-    left: 10px;
-    max-width: 50%;
+.buttons {
+  display: flex;
+  flex-flow: row-reverse;
+  margin-right: 5em;
 }
 
+.kvitters {
+  width: 400px;
+  list-style: none;
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  max-width: 50%;
+}
 
 @media (max-width: 550px) {
-    .forms {
-        flex-flow: none;
-        justify-content: center;
-    }
-    .buttons{
-        flex-flow: none;
-        justify-content: center;
-        margin-right: 0em;
-    }
+  .forms {
+    flex-flow: none;
+    justify-content: center;
   }
+  .buttons {
+    flex-flow: none;
+    justify-content: center;
+    margin-right: 0em;
+  }
+  .kvitters {
+    width: calc(100% - 20px); 
+    margin-right: 0em; 
+    margin-left: auto; 
+  }
+}
 
-  @media (max-width: 900px) {
-    .kvitters{
-       display: none;
-    }
+@media (max-width: 900px) {
+  .kvitters {
+    position: relative;
+    margin: 10px; 
+    margin-left: auto; 
+    margin-right: 90px; 
+    padding: 0px;
+    max-width: 100%; 
   }
+}

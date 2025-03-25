@@ -14,8 +14,8 @@ export class LoginRegisterFormComponent {
   @Output() onSubmitLoginEvent = new EventEmitter();
   @Output() navigateToRegisterEvent = new EventEmitter();
 
-  userName: string = '';
-  password: string = '';
+  userName: string = 'mario';
+  password: string = 'itsame123';
   email: string = '';
   reEnterPassword: string = '';
   isMismatch: boolean = false;
@@ -57,6 +57,14 @@ export class LoginRegisterFormComponent {
 
   navigateToRegister() {
     this.formToShow = this.formToShow === 'register' ? 'login' : 'register';
+    if (this.formToShow === 'register') {
+      this.userName = '';
+      this.password = '';
+    }
+    else{
+      this.userName = 'mario';
+      this.password = 'itsame123';
+    }
     this.navigateToRegisterEvent.emit(this.formToShow);
   }
 }

@@ -1,7 +1,7 @@
 <div>
     <ul class="list-container">
         @for (kvitter of kvitters(); track kvitter.id) {
-        <app-kvitter [kvitter]="kvitter" [showPrivateMark]="true"/>
+            <li><app-kvitter [kvitter]="kvitter" [showPrivateMark]="true" /> </li>
         }
     </ul>
 </div>
