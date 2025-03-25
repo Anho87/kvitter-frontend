@@ -9,5 +9,5 @@ export interface Reply{
     user:MiniUserDto;
     kvitter:MiniKvitterDto;
     parentReply:MiniReplyDto;
-    replies:MiniReplyDto[];
+    replies:Reply[];
 }

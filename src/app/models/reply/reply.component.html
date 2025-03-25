@@ -27,8 +27,7 @@
         <div class="reply-div">
             @for (reply of reply.replies; track reply.id){
             <li>
-                {{reply.message}}
-                <!-- <app-reply [reply]="reply"/> -->
+                <app-reply [reply]="reply"/>
             </li>
             }
         </div>
