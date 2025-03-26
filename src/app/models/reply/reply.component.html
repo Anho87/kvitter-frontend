@@ -20,7 +20,7 @@
         </div>
 
         <div *ngIf="showReplyBarContent" class="d-flex justify-content-between align-items-center w-100">
-            <input type="text" id="reply" name="reply" placeholder="Reply" class="reply-input" [(ngModel)]="replyToSend">
+            <input type="text" id="reply" name="reply" placeholder="Reply" class="reply-input" [(ngModel)]="replyToSend" maxlength="280">
             <app-button [buttonClass]="'style-small'" [buttonText]="'Send'" (buttonEvent)="sendReply()" />
         </div>
 

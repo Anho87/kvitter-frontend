@@ -20,6 +20,7 @@ export class KvitterComponent implements OnInit{
   private router = inject(Router);
   @Input({required:true}) kvitter!: Kvitter;
   @Input({required:true}) showPrivateMark!: boolean;
+  @Input()showReplies: boolean = true;
   @Output() userClicked = new EventEmitter<string>();
   @Input() class = '';
   @Input() showRemoveButton: boolean = false;

@@ -57,7 +57,7 @@ export class AxiosService {
     });
   }
 
-  postReply(message: string, kvitterId: string, parentReplyId: string | null = null): Promise<void> {
+  postReply(message: string, kvitterId: string | null = null, parentReplyId: string | null = null): Promise<void> {
     const data = {
         message: message,
         kvitterId: kvitterId,

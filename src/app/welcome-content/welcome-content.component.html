@@ -8,8 +8,7 @@
         (navigateToRegisterEvent)="showForm($event)" />
 </div>
 
-<div class=" five kvitters">
+<div class="kvitters">
     <app-kvitter *ngIf="currentKvitter" [class]="'transparent'" [showPrivateMark]="false" [kvitter]="currentKvitter"
-        [showFollowButton]="false" [showRemoveButton]="false" [showReplyButton]="false">
-    </app-kvitter>
+        [showFollowButton]="false" [showRemoveButton]="false" [showReplyButton]="false" [showReplies]="false"/>
 </div>

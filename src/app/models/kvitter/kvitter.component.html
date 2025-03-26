@@ -40,7 +40,7 @@
         <app-button [buttonClass]="'style-small'" [buttonText]="'Send'" (buttonEvent)="sendReply()" />
     </div>
 
-    <div class="reply-div">
+    <div *ngIf="showReplies" class="reply-div">
         @for (reply of kvitter.replies; track reply.id){
         <li>
             <app-reply [reply]="reply"/>
