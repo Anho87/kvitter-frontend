@@ -6,6 +6,8 @@
                 (buttonEvent)="showReplyBar()" />
             <app-button *ngIf="showRemoveButton" [buttonClass]="'style-small'" [buttonText]="'Remove'"
                 (buttonEvent)="removeKvitter()" />
+                <app-button *ngIf="showRekvittButton" [buttonClass]="'style-small'" [buttonText]="'Rekvitt'"
+                (buttonEvent)="rekvitt()" />
             <app-button *ngIf="showFollowButton" [buttonClass]="'style-small'" [buttonText]="'Follow'"
                 (buttonEvent)="followUser()" />
         </div>

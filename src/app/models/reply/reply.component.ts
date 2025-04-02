@@ -53,6 +53,8 @@ export class ReplyComponent {
     this.axiosService.followUser(this.reply.user.email);
   }
 
+
+
   ngOnInit(): void {
     if (this.axiosService.getUsernameFromToken() === this.reply.user.userName) {
       this.showRemoveButton = true;

@@ -47,32 +47,49 @@ export class AxiosService {
     );
   }
 
-  followUser(email?: string):void{
-    this.request('POST','/followUser',{
-      userEmail: email
-    }).then((response) => {
-      console.log('Succesfully following user',response);
-    }).catch((error) => {
-      console.error('Error following user:', error);
-    });
+  followUser(email?: string): void {
+    this.request('POST', '/followUser', {
+      userEmail: email,
+    })
+      .then((response) => {
+        console.log('Succesfully following user', response);
+      })
+      .catch((error) => {
+        console.error('Error following user:', error);
+      });
   }
 
-  postReply(message: string, kvitterId: string | null = null, parentReplyId: string | null = null): Promise<void> {
+  postReply( message: string, kvitterId: string | null = null, parentReplyId: string | null = null): Promise<void> {
     const data = {
-        message: message,
-        kvitterId: kvitterId,
-        parentReplyId: parentReplyId,
+      message: message,
+      kvitterId: kvitterId,
+      parentReplyId: parentReplyId,
     };
 
     return this.request('POST', 'postReply', data)
-        .then((response) => {
-            console.log('Successfully posted reply', response);
-            this.getKvitterList()
-        })
-        .catch((error) => {
-            console.error('Error posting reply', error); 
-        });
-}
+      .then((response) => {
+        console.log('Successfully posted reply', response);
+        this.getKvitterList();
+      })
+      .catch((error) => {
+        console.error('Error posting reply', error);
+      });
+  }
+
+  postRekvitt(kvitterId: string): Promise<void> {
+    const data = {
+      kvitterId: kvitterId,
+    };
+
+    return this.request('POST', 'postRekvitt', data)
+      .then((response) => {
+        console.log('Successfully posted rekvitt', response);
+        this.getKvitterList();
+      })
+      .catch((error) => {
+        console.error('Error posting rekvitt', error);
+      });
+  }
 
   getKvitterList(userName?: string): void {
     const queryParams = userName ? `?userName=${userName}` : '';
@@ -85,8 +102,7 @@ export class AxiosService {
       .catch((error) => {
         console.error('Error fetching kvitters:', error);
       });
-}
-
+  }
 
   getAccessToken(): string | null {
     return this.accessToken;

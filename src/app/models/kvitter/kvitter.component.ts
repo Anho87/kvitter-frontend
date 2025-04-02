@@ -26,6 +26,7 @@ export class KvitterComponent implements OnInit{
   @Input() showRemoveButton: boolean = false;
   @Input() showFollowButton: boolean = true;
   @Input() showReplyButton: boolean = true;
+  @Input() showRekvittButton: boolean = true;
   showReplyBarContent: boolean = false;
   reply: string = '';
   
@@ -34,6 +35,20 @@ export class KvitterComponent implements OnInit{
     this.showReplyBarContent = this.showReplyBarContent === true ? false : true;
   }
   
+  rekvitt(){
+    const kvitterId: string = this.kvitter.id;  
+
+    this.axiosService.postRekvitt(kvitterId)
+    .then(() => {
+      this.reply = ''; 
+      this.showReplyBarContent = false;
+        this.showReplyBarContent = false;
+    })
+    .catch((error) => {
+        console.error('Failed to send reply:', error);
+    });
+  }
+
   sendReply(){
     const message: string = this.reply;
     const kvitterId: string = this.kvitter.id; 
@@ -78,6 +93,10 @@ export class KvitterComponent implements OnInit{
       this.showRemoveButton = true;
       this.showFollowButton = false;
       this.showReplyButton = false;
+      this.showRekvittButton = false;
+    }
+    if(this.kvitter.private === true){
+      this.showRekvittButton = false;
     }
   }
 }
