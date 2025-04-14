@@ -4,6 +4,9 @@ import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
+import { Rekvitt } from '../models/rekvitt/rekvitt.model';
+
+type DetailedDto = Kvitter | Rekvitt;
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +14,7 @@ import { Router } from '@angular/router';
 export class AxiosService {
   private router = inject(Router);
   private accessToken: string | null = null;
-  kvitterList = signal<Kvitter[]>([]);
+  kvitterList = signal<DetailedDto[]>([]);
   tenPublicKvitterList = signal<Kvitter[]>([]);
 
   constructor() {
@@ -95,13 +98,35 @@ export class AxiosService {
     const queryParams = userName ? `?userName=${userName}` : '';
 
     this.request('GET', `/kvitterList${queryParams}`)
-      .then((response) => {
-        this.kvitterList.set(response.data);
-        console.log(this.kvitterList());
-      })
-      .catch((error) => {
-        console.error('Error fetching kvitters:', error);
+    .then((response) => {
+      const detailedList: DetailedDto[] = response.data.map((item: any) => {
+        if ('message' in item) {
+          return {
+            id: item.id,
+            message: item.message,
+            user: item.user,
+            createdDateAndTime: item.createdDateAndTime,
+            hashtags: item.hashtags,
+            private: item.isPrivate,
+            likes: item.likes,
+            replies: item.replies,
+            rekvitts: item.rekvitts,
+          } as Kvitter;
+        } else {
+          return {
+            id: item.id,
+            user: item.user,
+            originalKvitter: item.originalKvitter,
+          } as Rekvitt;
+        }
       });
+
+      this.kvitterList.set(detailedList);
+      console.log(this.kvitterList());
+    })
+    .catch((error) => {
+      console.error('Error fetching kvitters:', error);
+    });
   }
 
   getAccessToken(): string | null {

@@ -13,5 +13,5 @@ export interface Kvitter{
     private: Boolean;
     likes: MiniLikeDto[];
     replies: Reply[];
-    retweets: MiniRekvittDto[];
+    rekvitts: MiniRekvittDto[];
 }

@@ -1,70 +1,11 @@
 <div class="container">
     <div class="d-flex justify-content-start w-100">
-        <a href="javascript:void(0)" class="username" (click)="navigateToUserInfo(rekvitt.user.userName)">{{ rekvitt.user.userName }}</a>
+        <a href="javascript:void(0)" class="username" (click)="navigateToUserInfo(rekvitt.user.userName)">{{
+            rekvitt.user.userName }} rekivtted:</a> 
     </div>
 
     <div class="original-kvitter">
-
-        <div class="d-flex justify-content-between w-100">
-            <a href="javascript:void(0)" class="username" (click)="navigateToUserInfo(rekvitt.originalKvitter.user.userName)">{{
-                rekvitt.originalKvitter.user.userName }}</a>
-            <!-- <div class="d-flex justify-content-end">
-                <app-button *ngIf="showReplyButton" [buttonClass]="'style-small'" [buttonText]="'Reply'"
-                    (buttonEvent)="showReplyBar()" />
-                <app-button *ngIf="showRemoveButton" [buttonClass]="'style-small'" [buttonText]="'Remove'"
-                    (buttonEvent)="removeKvitter()" />
-                    <app-button *ngIf="showRekvittButton" [buttonClass]="'style-small'" [buttonText]="'Rekvitt'"
-                    (buttonEvent)="rekvitt()" />
-                <app-button *ngIf="showFollowButton" [buttonClass]="'style-small'" [buttonText]="'Follow'"
-                    (buttonEvent)="followUser()" />
-            </div> -->
-        </div>
-
-
-
-        <div class="">
-            <p class="message">{{rekvitt.originalKvitter.message}}</p>
-        </div>
-
-        <div class="d-flex justify-content-between">
-            <ul class="hashtags">
-                @for (hashtag of rekvitt.originalKvitter.hashtags; track hashtag.id) {
-                <li><app-hashtag [hashtag]="hashtag" /> </li>
-                }
-            </ul>
-
-            <div class="d-flex align-items-end">
-                <p class="date">{{ rekvitt.originalKvitter.createdDateAndTime | date: 'HH:mm dd-MM-yy' }}</p>
-                <!-- <div *ngIf="showPrivateMark && kvitter.private">
-                    <div class="private-mark">
-                        P
-                    </div>
-                </div> -->
-            </div>
-
-        </div>
-
-        <!-- <div *ngIf="showReplyBarContent" class="d-flex justify-content-between align-items-center w-100">
-            <input type="text" id="reply" name="reply" placeholder="Reply" class="reply-input" [(ngModel)]="reply">
-            <app-button [buttonClass]="'style-small'" [buttonText]="'Send'" (buttonEvent)="sendReply()" />
-        </div> -->
-
-        <!-- <div *ngIf="showReplies" class="reply-div">
-            @for (reply of kvitter.replies; track reply.id){
-            <li>
-                <app-reply [reply]="reply"/>
-            </li>
-            }
-        </div> -->
+        <app-kvitter [kvitter]="rekvitt.originalKvitter" [showPrivateMark]="false" [showFollowButton]="false"
+            [showRekvittButton]="false" [showReplies]="false" [showReplyButton]="false" [isRetweet]="true" />
     </div>
-
-
-
-
-
-
-
-
-
-
 </div>

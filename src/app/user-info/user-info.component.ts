@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { KvitterListComponent } from '../kvitter-list/kvitter-list.component';
 import { AxiosService } from '../services/axios.service';
 import { ButtonComponent } from '../button/button.component';

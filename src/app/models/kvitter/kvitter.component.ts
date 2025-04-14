@@ -27,6 +27,7 @@ export class KvitterComponent implements OnInit{
   @Input() showFollowButton: boolean = true;
   @Input() showReplyButton: boolean = true;
   @Input() showRekvittButton: boolean = true;
+  @Input() isRetweet: boolean = false;
   showReplyBarContent: boolean = false;
   reply: string = '';
   
@@ -90,10 +91,12 @@ export class KvitterComponent implements OnInit{
   
   ngOnInit(): void {
     if(this.axiosService.getUsernameFromToken() === this.kvitter.user.userName){
-      this.showRemoveButton = true;
       this.showFollowButton = false;
       this.showReplyButton = false;
       this.showRekvittButton = false;
+      if (this.isRetweet === false) {
+        this.showRemoveButton = true;
+      }
     }
     if(this.kvitter.private === true){
       this.showRekvittButton = false;

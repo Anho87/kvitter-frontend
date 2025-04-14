@@ -1,7 +1,14 @@
 <div>
     <ul class="list-container">
-        @for (kvitter of kvitters(); track kvitter.id) {
-            <li><app-kvitter [kvitter]="kvitter" [showPrivateMark]="true" /> </li>
-        }
+      @for (dto of kvitters(); track dto.id) {
+        <li *ngIf="isKvitter(dto); else rekvittBlock">
+          <app-kvitter [kvitter]="dto" [showPrivateMark]="true" />
+        </li>
+        <ng-template #rekvittBlock>
+          <li *ngIf="isRekvitt(dto)">
+            <app-rekvitt [rekvitt]="dto" />
+          </li>
+        </ng-template>
+      }
     </ul>
-</div>
+  </div>

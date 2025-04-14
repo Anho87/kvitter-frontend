@@ -1,0 +1,15 @@
+.container {
+    width: 100%;
+    border: 1px solid indigo;
+    padding: 10px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    background-color: white;
+  }
+
+  .username {
+    font-weight: bold;
+    color: inherit;  
+    text-decoration: none; 
+    cursor: pointer; 
+  }
