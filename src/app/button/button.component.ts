@@ -1,14 +1,15 @@
+import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-button',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './button.component.html',
-  styleUrl: './button.component.css'
+  styleUrl: './button.component.css',
 })
 export class ButtonComponent {
-@Input({required: true}) buttonText = '';
-@Input() buttonClass = 'styled-btn'
-@Output() buttonEvent = new EventEmitter();
+  @Input() hoverText = '';
+  @Input() buttonClass = 'styled-btn';
+  @Output() buttonEvent = new EventEmitter();
 }

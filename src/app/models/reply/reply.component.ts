@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, Input } from '@angular/core';
+import {
+  Component,
+  inject,
+  Input,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonComponent } from 'src/app/button/button.component';
 import { AxiosService } from 'src/app/services/axios.service';
@@ -14,10 +20,11 @@ import { Router } from '@angular/router';
   templateUrl: './reply.component.html',
   styleUrl: './reply.component.css',
 })
-export class ReplyComponent {
+export class ReplyComponent implements OnChanges {
   @Input({ required: true }) reply!: Reply;
   @Input() showRemoveButton: boolean = false;
   @Input() showFollowButton: boolean = true;
+  @Input() showUnFollowButton: boolean = true;
   @Input() showReplyButton: boolean = true;
   private axiosService = inject(AxiosService);
   private router = inject(Router);
@@ -53,13 +60,33 @@ export class ReplyComponent {
     this.axiosService.followUser(this.reply.user.email);
   }
 
-
+  unFollowUser() {
+    this.axiosService.unFollowUser(this.reply.user.email);
+  }
 
   ngOnInit(): void {
     if (this.axiosService.getUsernameFromToken() === this.reply.user.userName) {
       this.showRemoveButton = true;
       this.showFollowButton = false;
+      this.showUnFollowButton = false;
       this.showReplyButton = false;
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.axiosService.getUsernameFromToken() === this.reply.user.userName) {
+      this.showRemoveButton = true;
+      this.showFollowButton = false;
+      this.showUnFollowButton = false;
+      this.showReplyButton = false;
+    } else {
+      if (this.reply.isFollowing) {
+        this.showUnFollowButton = true;
+        this.showFollowButton = false;
+      } else {
+        this.showUnFollowButton = false;
+        this.showFollowButton = true;
+      }
     }
   }
 

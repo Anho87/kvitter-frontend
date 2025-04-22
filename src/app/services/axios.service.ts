@@ -5,6 +5,7 @@ import { jwtDecode } from 'jwt-decode';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 import { Rekvitt } from '../models/rekvitt/rekvitt.model';
+import { Reply } from '../models/reply/reply.model';
 
 type DetailedDto = Kvitter | Rekvitt;
 
@@ -56,9 +57,23 @@ export class AxiosService {
     })
       .then((response) => {
         console.log('Succesfully following user', response);
+        this.getKvitterList();
       })
       .catch((error) => {
         console.error('Error following user:', error);
+      });
+  }
+
+  unFollowUser(email?: string): void {
+    this.request('DELETE', '/unFollowUser', {
+      userEmail: email,
+    })
+      .then((response) => {
+        console.log('Succesfully unfollowed user', response);
+        this.getKvitterList();
+      })
+      .catch((error) => {
+        console.error('Error unfollowing user:', error);
       });
   }
 
@@ -77,6 +92,29 @@ export class AxiosService {
       .catch((error) => {
         console.error('Error posting reply', error);
       });
+  }
+
+  upvoteKvitter(kvitterId: string, upvote: boolean): Promise<void>{
+    const data = {
+      kvitterId: kvitterId,
+    };
+    if (upvote) {
+      return this.request('POST', 'upvoteKvitter', data)
+      .then((response) => {
+        console.log('Upvote on kvitter succesfull', response);
+      })
+      .catch((error) => {
+        console.log('Error upvoting kvitter', error);
+      })
+    }else{
+      return this.request('DELETE', 'removeUpvoteOnKvitter', data)
+      .then((response) => {
+        console.log('Removed upvote on kvitter succesfull', response);
+      })
+      .catch((error) => {
+        console.log('Error removing upvote on kvitter', error);
+      })
+    }
   }
 
   postRekvitt(kvitterId: string): Promise<void> {
@@ -108,15 +146,17 @@ export class AxiosService {
             createdDateAndTime: item.createdDateAndTime,
             hashtags: item.hashtags,
             private: item.isPrivate,
-            likes: item.likes,
-            replies: item.replies,
+            replies: item.replies.map((reply: any) => this.mapReply(reply)),
             rekvitts: item.rekvitts,
+            isFollowing: item.isFollowing,
+            isLiked: item.isLiked
           } as Kvitter;
         } else {
           return {
             id: item.id,
             user: item.user,
             originalKvitter: item.originalKvitter,
+            createdDateAndTime: item.createdDateAndTime,
           } as Rekvitt;
         }
       });
@@ -213,6 +253,19 @@ export class AxiosService {
     }
   }
 
+  private mapReply(reply: any): Reply {
+    return {
+      id: reply.id,
+      message: reply.message,
+      createdDateAndTime: reply.createdDateAndTime,
+      user: reply.user,
+      kvitter: reply.kvitter,
+      parentReply: reply.parentReply,
+      replies: reply.replies ? reply.replies.map((r: any) => this.mapReply(r)) : [],
+      isFollowing: reply.isFollowing
+    };
+  }
+
   request(method: string, url: string, data?: any): Promise<any> {
     let headers = {};
     if (this.getAccessToken() !== null) {
@@ -225,5 +278,35 @@ export class AxiosService {
       data: data,
       headers: headers,
     });
+  }
+
+updateKvitterUpvoteStatus(id: string, isLiked: Boolean) {
+  const updatedList = this.kvitterList().map(dto => {
+    if (this.isKvitter(dto) && dto.id === id) {
+      return { ...dto, isLiked };
+    }
+
+    if (this.isRekvitt(dto) && dto.originalKvitter.id === id) {
+      return {
+        ...dto,
+        originalKvitter: {
+          ...dto.originalKvitter,
+          isLiked,
+        },
+      };
+    }
+
+    return dto;
+  });
+
+  this.kvitterList.set(updatedList);
+}
+
+  isKvitter(dto: DetailedDto): dto is Kvitter {
+    return 'message' in dto;
+  }
+
+  isRekvitt(dto: DetailedDto): dto is Rekvitt {
+    return 'originalKvitter' in dto;
   }
 }

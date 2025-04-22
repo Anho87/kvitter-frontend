@@ -1,1 +1,5 @@
-<button class="{{buttonClass}}" (click)="buttonEvent.emit()">{{buttonText}}</button>
+<button class="{{buttonClass}}" (click)="buttonEvent.emit()">
+    <ng-content></ng-content>
+    <div class="tooltip" *ngIf="hoverText">{{ hoverText }}</div>
+  </button>
+  

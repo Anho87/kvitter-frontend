@@ -7,6 +7,17 @@
   background-color: white;
 }
 
+.upvote-btn{
+  font-size: 20px;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.upvote-btn.filled{
+  color: indigo;
+}
+
 .username {
   font-weight: bold;
   color: inherit;  

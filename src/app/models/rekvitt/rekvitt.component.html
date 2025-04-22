@@ -1,11 +1,15 @@
 <div class="container">
-    <div class="d-flex justify-content-start w-100">
+    <div class="d-flex justify-content-between w-100">
         <a href="javascript:void(0)" class="username" (click)="navigateToUserInfo(rekvitt.user.userName)">{{
-            rekvitt.user.userName }} rekivtted:</a> 
+            rekvitt.user.userName }} rekivtted:</a>
+        <div class="d-flex justify-content-end">
+            <app-button *ngIf="showRemoveButton" [buttonClass]="'style-small'" [hoverText]="'Remove'"
+                (buttonEvent)="removeKvitter()"><i class="bi bi-x-square fs-6"></i> </app-button>
+        </div>
     </div>
 
     <div class="original-kvitter">
-        <app-kvitter [kvitter]="rekvitt.originalKvitter" [showPrivateMark]="false" [showFollowButton]="false"
-            [showRekvittButton]="false" [showReplies]="false" [showReplyButton]="false" [isRetweet]="true" />
+        <app-kvitter [kvitter]="rekvitt.originalKvitter" [showPrivateMark]="false" [showRekvittButton]="true"
+            [showReplies]="false" [showReplyButton]="false" [isRetweet]="true" />
     </div>
 </div>

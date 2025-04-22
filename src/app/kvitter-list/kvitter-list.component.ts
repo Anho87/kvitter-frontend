@@ -36,6 +36,7 @@ export class KvitterListComponent implements OnInit, OnChanges {
   isRekvitt(dto: DetailedDto): dto is Rekvitt {
     return 'originalKvitter' in dto;
   }
+
 }
 
 

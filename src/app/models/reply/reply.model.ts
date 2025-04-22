@@ -10,4 +10,5 @@ export interface Reply{
     kvitter:MiniKvitterDto;
     parentReply:MiniReplyDto;
     replies:Reply[];
+    isFollowing: Boolean;
 }

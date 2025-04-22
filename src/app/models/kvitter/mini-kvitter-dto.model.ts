@@ -1,6 +1,11 @@
+import { MiniHashtagDto } from "../hashtag/mini-hashtag-dto.model";
+
 export interface MiniKvitterDto{
     id: string;
     message: string;
     createdDateAndTime: string;
-    isPrivate: Boolean;
+    hashtags: MiniHashtagDto[];
+    private: Boolean;
+    isFollowing: Boolean;
+    isLiked: Boolean;
 }

@@ -1,6 +1,6 @@
 <div class="buttons">
-    <app-button [buttonText]="'Register'" (buttonEvent)="showForm('register')" />
-    <app-button [buttonText]="'Login'" (buttonEvent)="showForm('login')" />
+    <app-button (buttonEvent)="showForm('register')"><i class=""></i>Register</app-button>
+    <app-button (buttonEvent)="showForm('login')"><i class=""></i>Login</app-button>
 </div>
 
 <div class="forms">
@@ -10,5 +10,5 @@
 
 <div class="kvitters">
     <app-kvitter *ngIf="currentKvitter" [class]="'transparent'" [showPrivateMark]="false" [kvitter]="currentKvitter"
-        [showFollowButton]="false" [showRemoveButton]="false" [showReplyButton]="false" [showReplies]="false" [showRekvittButton]="false"/>
+        [showButtonBar]="false" [showReplies]="false" [showUpvoteButton]="false" />
 </div>
