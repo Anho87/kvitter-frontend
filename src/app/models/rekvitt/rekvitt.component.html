@@ -1,10 +1,10 @@
 <div class="container">
     <div class="d-flex justify-content-between w-100">
         <a href="javascript:void(0)" class="username" (click)="navigateToUserInfo(rekvitt.user.userName)">{{
-            rekvitt.user.userName }} rekivtted:</a>
+            rekvitt.user.userName }} rekvitted:</a>
         <div class="d-flex justify-content-end">
             <app-button *ngIf="showRemoveButton" [buttonClass]="'style-small'" [hoverText]="'Remove'"
-                (buttonEvent)="removeKvitter()"><i class="bi bi-x-square fs-6"></i> </app-button>
+                (buttonEvent)="removeRekvitt()"><i class="bi bi-x-square fs-6"></i> </app-button>
         </div>
     </div>
 

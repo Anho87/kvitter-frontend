@@ -4,4 +4,5 @@ export interface MiniReplyDto{
     createdDateAndTime:string;
     userId:string;
     userName:String;
+    isActive: Boolean;
 }

@@ -1,11 +1,12 @@
+import axios from 'axios';
 import { inject, Injectable, signal } from '@angular/core';
 import { Kvitter } from '../models/kvitter/kvitter.model';
-import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 import { Rekvitt } from '../models/rekvitt/rekvitt.model';
 import { Reply } from '../models/reply/reply.model';
+import { MiniUserDto } from '../models/user/mini-user-dto.model';
 
 type DetailedDto = Kvitter | Rekvitt;
 
@@ -51,26 +52,40 @@ export class AxiosService {
     );
   }
 
-  followUser(email?: string): void {
+  followUser(user?: MiniUserDto): void {
     this.request('POST', '/followUser', {
-      userEmail: email,
+      userEmail: user?.email,
     })
       .then((response) => {
         console.log('Succesfully following user', response);
-        this.getKvitterList();
+        if (this.router.url.includes('/user-info')) {
+          const currentUrl = this.router.url;
+          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+            this.router.navigateByUrl(currentUrl);
+          });
+        }else{
+          this.getKvitterList();
+        }
       })
       .catch((error) => {
         console.error('Error following user:', error);
       });
   }
 
-  unFollowUser(email?: string): void {
+  unFollowUser(user?: MiniUserDto): void {
     this.request('DELETE', '/unFollowUser', {
-      userEmail: email,
+      userEmail: user?.email,
     })
       .then((response) => {
         console.log('Succesfully unfollowed user', response);
-        this.getKvitterList();
+        if (this.router.url.includes('/user-info')) {
+          const currentUrl = this.router.url;
+          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+            this.router.navigateByUrl(currentUrl);
+          });
+        }else{
+          this.getKvitterList();
+        }
       })
       .catch((error) => {
         console.error('Error unfollowing user:', error);
@@ -83,11 +98,17 @@ export class AxiosService {
       kvitterId: kvitterId,
       parentReplyId: parentReplyId,
     };
-
     return this.request('POST', 'postReply', data)
       .then((response) => {
         console.log('Successfully posted reply', response);
-        this.getKvitterList();
+        if (this.router.url.includes('/user-info')) {
+          const currentUrl = this.router.url;
+          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+            this.router.navigateByUrl(currentUrl);
+          });
+        }else{
+          this.getKvitterList();
+        }
       })
       .catch((error) => {
         console.error('Error posting reply', error);
@@ -121,11 +142,17 @@ export class AxiosService {
     const data = {
       kvitterId: kvitterId,
     };
-
     return this.request('POST', 'postRekvitt', data)
       .then((response) => {
         console.log('Successfully posted rekvitt', response);
-        this.getKvitterList();
+        if (this.router.url.includes('/user-info')) {
+          const currentUrl = this.router.url;
+          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+            this.router.navigateByUrl(currentUrl);
+          });
+        }else{
+          this.getKvitterList();
+        }
       })
       .catch((error) => {
         console.error('Error posting rekvitt', error);
@@ -146,6 +173,7 @@ export class AxiosService {
             createdDateAndTime: item.createdDateAndTime,
             hashtags: item.hashtags,
             private: item.isPrivate,
+            isActive: item.isActive,
             replies: item.replies.map((reply: any) => this.mapReply(reply)),
             rekvitts: item.rekvitts,
             isFollowing: item.isFollowing,
@@ -262,7 +290,8 @@ export class AxiosService {
       kvitter: reply.kvitter,
       parentReply: reply.parentReply,
       replies: reply.replies ? reply.replies.map((r: any) => this.mapReply(r)) : [],
-      isFollowing: reply.isFollowing
+      isFollowing: reply.isFollowing,
+      isActive: reply.isActive
     };
   }
 

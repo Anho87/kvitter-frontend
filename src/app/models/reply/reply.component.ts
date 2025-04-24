@@ -10,7 +10,6 @@ import { FormsModule } from '@angular/forms';
 import { ButtonComponent } from 'src/app/button/button.component';
 import { AxiosService } from 'src/app/services/axios.service';
 import { Reply } from './reply.model';
-import { MiniReplyDto } from './mini-reply-dto.model';
 import { Router } from '@angular/router';
 
 @Component({
@@ -26,6 +25,7 @@ export class ReplyComponent implements OnChanges {
   @Input() showFollowButton: boolean = true;
   @Input() showUnFollowButton: boolean = true;
   @Input() showReplyButton: boolean = true;
+  @Input() showButtonBar: boolean = true;
   private axiosService = inject(AxiosService);
   private router = inject(Router);
   showReplyBarContent: boolean = false;
@@ -49,7 +49,14 @@ export class ReplyComponent implements OnChanges {
       .request('DELETE', '/removeReply', data)
       .then((response) => {
         console.log('Reply removed successfully', response);
-        this.axiosService.getKvitterList();
+        if (this.router.url.includes('/user-info')) {
+          const currentUrl = this.router.url;
+          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+            this.router.navigateByUrl(currentUrl);
+          });
+        }else{
+          this.axiosService.getKvitterList();
+        }
       })
       .catch((error) => {
         console.error('Error removing reply', error);
@@ -57,11 +64,11 @@ export class ReplyComponent implements OnChanges {
   }
 
   followUser() {
-    this.axiosService.followUser(this.reply.user.email);
+    this.axiosService.followUser(this.reply.user);
   }
 
   unFollowUser() {
-    this.axiosService.unFollowUser(this.reply.user.email);
+    this.axiosService.unFollowUser(this.reply.user);
   }
 
   ngOnInit(): void {
@@ -70,6 +77,9 @@ export class ReplyComponent implements OnChanges {
       this.showFollowButton = false;
       this.showUnFollowButton = false;
       this.showReplyButton = false;
+    }
+    if (!this.reply.isActive) {
+      this.showButtonBar = false;
     }
   }
 

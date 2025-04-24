@@ -1,7 +1,7 @@
 import { MiniKvitterDto } from "../kvitter/mini-kvitter-dto.model";
 import { MiniLikeDto } from "../like/mini-like-dto.model";
+import { MiniRekvittDto } from "../rekvitt/mini-rekvitt-dto.model";
 import { MiniReplyDto } from "../reply/mini-reply-dto.model";
-import { MiniRetweetDto } from "../retweet/mini-retweet-dto.models";
 import { MiniUserDto } from "./mini-user-dto.model";
 
 
@@ -14,6 +14,6 @@ export interface User {
     replies: MiniReplyDto[];
     following: MiniUserDto[];
     followers: MiniUserDto[]
-    retweets: MiniRetweetDto[]
+    rekvitts: MiniRekvittDto[]
     token: string;
 }

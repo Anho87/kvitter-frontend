@@ -6,6 +6,7 @@ export interface MiniKvitterDto{
     createdDateAndTime: string;
     hashtags: MiniHashtagDto[];
     private: Boolean;
+    isActive: Boolean;
     isFollowing: Boolean;
     isLiked: Boolean;
 }

@@ -1,7 +1,7 @@
 <div class="container">
     <div class="d-flex justify-content-between w-100">
         <a href="javascript:void(0)" class="username" (click)="navigateToUserInfo()">{{ reply.user.userName }}</a>
-        <div class="d-flex justify-content-end">
+        <div *ngIf="showButtonBar" class="d-flex justify-content-end">
             <app-button *ngIf="showReplyButton" [buttonClass]="'style-small'" [hoverText]="'Reply'" (buttonEvent)="showReplyBar()"><i
                     class="bi bi-reply fs-6"></i></app-button>
             <app-button *ngIf="showRemoveButton" [buttonClass]="'style-small'" [hoverText]="'Remove'" (buttonEvent)="removeReply()"><i

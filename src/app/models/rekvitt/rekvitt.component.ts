@@ -20,7 +20,7 @@ export class RekvittComponent implements OnInit{
   @Input() showRemoveButton: boolean = false;
   isUpvoted = false;
 
-  removeKvitter() {
+  removeRekvitt() {
     let data = {
       rekvittId: this.rekvitt.id,
     };
@@ -28,7 +28,14 @@ export class RekvittComponent implements OnInit{
       .request('DELETE', '/removeRekvitt', data)
       .then((response) => {
         console.log('Rekvitt removed successfully', response);
-        this.axiosService.getKvitterList();
+        if (this.router.url.includes('/user-info')) {
+          const currentUrl = this.router.url;
+          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+            this.router.navigateByUrl(currentUrl);
+          });
+        }else{
+          this.axiosService.getKvitterList();
+        }
       })
       .catch((error) => {
         console.error('Error removing Rekvitt', error);

@@ -11,6 +11,7 @@ export interface Kvitter{
     createdDateAndTime: string;
     hashtags: MiniHashtagDto[];
     private: Boolean;
+    isActive: Boolean;
     replies: Reply[];
     rekvitts: MiniRekvittDto[];
     isFollowing: Boolean;

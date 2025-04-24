@@ -11,4 +11,5 @@ export interface Reply{
     parentReply:MiniReplyDto;
     replies:Reply[];
     isFollowing: Boolean;
+    isActive: Boolean;
 }
