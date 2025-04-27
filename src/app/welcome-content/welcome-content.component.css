@@ -1,11 +1,14 @@
 .forms {
-  display: flex;
-  flex-flow: row-reverse;
+  position: absolute;
+  right: 10px;
+  top: 70px;
 }
 .buttons {
   display: flex;
   flex-flow: row-reverse;
-  margin-right: 5em;
+  position: absolute;
+  right: 10px;
+  top: 10px;
 }
 
 .kvitters {
@@ -17,25 +20,11 @@
   max-width: 50%;
 }
 
-@media (max-width: 550px) {
-  .forms {
-    flex-flow: none;
-    justify-content: center;
-  }
-  .buttons {
-    flex-flow: none;
-    justify-content: center;
-    margin-right: 0em;
-  }
+@media (max-width: 1000px) {
   .kvitters {
     width: calc(100% - 20px); 
     margin-right: 0em; 
     margin-left: auto; 
-  }
-}
-
-@media (max-width: 900px) {
-  .kvitters {
     position: relative;
     margin: 10px; 
     margin-left: auto; 
@@ -43,4 +32,21 @@
     padding: 0px;
     max-width: 100%; 
   }
+  
+  .forms {
+    position: relative;
+    right: 0px;
+    top: 0px;
+    display: flex;
+    justify-content: center;
+  }
+  .buttons {
+    position: relative;
+    right: 0px;
+    top: 0px;
+    display: flex;
+    justify-content: center;
+  }
 }
+
+

@@ -1,5 +1,12 @@
 <button class="{{buttonClass}}" (click)="buttonEvent.emit()">
-    <ng-content></ng-content>
-    <div class="tooltip" *ngIf="hoverText">{{ hoverText }}</div>
-  </button>
-  
+  <ng-content></ng-content>
+  @if (hoverText) {
+  <div class="tooltip" [ngClass]="{
+      'tooltip-above': tooltipPosition === 'above',
+      'tooltip-below': tooltipPosition === 'below'
+    }">
+    {{ hoverText }}
+  </div>
+  }
+
+</button>

@@ -7,6 +7,8 @@ import { Router } from '@angular/router';
 import { Rekvitt } from '../models/rekvitt/rekvitt.model';
 import { Reply } from '../models/reply/reply.model';
 import { MiniUserDto } from '../models/user/mini-user-dto.model';
+import { Hashtag } from '../models/hashtag/hashtag.model';
+import { MiniHashtagDto } from '../models/hashtag/mini-hashtag-dto.model';
 
 type DetailedDto = Kvitter | Rekvitt;
 
@@ -18,6 +20,8 @@ export class AxiosService {
   private accessToken: string | null = null;
   kvitterList = signal<DetailedDto[]>([]);
   tenPublicKvitterList = signal<Kvitter[]>([]);
+  trendingHashtags = signal<MiniHashtagDto[]>([]);
+  authorized = signal<boolean>(false);
 
   constructor() {
     axios.defaults.baseURL = environment.apiUrl;
@@ -138,24 +142,36 @@ export class AxiosService {
     }
   }
 
-  postRekvitt(kvitterId: string): Promise<void> {
+  
+
+  async postRekvitt(kvitterId: string): Promise<void> {
     const data = {
       kvitterId: kvitterId,
     };
-    return this.request('POST', 'postRekvitt', data)
+    try {
+      const response = await this.request('POST', 'postRekvitt', data);
+      console.log('Successfully posted rekvitt', response);
+      if (this.router.url.includes('/user-info')) {
+        const currentUrl = this.router.url;
+        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+          this.router.navigateByUrl(currentUrl);
+        });
+      } else {
+        this.getKvitterList();
+      }
+    } catch (error) {
+      console.error('Error posting rekvitt', error);
+    }
+  }
+
+  fetchTrendingHashtags() {
+    this.request('GET', '/trendingHashtags')
       .then((response) => {
-        console.log('Successfully posted rekvitt', response);
-        if (this.router.url.includes('/user-info')) {
-          const currentUrl = this.router.url;
-          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-            this.router.navigateByUrl(currentUrl);
-          });
-        }else{
-          this.getKvitterList();
-        }
+        this.trendingHashtags.set(response.data); 
+        console.log(response.data);
       })
       .catch((error) => {
-        console.error('Error posting rekvitt', error);
+        console.error('Error fetching trending hashtags:', error);
       });
   }
 
@@ -228,6 +244,7 @@ export class AxiosService {
   logoutUser(): void {
     console.warn('User logged out');
     this.clearAccessToken();
+    this.authorized.set(false);
     this.router.navigate(['/welcome']);
   }
 
@@ -236,6 +253,7 @@ export class AxiosService {
     try {
       const response = await axios.post('/refresh-token');
       const { accessToken } = response.data;
+      this.authorized.set(true);
       this.setAccessToken(accessToken);
       return true;
     } catch (error) {
@@ -268,7 +286,7 @@ export class AxiosService {
       const { accessToken } = response.data;
 
       this.setAccessToken(accessToken);
-
+      this.authorized.set(true);
       error.config.headers['Authorization'] = 'Bearer ' + accessToken;
       return axios(error.config);
     } catch (refreshError) {

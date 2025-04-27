@@ -1,0 +1,9 @@
+<div class="container d-flex justify-content-end">
+    @if (showBackButton) {
+        <app-button [hoverText]="'Back'" [tooltipPosition]="'below'" (buttonEvent)="back()"><i
+                class="bi bi-box-arrow-in-left fs-6"></i></app-button>
+    }
+    @if (showLogoutButton) {
+        <app-button  (buttonEvent)="onLogout()"><i class=""></i>Logout</app-button>
+    }
+</div>

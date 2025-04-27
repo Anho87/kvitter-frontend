@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { Hashtag } from './hashtag.model';
 import { MiniHashtagDto } from './mini-hashtag-dto.model';
 
 @Component({
@@ -11,5 +10,4 @@ import { MiniHashtagDto } from './mini-hashtag-dto.model';
 })
 export class HashtagComponent {
   @Input({required:true}) hashtag!: MiniHashtagDto;
-// @Input() hashtag = '';
 }

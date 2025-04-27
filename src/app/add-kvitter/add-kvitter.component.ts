@@ -1,4 +1,4 @@
-import { Component, inject, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Output } from '@angular/core';
 import { AxiosService } from '../services/axios.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -12,10 +12,15 @@ import { CommonModule } from '@angular/common';
 })
 export class AddKvitterComponent {
   private axiosService = inject(AxiosService);
+  @Output() close = new EventEmitter<void>();
   message: string = '';
   hashtags: string = '';
   hashtaglist: string[] = [];
   private: Boolean = false;
+
+  onCancel() {
+    this.close.emit();
+  }
 
   kvitt(): void {
     this.splitHashtags();
@@ -29,6 +34,7 @@ export class AddKvitterComponent {
     .request('POST', '/postKvitter', data) 
     .then((response) => {
       console.log('Kvitter posted successfully', response);
+      this.close.emit();
       this.axiosService.getKvitterList();
     })
     .catch((error) => {

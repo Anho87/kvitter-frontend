@@ -1,0 +1,39 @@
+@if (isSmallScreen && isSidebarVisible) {
+<div class="backdrop" (click)="onCancel()"></div>
+}
+
+@if (isSmallScreen && !isSidebarVisible) {
+<app-button class="sidebar-toggle-btn" (buttonEvent)="toggleSidebar()"><i class="bi bi-list"></i></app-button>
+}
+
+<div class="sidebar" [class.active]="isSidebarVisible || !isSmallScreen">
+    @if (isSmallScreen && isSidebarVisible) {
+    <app-button (buttonEvent)="toggleSidebar()"><i class="bi bi-x-lg inside-sidebar-btn"></i></app-button>
+    }
+    <div class="d-flex flex-column justify-content-between test">
+        <ul class="sidebar-menu">
+            <li><a href="javascript:void(0)" (click)="onHome()">Home</a></li>
+            <li><a href="javascript:void(0)" (click)="onSearch()">Search</a></li>
+            <li><a href="javascript:void(0)" (click)="onHome()">Messages</a></li>
+            <li><a href="javascript:void(0)" (click)="onHome()">Notifications</a></li>
+            <li><a href="javascript:void(0)" (click)="onLogout()">Logout</a></li>
+        </ul>
+
+        <div class="trending">
+            <div class="title">Trending Hashtags#</div>
+            <div class="hashtags">
+                <ul class="list-unstyled d-flex flex-wrap">
+                    @if (hashtags()) {
+                    @for (hashtag of hashtags(); track hashtag.id) {
+                    <li class="hashtag-item">
+                        <app-hashtag [hashtag]="hashtag"></app-hashtag>
+                    </li>
+                    }
+                    } @else {
+                    <li>Loading popular hashtags...</li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

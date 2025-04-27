@@ -79,6 +79,7 @@ export class WelcomeContentComponent implements OnInit, OnDestroy {
       })
       .then((response) => {
         this.axiosService.setAccessToken(response.data.accessToken);
+        this.axiosService.authorized.set(true);
         let userName = this.axiosService.getUsernameFromToken();
         this.ngOnDestroy()
         this.router.navigate([`user/${userName}`]);
@@ -94,6 +95,7 @@ export class WelcomeContentComponent implements OnInit, OnDestroy {
       })
       .then((response) => {
         this.axiosService.setAccessToken(response.data.accessToken);
+        this.axiosService.authorized.set(true);
         let userName = this.axiosService.getUsernameFromToken();
         this.ngOnDestroy()
         this.router.navigate([`user/${userName}`]);

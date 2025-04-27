@@ -1,0 +1,11 @@
+.container{
+    position:fixed;
+    top: 0;
+    right: 0;
+}
+
+@media (max-width: 1000px) {
+    .container{
+        position: relative;
+    }
+}

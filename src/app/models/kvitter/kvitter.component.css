@@ -79,17 +79,6 @@
   font-size: 14px;
   white-space: nowrap;
 }
-.five {
-  background-color: red;
-}
-
-.four {
-  background-color: blue;
-}
-
-.three {
-  background-color: chartreuse;
-}
 
 .transparent {
   background-color: rgba(0, 0, 0, 0.5);

@@ -2,7 +2,6 @@
     width: 400px;
     height: 100%;
     margin: 10px;
-    margin-right: 5em;
     padding: 15px; 
     background: #fff;
     border-radius: 6px; 
@@ -75,6 +74,5 @@
     .custom-form {
         width: auto;
         height: auto;
-        margin-right: 0em;
     }
   }

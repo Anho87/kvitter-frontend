@@ -1,6 +1,7 @@
 import {
   Component,
   EventEmitter,
+  HostListener,
   inject,
   Input,
   OnChanges,
@@ -47,6 +48,7 @@ export class KvitterComponent implements OnInit, OnChanges {
   @Input() showUpvoteButton: boolean = true;
   @Input() class = '';
   @Input() showButtonBar: boolean = true;
+  @Input() showHashtags: boolean = false;
   showReplyBarContent: boolean = false;
   reply: string = '';
   isUpvoted = false;
@@ -58,12 +60,14 @@ export class KvitterComponent implements OnInit, OnChanges {
   upvote() {
     this.isUpvoted = !this.isUpvoted;
     this.axiosService.upvoteKvitter(this.kvitter.id, this.isUpvoted);
-    this.axiosService.updateKvitterUpvoteStatus(this.kvitter.id, this.isUpvoted);
+    this.axiosService.updateKvitterUpvoteStatus(
+      this.kvitter.id,
+      this.isUpvoted
+    );
   }
 
   rekvitt() {
     const kvitterId: string = this.kvitter.id;
-
     this.axiosService
       .postRekvitt(kvitterId)
       .then(() => {
@@ -108,10 +112,12 @@ export class KvitterComponent implements OnInit, OnChanges {
         console.log('Kvitter removed successfully', response);
         if (this.router.url.includes('/user-info')) {
           const currentUrl = this.router.url;
-          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-            this.router.navigateByUrl(currentUrl);
-          });
-        }else{
+          this.router
+            .navigateByUrl('/', { skipLocationChange: true })
+            .then(() => {
+              this.router.navigateByUrl(currentUrl);
+            });
+        } else {
           this.axiosService.getKvitterList();
         }
       })
@@ -129,7 +135,10 @@ export class KvitterComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-    if ( this.axiosService.getUsernameFromToken() === this.kvitter.user.userName) {
+    this.checkScreenSize();
+    if (
+      this.axiosService.getUsernameFromToken() === this.kvitter.user.userName
+    ) {
       this.showFollowButton = false;
       this.showUnFollowButton = false;
       this.showReplyButton = false;
@@ -142,26 +151,33 @@ export class KvitterComponent implements OnInit, OnChanges {
     if (this.kvitter.private) {
       this.showRekvittButton = false;
     }
-    if(!this.kvitter.isActive){
+    if (!this.kvitter.isActive) {
       this.showButtonBar = false;
       this.showUpvoteButton = false;
     }
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (this.axiosService.getUsernameFromToken() !== this.kvitter.user.userName) {
-    if (this.kvitter.isFollowing) {
-      this.showUnFollowButton = true;
-      this.showFollowButton = false;
-    } else {
-      this.showUnFollowButton = false;
-      this.showFollowButton = true;
+    @HostListener('window:resize')
+    checkScreenSize() {
+      this.showHashtags = window.innerWidth >= 400;
     }
-    if (this.kvitter.isLiked) {
-      this.isUpvoted = true;
-    }else{
-      this.isUpvoted = false;
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (
+      this.axiosService.getUsernameFromToken() !== this.kvitter.user.userName
+    ) {
+      if (this.kvitter.isFollowing) {
+        this.showUnFollowButton = true;
+        this.showFollowButton = false;
+      } else {
+        this.showUnFollowButton = false;
+        this.showFollowButton = true;
+      }
+      if (this.kvitter.isLiked) {
+        this.isUpvoted = true;
+      } else {
+        this.isUpvoted = false;
+      }
     }
   }
-}
 }

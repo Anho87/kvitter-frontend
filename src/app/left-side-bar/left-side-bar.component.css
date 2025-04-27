@@ -1,0 +1,99 @@
+.sidebar {
+  position: fixed;
+  top: 80px;
+  left: -250px;
+  width: 240px;
+  height: 100vh;
+  background-color: rgba(36, 4, 87, 0.5);
+  padding: 20px;
+  overflow-y: auto;
+  z-index: 1000;
+  transition: left 0.3s ease;
+}
+
+.backdrop {
+  background-color: rgba(0, 0, 0, 0.9);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+}
+
+.sidebar.active + .backdrop {
+  display: block;
+}
+
+.sidebar.active {
+  left: 0;
+}
+
+.sidebar-content {
+  background-color: rebeccapurple;
+}
+
+.sidebar-menu {
+  list-style: none;
+}
+.sidebar .sidebar-menu a,
+.trending {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+  display: block;
+}
+
+.sidebar-menu li {
+  margin: 15px 0;
+}
+
+.sidebar-menu a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+  display: block;
+}
+
+.sidebar-menu a:hover {
+  text-decoration: underline;
+}
+
+.sidebar-toggle-btn {
+  position: fixed;
+  top: 75px;
+}
+
+.inside-sidebar-btn {
+  display: d-flex;
+}
+
+@media (max-width: 1000px) {
+  .sidebar {
+    top: 0px;
+  }
+}
+
+.trending {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.title {
+  font-weight: bold;
+  color: white;
+  font-size: 20px;
+}
+
+.hashtags ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0;
+  margin: 0;
+}
+
+.hashtag-item {
+  list-style: none;
+}

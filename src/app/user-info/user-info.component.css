@@ -1,9 +1,21 @@
 .content{
     width: 500px;
 }
+h1{
+    color: white;
+}
 
 @media (max-width: 550px) {
     .content{
         width: auto;
+        
+    }
+  }
+
+
+  @media (max-width: 768px) {
+    .content{
+
+        margin-top: 60px;
     }
   }

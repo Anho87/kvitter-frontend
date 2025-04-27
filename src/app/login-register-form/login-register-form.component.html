@@ -1,5 +1,6 @@
 <div class="form-container">
-    <form *ngIf="formToShow == 'login'" class="custom-form" (ngSubmit)="onSubmitLogin()" #loginForm="ngForm">
+    @if (formToShow == 'login') {
+    <form class="custom-form" (ngSubmit)="onSubmitLogin()" #loginForm="ngForm">
         <h1>Welcome back!</h1>
         <p>
             <label for="username">Username</label>
@@ -18,9 +19,11 @@
             <a href="javascript:void(0)" class="register-link" (click)="navigateToRegister()">Register here!</a>
         </h6>
     </form>
+    }
 
 
-    <form *ngIf="formToShow == 'register'" class="custom-form" (ngSubmit)="onSubmitRegister()">
+    @if (formToShow == 'register'){
+    <form class="custom-form" (ngSubmit)="onSubmitRegister()">
         <h1>Register</h1>
         <p>
             <label for="email">Email</label>
@@ -50,4 +53,6 @@
             <a href="javascript:void(0)" class="login-link" (click)="navigateToRegister()">Login here!</a>
         </h6>
     </form>
+    }
+
 </div>

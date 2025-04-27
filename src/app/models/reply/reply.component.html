@@ -1,16 +1,26 @@
 <div class="container">
     <div class="d-flex justify-content-between w-100">
         <a href="javascript:void(0)" class="username" (click)="navigateToUserInfo()">{{ reply.user.userName }}</a>
-        <div *ngIf="showButtonBar" class="d-flex justify-content-end">
-            <app-button *ngIf="showReplyButton" [buttonClass]="'style-small'" [hoverText]="'Reply'" (buttonEvent)="showReplyBar()"><i
-                    class="bi bi-reply fs-6"></i></app-button>
-            <app-button *ngIf="showRemoveButton" [buttonClass]="'style-small'" [hoverText]="'Remove'" (buttonEvent)="removeReply()"><i
-                    class="bi bi-x-square fs-6"></i></app-button>
-            <app-button *ngIf="showFollowButton" [buttonClass]="'style-small'" [hoverText]="'Follow'" (buttonEvent)="followUser()"><i
-                    class="bi bi-person-add fs-6"></i></app-button>
-            <app-button *ngIf="showUnFollowButton" [buttonClass]="'style-small'" [hoverText]="'Unfollow'" (buttonEvent)="unFollowUser()"> <i
-                    class="bi bi-person-fill-dash fs-6"></i> </app-button>
-        </div>
+        @if (showButtonBar) {
+            <div class="d-flex justify-content-end">
+                @if (showReplyButton) {
+                    <app-button [buttonClass]="'style-small'" [hoverText]="'Reply'" (buttonEvent)="showReplyBar()"><i
+                        class="bi bi-reply fs-6"></i></app-button>
+                }
+                @if (showRemoveButton) {
+                    <app-button [buttonClass]="'style-small'" [hoverText]="'Remove'" (buttonEvent)="removeReply()"><i
+                        class="bi bi-x-square fs-6"></i></app-button>
+                }
+                @if (showFollowButton) {
+                    <app-button [buttonClass]="'style-small'" [hoverText]="'Follow'" (buttonEvent)="followUser()"><i
+                        class="bi bi-person-add fs-6"></i></app-button>
+                }
+                @if (showUnFollowButton) {
+                    <app-button [buttonClass]="'style-small'" [hoverText]="'Unfollow'" (buttonEvent)="unFollowUser()"> <i
+                        class="bi bi-person-fill-dash fs-6"></i> </app-button>
+                }
+            </div>
+        }
     </div>
 
     <div class="">
@@ -21,12 +31,14 @@
         <p class="date">{{ reply.createdDateAndTime | date: 'HH:mm dd-MM-yy' }}</p>
     </div>
 
-    <div *ngIf="showReplyBarContent" class="d-flex justify-content-between align-items-center w-100">
-        <input type="text" id="reply" name="reply" placeholder="Reply" class="reply-input" [(ngModel)]="replyToSend"
-            maxlength="280">
-        <app-button [buttonClass]="'style-small'" [hoverText]="'Send'" (buttonEvent)="sendReply()"><i class="bi bi-send-fill"></i></app-button>
-    </div>
-
+    @if (showReplyBarContent) {
+        <div class="d-flex justify-content-between align-items-center w-100">
+            <input type="text" id="reply" name="reply" placeholder="Reply" class="reply-input" [(ngModel)]="replyToSend"
+                maxlength="280">
+            <app-button [buttonClass]="'style-small'" [hoverText]="'Send'" (buttonEvent)="sendReply()"><i class="bi bi-send-fill"></i></app-button>
+        </div>
+    }
+    
     <div class="reply-div">
         @for (reply of reply.replies; track reply.id){
         <li>

@@ -1,10 +1,42 @@
-<div class="d-flex justify-content-end">
-    <app-button (buttonEvent)="onLogout()"><i class=""></i>Logout</app-button>
-</div>
+@if (isAddingKvitter) {
+<app-add-kvitter (close)="onCloseAddKvitter()"></app-add-kvitter>
+}
+
 <div class="container content">
-    <div class="row add-kvitter">
-        <app-add-kvitter />
+    
+    <div class="d-flex justify-content-end">
+        <div class="dropdown">
+            @if (!isAddingKvitter) {
+            <button class="dropdown-toggle" (click)="toggleDropdown()">
+                @if (!isSmallScreen) {
+                    {{ selectedOption || 'Select an option' }}
+                }
+            </button>
+
+            @if (isOpen) {
+            <ul class="dropdown-menu">
+                @for (option of options; track option) {
+                <li (click)="selectOption(option)">
+                    {{ option }}
+                </li>
+                }
+            </ul>
+            }
+            }
+        </div>
+        <div class="row add-kvitter">
+            @if (!isAddingKvitter) {
+            <app-button [hoverText]="'Add Kvitter'" class="add-btn" (buttonEvent)="onAddingKvitter()">
+                @if (isSmallScreen) {
+                    <i class="bi bi-signpost"></i>
+                }@else{
+                    Add Kvitter
+                }
+            </app-button>
+            }
+        </div>
     </div>
+
     <div class="row kvitter-list">
         <app-kvitter-list />
     </div>

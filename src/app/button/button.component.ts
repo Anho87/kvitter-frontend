@@ -12,4 +12,5 @@ export class ButtonComponent {
   @Input() hoverText = '';
   @Input() buttonClass = 'styled-btn';
   @Output() buttonEvent = new EventEmitter();
+  @Input() tooltipPosition: 'above' | 'below' = 'above';
 }

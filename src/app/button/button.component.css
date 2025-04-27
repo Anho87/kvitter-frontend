@@ -17,7 +17,7 @@
 }
 
 .styled-btn:active {
-    background-color: blueviolet; 
+    background-color: blueviolet;
     transform: scale(0.98); 
 }
 
@@ -53,28 +53,28 @@
 
 
 .tooltip {
-    visibility: hidden; /* Hide the tooltip by default */
+    visibility: hidden; 
     position: absolute;
-    top: -30px; /* Position above the button */
+    top: -30px; 
     left: 50%;
     transform: translateX(-50%);
-    background-color: rgba(0, 0, 0, 0.8); /* Dark background with some transparency */
+    background-color: rgba(0, 0, 0, 0.8); 
     color: white;
     padding: 5px 10px;
     border-radius: 5px;
     font-size: 12px;
     opacity: 0;
-    transition: opacity 0.3s; /* Fade-in effect */
+    transition: opacity 0.3s;
     z-index: 10;
 }
 
-/* Show the tooltip when hovering over the button */
+
 .styled-btn:hover .tooltip, .style-small:hover .tooltip {
     visibility: visible;
-    opacity: 1; /* Fade-in the tooltip */
+    opacity: 1;
 }
 
-/* Add a little extra space between the button and the tooltip */
+
 .styled-btn .tooltip, .style-small .tooltip {
-    top: -35px; /* Slightly adjusted position */
+    top: -35px; 
 }

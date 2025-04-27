@@ -9,6 +9,8 @@
 </div>
 
 <div class="kvitters">
-    <app-kvitter *ngIf="currentKvitter" [class]="'transparent'" [showPrivateMark]="false" [kvitter]="currentKvitter"
+    @if (currentKvitter) {
+        <app-kvitter  [class]="'transparent'" [showPrivateMark]="false" [kvitter]="currentKvitter"
         [showButtonBar]="false" [showReplies]="false" [showUpvoteButton]="false" />
+    }
 </div>
