@@ -98,7 +98,6 @@ export class KvitterComponent implements OnInit, OnChanges {
   }
 
   navigateToUserInfo() {
-    console.log(this.kvitter.user.userName);
     this.router.navigate([`user-info/${this.kvitter.user.userName}`]);
   }
 
@@ -155,6 +154,7 @@ export class KvitterComponent implements OnInit, OnChanges {
       this.showButtonBar = false;
       this.showUpvoteButton = false;
     }
+  
   }
 
     @HostListener('window:resize')

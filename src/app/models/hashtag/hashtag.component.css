@@ -1,4 +1,4 @@
-.hashtag{
+/* .hashtag{
     border: 1px solid black;
     background: rebeccapurple;
     color: white;
@@ -6,4 +6,20 @@
     padding-right: 5px;
     border-radius: 5px;
     height: 30px;
+  } */
+
+  .hashtag {
+    border: 1px solid black;
+    background: rebeccapurple;
+    color: white;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-radius: 5px;
+    height: 30px;
+    
+    /* Lägg till dessa för att nolla knappens standardstil: */
+    font: inherit;
+    cursor: pointer;
+    padding-top: 0;
+    padding-bottom: 0;
   }

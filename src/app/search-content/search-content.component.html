@@ -1,6 +1,9 @@
 <div class="container content">
-
-    <div class="kvitter-list">
-        <app-kvitter-list />
-    </div>
+    <h1>Search Kvitter</h1>
+    @if (category && searched) {
+        <h6>Category: {{ category }} | Searchword: {{ searched }}</h6>
+        <div class="kvitter-list">
+            <app-kvitter-list />
+        </div>
+    }
 </div>

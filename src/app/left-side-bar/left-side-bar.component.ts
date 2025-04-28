@@ -51,7 +51,7 @@ export class LeftSideBarComponent implements OnInit{
   }
 
   onSearch(){
-    this.router.navigate([`search`]);
+    this.router.navigate([`/search`]);
     this.isSidebarVisible = !this.isSidebarVisible;
   }
 

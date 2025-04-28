@@ -18,6 +18,7 @@ export class RekvittComponent implements OnInit{
   private router = inject(Router);
   @Input({ required: true }) rekvitt!: Rekvitt;
   @Input() showRemoveButton: boolean = false;
+  @Input() class = '';
   isUpvoted = false;
 
   removeRekvitt() {

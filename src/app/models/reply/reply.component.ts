@@ -26,6 +26,7 @@ export class ReplyComponent implements OnChanges {
   @Input() showUnFollowButton: boolean = true;
   @Input() showReplyButton: boolean = true;
   @Input() showButtonBar: boolean = true;
+  @Input() class = '';
   private axiosService = inject(AxiosService);
   private router = inject(Router);
   showReplyBarContent: boolean = false;

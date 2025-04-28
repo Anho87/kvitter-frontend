@@ -18,20 +18,20 @@ import { ButtonComponent } from '../button/button.component';
   templateUrl: './logged-in-content.component.html',
   styleUrl: './logged-in-content.component.css',
 })
-export class LoggedInContentComponent implements OnInit{
+export class LoggedInContentComponent implements OnInit {
   private axiosService = inject(AxiosService);
   private location = inject(Location);
   isAddingKvitter: boolean = false;
   isSmallScreen = false;
 
-
   isOpen = false;
   selectedOption: string = 'Popular';
 
-  options = ['Popular', 'Following'];
+  options = ['Popular', 'Following', 'Latest'];
 
   ngOnInit() {
     this.checkScreenSize();
+    this.axiosService.getKvitterList();
   }
   @HostListener('window:resize')
   checkScreenSize() {
@@ -42,6 +42,14 @@ export class LoggedInContentComponent implements OnInit{
     this.isOpen = !this.isOpen;
   }
 
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.dropdown')) {
+      this.isOpen = false;
+    }
+  }
+
   selectOption(option: string) {
     this.selectedOption = option;
     this.isOpen = false;
@@ -49,6 +57,7 @@ export class LoggedInContentComponent implements OnInit{
 
   onAddingKvitter() {
     this.isAddingKvitter = true;
+    this.isOpen = false;
   }
   onCloseAddKvitter() {
     this.isAddingKvitter = false;

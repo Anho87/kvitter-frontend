@@ -4,14 +4,30 @@
   padding: 10px;
   margin-bottom: 5px;
   border-radius: 5px;
-  background-color: white;
+  /* background-color: white; */
 }
 
-.upvote-btn{
+/* .upvote-btn{
   font-size: 20px;
-  border: none;
+  border: 1px solid indigo;
   background: none;
   cursor: pointer;
+} */
+
+.upvote-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.upvote-btn i {
+  font-size: 24px;
+  color: rebeccapurple;
+  text-shadow: 
+    -1px -1px 0 #000,  
+     1px -1px 0 #000,
+    -1px  1px 0 #000,
+     1px  1px 0 #000;
 }
 
 .upvote-btn.filled{
@@ -20,7 +36,7 @@
 
 .username {
   font-weight: bold;
-  color: inherit;  
+  color: white;  
   text-decoration: none; 
   cursor: pointer; 
 }
@@ -58,6 +74,7 @@
   max-width: 100%;
   white-space: normal;
   word-wrap: break-word;
+  color: white;  
 }
 
 .hashtags {
@@ -75,7 +92,7 @@
 .date {
   margin: 0px;
   padding: 0px;
-  color: black;
+  color: white;
   font-size: 14px;
   white-space: nowrap;
 }

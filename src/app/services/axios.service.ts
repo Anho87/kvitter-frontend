@@ -2,6 +2,7 @@ import axios from 'axios';
 import { inject, Injectable, signal } from '@angular/core';
 import { Kvitter } from '../models/kvitter/kvitter.model';
 import { jwtDecode } from 'jwt-decode';
+import { Title } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 import { Rekvitt } from '../models/rekvitt/rekvitt.model';
@@ -16,6 +17,7 @@ type DetailedDto = Kvitter | Rekvitt;
   providedIn: 'root',
 })
 export class AxiosService {
+  private titleService = inject(Title);
   private router = inject(Router);
   private accessToken: string | null = null;
   kvitterList = signal<DetailedDto[]>([]);
@@ -96,49 +98,55 @@ export class AxiosService {
       });
   }
 
-  postReply( message: string, kvitterId: string | null = null, parentReplyId: string | null = null): Promise<void> {
+  getSearchResults(category: string, searched: string){
+    const queryParams = category && searched ? `?category=${category}&searched=${searched}` : '';
+    this.request('GET', `/search${queryParams}`)
+      .then((response) => {
+        this.kvitterList.set(response.data);
+      });
+      console.log(this.kvitterList());
+  }
+
+  async postReply( message: string, kvitterId: string | null = null, parentReplyId: string | null = null): Promise<void> {
     const data = {
       message: message,
       kvitterId: kvitterId,
       parentReplyId: parentReplyId,
     };
-    return this.request('POST', 'postReply', data)
-      .then((response) => {
-        console.log('Successfully posted reply', response);
-        if (this.router.url.includes('/user-info')) {
-          const currentUrl = this.router.url;
-          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-            this.router.navigateByUrl(currentUrl);
-          });
-        }else{
-          this.getKvitterList();
-        }
-      })
-      .catch((error) => {
-        console.error('Error posting reply', error);
-      });
+    try {
+      const response = await this.request('POST', 'postReply', data);
+      console.log('Successfully posted reply', response);
+      if (this.router.url.includes('/user-info')) {
+        const currentUrl = this.router.url;
+        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+          this.router.navigateByUrl(currentUrl);
+        });
+      } else {
+        this.getKvitterList();
+      }
+    } catch (error) {
+      console.error('Error posting reply', error);
+    }
   }
 
-  upvoteKvitter(kvitterId: string, upvote: boolean): Promise<void>{
+  async upvoteKvitter(kvitterId: string, upvote: boolean): Promise<void>{
     const data = {
       kvitterId: kvitterId,
     };
     if (upvote) {
-      return this.request('POST', 'upvoteKvitter', data)
-      .then((response) => {
+      try {
+        const response = await this.request('POST', 'upvoteKvitter', data);
         console.log('Upvote on kvitter succesfull', response);
-      })
-      .catch((error) => {
+      } catch (error) {
         console.log('Error upvoting kvitter', error);
-      })
+      }
     }else{
-      return this.request('DELETE', 'removeUpvoteOnKvitter', data)
-      .then((response) => {
-        console.log('Removed upvote on kvitter succesfull', response);
-      })
-      .catch((error) => {
-        console.log('Error removing upvote on kvitter', error);
-      })
+      try {
+        const response_1 = await this.request('DELETE', 'removeUpvoteOnKvitter', data);
+        console.log('Removed upvote on kvitter succesfull', response_1);
+      } catch (error_1) {
+        console.log('Error removing upvote on kvitter', error_1);
+      }
     }
   }
 
@@ -246,6 +254,7 @@ export class AxiosService {
     this.clearAccessToken();
     this.authorized.set(false);
     this.router.navigate(['/welcome']);
+    this.titleService.setTitle(`Kvitter`);
   }
 
   async autoLogin(): Promise<boolean> {

@@ -6,6 +6,7 @@ import { LoginRegisterFormComponent } from '../login-register-form/login-registe
 import { KvitterComponent } from "../models/kvitter/kvitter.component";
 import { Kvitter } from '../models/kvitter/kvitter.model';
 import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-content',
@@ -21,6 +22,7 @@ import { Router } from '@angular/router';
 })
 export class WelcomeContentComponent implements OnInit, OnDestroy {
   private axiosService = inject(AxiosService);
+  private titleService = inject(Title);
   private router = inject(Router);
   kvitters = computed<Kvitter[]>(() => this.axiosService.tenPublicKvitterList());
   private dataLoaded = false;
@@ -81,6 +83,7 @@ export class WelcomeContentComponent implements OnInit, OnDestroy {
         this.axiosService.setAccessToken(response.data.accessToken);
         this.axiosService.authorized.set(true);
         let userName = this.axiosService.getUsernameFromToken();
+        this.titleService.setTitle(`Kvitter - ${userName}`);
         this.ngOnDestroy()
         this.router.navigate([`user/${userName}`]);
       });
@@ -97,6 +100,7 @@ export class WelcomeContentComponent implements OnInit, OnDestroy {
         this.axiosService.setAccessToken(response.data.accessToken);
         this.axiosService.authorized.set(true);
         let userName = this.axiosService.getUsernameFromToken();
+        this.titleService.setTitle(`Kvitter - ${userName}`);
         this.ngOnDestroy()
         this.router.navigate([`user/${userName}`]);
       });

@@ -19,7 +19,7 @@ export const routes: Routes = [
   },
   {
     path: 'search',
-    component: SearchContentComponent,
+    component: SearchContentComponent
   },
   {
     path: '',

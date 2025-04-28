@@ -2,24 +2,10 @@
     <ul class="list-container">
       @for (dto of kvitters(); track dto.id) {
         @if (isKvitter(dto)){
-          <app-kvitter [kvitter]="dto" [showPrivateMark]="true"/>
+          <app-kvitter [class]="'transparent'" [kvitter]="dto" [showPrivateMark]="true"/>
         }@else {
-          <app-rekvitt [rekvitt]="dto" [showRemoveButton]="false"/>
+          <app-rekvitt [class]="'transparent'" [rekvitt]="dto" [showRemoveButton]="false"/>
         }
-
-
-
-
-
-
-        <!-- <li *ngIf="isKvitter(dto); else rekvittBlock">
-          <app-kvitter [kvitter]="dto" [showPrivateMark]="true"/>
-        </li>
-        <ng-template #rekvittBlock>
-          <li *ngIf="isRekvitt(dto)">
-            <app-rekvitt [rekvitt]="dto" [showRemoveButton]="false"/>
-          </li>
-        </ng-template> -->
       }
     </ul>
   </div>

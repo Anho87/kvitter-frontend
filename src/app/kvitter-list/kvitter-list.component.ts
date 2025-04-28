@@ -26,7 +26,7 @@ export class KvitterListComponent implements OnInit, OnChanges {
     }
   }
   ngOnInit(): void {
-    this.axiosService.getKvitterList(this.userName);
+    // this.axiosService.getKvitterList(this.userName);
   }
 
   isKvitter(dto: DetailedDto): dto is Kvitter {

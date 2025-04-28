@@ -68,7 +68,7 @@
     <div class="reply-div">
         @for (reply of kvitter.replies; track reply.id){
         <li>
-            <app-reply [reply]="reply" />
+            <app-reply [class]="'transparent'" [reply]="reply" />
         </li>
         }
     </div>

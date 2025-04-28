@@ -3,27 +3,31 @@
 }
 
 <div class="container content">
-    
-    <div class="d-flex justify-content-end">
-        <div class="dropdown">
-            @if (!isAddingKvitter) {
-            <button class="dropdown-toggle" (click)="toggleDropdown()">
-                @if (!isSmallScreen) {
-                    {{ selectedOption || 'Select an option' }}
-                }
-            </button>
 
-            @if (isOpen) {
-            <ul class="dropdown-menu">
-                @for (option of options; track option) {
-                <li (click)="selectOption(option)">
-                    {{ option }}
-                </li>
+    <div class="d-flex justify-content-end">
+
+      
+      @if (!isAddingKvitter) {
+          <div class="dropdown">
+                <button class="dropdown-toggle" (click)="toggleDropdown()">
+                  @if (!isSmallScreen) {
+                    {{ selectedOption || 'Select an option' }}
+                  }
+                </button>
+              
+                @if (isOpen) {
+                  <ul class="dropdown-menu">
+                    @for (option of options; track option) {
+                      <li (click)="selectOption(option)">
+                        {{ option }}
+                      </li>
+                    }
+                  </ul>
                 }
-            </ul>
-            }
-            }
-        </div>
+          </div>
+      }
+
+
         <div class="row add-kvitter">
             @if (!isAddingKvitter) {
             <app-button [hoverText]="'Add Kvitter'" class="add-btn" (buttonEvent)="onAddingKvitter()">
@@ -34,10 +38,12 @@
                 }
             </app-button>
             }
-        </div>
+          </div>
+
     </div>
 
     <div class="row kvitter-list">
         <app-kvitter-list />
     </div>
+
 </div>
