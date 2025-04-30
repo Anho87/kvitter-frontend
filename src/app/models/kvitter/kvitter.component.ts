@@ -1,31 +1,29 @@
 import {
   Component,
-  computed,
   EventEmitter,
   HostListener,
-  inject,
   Input,
   OnChanges,
   OnInit,
   Output,
   SimpleChanges,
+  inject
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HashtagComponent } from '../hashtag/hashtag.component';
 import { ButtonComponent } from '../../button/button.component';
-import { AxiosService } from '../../services/axios.service';
 import { Kvitter } from './kvitter.model';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ReplyComponent } from '../reply/reply.component';
 import { FilterService } from 'src/app/services/filter-service.service';
+import { ApiService } from 'src/app/services/api-service.service';
 
 @Component({
   selector: 'app-kvitter',
   standalone: true,
   imports: [
     CommonModule,
-    HashtagComponent,
     HashtagComponent,
     ButtonComponent,
     FormsModule,
@@ -35,9 +33,10 @@ import { FilterService } from 'src/app/services/filter-service.service';
   styleUrl: './kvitter.component.css',
 })
 export class KvitterComponent implements OnInit, OnChanges {
-  private axiosService = inject(AxiosService);
+  private apiService = inject(ApiService);
   private router = inject(Router);
   private filterService = inject(FilterService);
+
   @Output() userClicked = new EventEmitter<string>();
   @Input({ required: true }) kvitter!: Kvitter;
   @Input({ required: true }) showPrivateMark!: boolean;
@@ -52,36 +51,44 @@ export class KvitterComponent implements OnInit, OnChanges {
   @Input() class = '';
   @Input() showButtonBar: boolean = true;
   @Input() showHashtags: boolean = false;
+
   showReplyBarContent: boolean = false;
   reply: string = '';
   isUpvoted = false;
   likeCount: number = 0;
 
-  showReplyBar() {
-    this.showReplyBarContent = this.showReplyBarContent === true ? false : true;
+  showReplyBar(): void {
+    this.showReplyBarContent = !this.showReplyBarContent;
   }
 
-  upvote() {
-    if (this.isUpvoted) {
-      this.likeCount--;
-    }else{
-      this.likeCount++;
-    }
+  upvote(): void {
     this.isUpvoted = !this.isUpvoted;
-    this.axiosService.upvoteKvitter(this.kvitter.id, this.isUpvoted);
-    this.axiosService.updateKvitterUpvoteStatus(
-      this.kvitter.id,
-      this.isUpvoted
-    );
+    this.likeCount += this.isUpvoted ? 1 : -1;
+
+    this.apiService.upvoteKvitter(this.kvitter.id, this.isUpvoted);
+    this.apiService.updateKvitterUpvoteStatus(this.kvitter.id, this.isUpvoted);
   }
 
-  rekvitt() {
-    const kvitterId: string = this.kvitter.id;
-    this.axiosService
-      .postRekvitt(kvitterId)
+  rekvitt(): void {
+    const kvitterId = this.kvitter.id;
+    this.apiService.postRekvitt(kvitterId)
       .then(() => {
         this.reply = '';
         this.showReplyBarContent = false;
+      })
+      .catch((error) => {
+        console.error('Failed to rekvitt:', error);
+      });
+  }
+
+  sendReply(): void {
+    const message = this.reply;
+    const kvitterId = this.kvitter.id;
+    const parentReplyId = '';
+
+    this.apiService.postReply(message, kvitterId, parentReplyId)
+      .then(() => {
+        this.reply = '';
         this.showReplyBarContent = false;
       })
       .catch((error) => {
@@ -89,98 +96,76 @@ export class KvitterComponent implements OnInit, OnChanges {
       });
   }
 
-  sendReply() {
-    const message: string = this.reply;
-    const kvitterId: string = this.kvitter.id;
-    const parentReplyId: string = '';
-
-    this.axiosService
-      .postReply(message, kvitterId, parentReplyId)
-      .then(() => {
-        this.reply = '';
-        this.showReplyBarContent = false;
-        this.showReplyBarContent = false;
-      })
-      .catch((error) => {
-        console.error('Failed to send reply:', error);
-      });
-  }
-
-  navigateToUserInfo() {
+  navigateToUserInfo(): void {
     this.filterService.selectedOption.set('user-info');
     this.router.navigate([`user-info/${this.kvitter.user.userName}`]);
   }
 
-  removeKvitter() {
-    let data = {
-      id: this.kvitter.id,
-    };
-    this.axiosService
-      .request('DELETE', '/removeKvitter', data)
-      .then((response) => {
+  removeKvitter(): void {
+    const data = { id: this.kvitter.id };
+
+    this.apiService.http.request('DELETE', 'removeKvitter', { body: data }).subscribe({
+      next: (response) => {
         console.log('Kvitter removed successfully', response);
-        if (this.router.url.includes('/user-info')) {
-          const currentUrl = this.router.url;
-          this.router
-            .navigateByUrl('/', { skipLocationChange: true })
-            .then(() => {
-              this.router.navigateByUrl(currentUrl);
-            });
-        } else if(this.router.url.includes('/search')){
-          const currentUrl = this.router.url;
+        const currentUrl = this.router.url;
+
+        if (currentUrl.includes('/user-info') || currentUrl.includes('/search')) {
           this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
             this.router.navigateByUrl(currentUrl);
           });
         } else {
-          this.axiosService.getKvitterList();
+          this.apiService.getKvitterList();
         }
-      })
-      .catch((error) => {
-        console.error('Error removing kvitter', error);
-      });
+      },
+      error: (err) => {
+        console.error('Error removing kvitter', err);
+      }
+    });
   }
 
-  followUser() {
-    this.axiosService.followUser(this.kvitter.user);
+  followUser(): void {
+    this.apiService.followUser(this.kvitter.user);
   }
 
-  unFollowUser() {
-    this.axiosService.unFollowUser(this.kvitter.user);
+  unFollowUser(): void {
+    this.apiService.unFollowUser(this.kvitter.user);
   }
 
   ngOnInit(): void {
     this.likeCount = this.kvitter.likes.length;
     this.checkScreenSize();
-    if (
-      this.axiosService.getUsernameFromToken() === this.kvitter.user.userName
-    ) {
+
+    const username = this.apiService.getUsernameFromToken();
+
+    if (username === this.kvitter.user.userName) {
       this.showFollowButton = false;
       this.showUnFollowButton = false;
       this.showReplyButton = false;
       this.showRekvittButton = false;
       this.showUpvoteButton = false;
-      if (this.isRetweet === false) {
+      if (!this.isRetweet) {
         this.showRemoveButton = true;
       }
     }
+
     if (this.kvitter.isPrivate) {
       this.showRekvittButton = false;
     }
+
     if (!this.kvitter.isActive) {
       this.showButtonBar = false;
       this.showUpvoteButton = false;
     }
-  
   }
 
-    @HostListener('window:resize')
-    checkScreenSize() {
-      this.showHashtags = window.innerWidth >= 400;
-    }
+  @HostListener('window:resize')
+  checkScreenSize(): void {
+    this.showHashtags = window.innerWidth >= 400;
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (
-      this.axiosService.getUsernameFromToken() !== this.kvitter.user.userName
+      this.apiService.getUsernameFromToken() !== this.kvitter.user.userName
     ) {
       if (this.kvitter.isFollowing) {
         this.showUnFollowButton = true;

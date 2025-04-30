@@ -7,9 +7,9 @@ import {
   Output,
 } from '@angular/core';
 import { ButtonComponent } from '../button/button.component';
-import { AxiosService } from '../services/axios.service';
 import { CommonModule, Location } from '@angular/common';
 import { Router } from '@angular/router';
+import { ApiService } from '../services/api-service.service';
 
 @Component({
   selector: 'app-right-side-bar',
@@ -19,36 +19,33 @@ import { Router } from '@angular/router';
   styleUrl: './right-side-bar.component.css',
 })
 export class RightSideBarComponent implements OnInit {
-  private axiosService = inject(AxiosService);
+  private apiService = inject(ApiService);
   private location = inject(Location);
   private router = inject(Router);
+
   @Output() loggingOut = new EventEmitter();
+
   isSmallScreen = false;
   showLogoutButton: boolean = true;
   showBackButton: boolean = true;
 
   onLogout(): void {
-    this.axiosService.logout();
+    this.apiService.logout();
   }
 
-  back() {
+  back(): void {
     this.location.back();
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.checkScreenSize();
   }
 
   @HostListener('window:resize')
-  checkScreenSize() {
+  checkScreenSize(): void {
     const windowWidth = window.innerWidth;
     this.isSmallScreen = windowWidth <= 1000;
-    if (this.isSmallScreen) {
-      this.showLogoutButton = false;
-      this.showBackButton = false;
-    } else {
-      this.showLogoutButton = true;
-      this.showBackButton = true;
-    }
+    this.showLogoutButton = !this.isSmallScreen;
+    this.showBackButton = !this.isSmallScreen;
   }
 }

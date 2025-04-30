@@ -1,9 +1,10 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { KvitterListComponent } from '../kvitter-list/kvitter-list.component';
-import { AxiosService } from '../services/axios.service';
+
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { FilterService } from '../services/filter-service.service';
+import { ApiService } from '../services/api-service.service';
 
 @Component({
   selector: 'app-user-info',
@@ -14,24 +15,25 @@ import { FilterService } from '../services/filter-service.service';
 })
 export class UserInfoComponent implements OnInit {
   userName!: string;
-  private axiosService = inject(AxiosService);
-    private filterService = inject(FilterService);
+
+  private apiService = inject(ApiService);
+  private filterService = inject(FilterService);
   private route = inject(ActivatedRoute);
   private location = inject(Location);
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.userName = params['userName'];
+      this.filterService.selectedOption.set('user-info');
+      this.apiService.getKvitterList('user-info', this.userName);
     });
-    this.filterService.selectedOption.set('user-info');
-    this.axiosService.getKvitterList('user-info',this.userName);
   }
 
   onLogout(): void {
-    this.axiosService.logout();
+    this.apiService.logout();
   }
 
-  back(){
+  back(): void {
     this.location.back();
   }
 }

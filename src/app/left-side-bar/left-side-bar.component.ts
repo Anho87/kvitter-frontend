@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, HostListener, inject, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, inject, computed } from '@angular/core';
 import { ButtonComponent } from '../button/button.component';
 import { Router } from '@angular/router';
-import { AxiosService } from '../services/axios.service';
 import { HashtagComponent } from '../models/hashtag/hashtag.component';
 import { MiniHashtagDto } from '../models/hashtag/mini-hashtag-dto.model';
+import { ApiService } from '../services/api-service.service';
 
 @Component({
   selector: 'app-left-side-bar',
@@ -13,53 +13,50 @@ import { MiniHashtagDto } from '../models/hashtag/mini-hashtag-dto.model';
   templateUrl: './left-side-bar.component.html',
   styleUrl: './left-side-bar.component.css',
 })
-export class LeftSideBarComponent implements OnInit{
-  private axiosService = inject(AxiosService);
+export class LeftSideBarComponent implements OnInit {
+  private apiService = inject(ApiService);
   private router = inject(Router);
-  hashtags = computed<MiniHashtagDto[]>(() => this.axiosService.trendingHashtags());
+
+  hashtags = computed<MiniHashtagDto[]>(() => this.apiService.trendingHashtags());
 
   isSidebarVisible = true;
   isSmallScreen = false;
 
-  onCancel() {
+  onCancel(): void {
     this.isSidebarVisible = false;
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.checkScreenSize();
-    this.axiosService.fetchTrendingHashtags();
+    this.apiService.fetchTrendingHashtags();
   }
 
   @HostListener('window:resize')
-  checkScreenSize() {
+  checkScreenSize(): void {
     this.isSmallScreen = window.innerWidth <= 1000;
-    if (this.isSmallScreen) {
-      this.isSidebarVisible = false;
-    } else {
-      this.isSidebarVisible = true;
-    }
+    this.isSidebarVisible = !this.isSmallScreen;
   }
 
-  hashTagClicked(){
+  hashTagClicked(): void {
     this.isSidebarVisible = false;
   }
 
-  toggleSidebar() {
+  toggleSidebar(): void {
     this.isSidebarVisible = !this.isSidebarVisible;
   }
 
-  onHome() {
-    let userName = this.axiosService.getUsernameFromToken();
+  onHome(): void {
+    const userName = this.apiService.getUsernameFromToken();
     this.router.navigate([`user/${userName}`]);
-    this.isSidebarVisible = !this.isSidebarVisible;
+    this.isSidebarVisible = false;
   }
 
-  onSearch(){
-    this.router.navigate([`/search`]);
-    this.isSidebarVisible = !this.isSidebarVisible;
+  onSearch(): void {
+    this.router.navigate(['/search']);
+    this.isSidebarVisible = false;
   }
 
-  onLogout() {
-    this.axiosService.logout();
+  onLogout(): void {
+    this.apiService.logout();
   }
 }

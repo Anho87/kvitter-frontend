@@ -1,11 +1,11 @@
-import { Component, computed, HostListener, inject, OnInit } from '@angular/core';
+import { Component, HostListener, inject, OnInit } from '@angular/core';
 import { AddKvitterComponent } from '../add-kvitter/add-kvitter.component';
-import { AxiosService } from '../services/axios.service';
 import { KvitterListComponent } from '../kvitter-list/kvitter-list.component';
 import { CommonModule } from '@angular/common';
 import { Location } from '@angular/common';
 import { ButtonComponent } from '../button/button.component';
 import { FilterService } from '../services/filter-service.service';
+import { ApiService } from '../services/api-service.service';
 
 @Component({
   selector: 'app-logged-in',
@@ -20,60 +20,61 @@ import { FilterService } from '../services/filter-service.service';
   styleUrl: './logged-in-content.component.css',
 })
 export class LoggedInContentComponent implements OnInit {
-  private axiosService = inject(AxiosService);
+  private apiService = inject(ApiService);
   private filterService = inject(FilterService);
   private location = inject(Location);
+
   isAddingKvitter: boolean = false;
   isSmallScreen = false;
-
   isOpen = false;
   selectedOption: string = 'Latest';
-  
 
   options = ['Latest', 'Popular', 'Following', 'My Activity'];
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.checkScreenSize();
     this.filterService.selectedOption.set(this.selectedOption);
-    this.axiosService.getKvitterList();
+    this.apiService.getKvitterList();
   }
+
   @HostListener('window:resize')
-  checkScreenSize() {
+  checkScreenSize(): void {
     this.isSmallScreen = window.innerWidth <= 400;
   }
 
-  toggleDropdown() {
+  toggleDropdown(): void {
     this.isOpen = !this.isOpen;
   }
 
   @HostListener('document:click', ['$event'])
-  onClickOutside(event: MouseEvent) {
+  onClickOutside(event: MouseEvent): void {
     const target = event.target as HTMLElement;
     if (!target.closest('.dropdown')) {
       this.isOpen = false;
     }
   }
 
-  selectOption(option: string) {
+  selectOption(option: string): void {
     this.selectedOption = option;
     this.filterService.selectedOption.set(option);
-    this.axiosService.getKvitterList();
+    this.apiService.getKvitterList();
     this.isOpen = false;
   }
 
-  onAddingKvitter() {
+  onAddingKvitter(): void {
     this.isAddingKvitter = true;
     this.isOpen = false;
   }
-  onCloseAddKvitter() {
+
+  onCloseAddKvitter(): void {
     this.isAddingKvitter = false;
   }
 
-  onLogout() {
-    this.axiosService.logout();
+  onLogout(): void {
+    this.apiService.logout();
   }
 
-  back() {
+  back(): void {
     this.location.back();
   }
 }

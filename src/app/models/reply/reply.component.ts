@@ -1,18 +1,18 @@
 import { CommonModule } from '@angular/common';
 import {
   Component,
-  computed,
   inject,
   Input,
   OnChanges,
+  OnInit,
   SimpleChanges,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonComponent } from 'src/app/button/button.component';
-import { AxiosService } from 'src/app/services/axios.service';
 import { Reply } from './reply.model';
 import { Router } from '@angular/router';
 import { FilterService } from 'src/app/services/filter-service.service';
+import { ApiService } from 'src/app/services/api-service.service';
 
 @Component({
   selector: 'app-reply',
@@ -21,8 +21,11 @@ import { FilterService } from 'src/app/services/filter-service.service';
   templateUrl: './reply.component.html',
   styleUrl: './reply.component.css',
 })
-export class ReplyComponent implements OnChanges {
+export class ReplyComponent implements OnInit, OnChanges {
   private filterService = inject(FilterService);
+  private apiService = inject(ApiService);
+  private router = inject(Router);
+
   @Input({ required: true }) reply!: Reply;
   @Input() showRemoveButton: boolean = false;
   @Input() showFollowButton: boolean = true;
@@ -30,58 +33,53 @@ export class ReplyComponent implements OnChanges {
   @Input() showReplyButton: boolean = true;
   @Input() showButtonBar: boolean = true;
   @Input() class = '';
-  private axiosService = inject(AxiosService);
-  private router = inject(Router);
+
   showReplyBarContent: boolean = false;
   replyToSend: string = '';
 
-  navigateToUserInfo() {
+  navigateToUserInfo(): void {
     this.filterService.selectedOption.set('user-info');
     this.router.navigate([`user-info/${this.reply.user.userName}`]);
   }
 
-  showReplyBar() {
-    this.showReplyBarContent = this.showReplyBarContent === true ? false : true;
+  showReplyBar(): void {
+    this.showReplyBarContent = !this.showReplyBarContent;
     this.replyToSend = '';
   }
 
-  removeReply() {
-    let data = {
-      id: this.reply.id,
-    };
-    this.axiosService
-      .request('DELETE', '/removeReply', data)
-      .then((response) => {
+  removeReply(): void {
+    const data = { id: this.reply.id };
+
+    this.apiService.http.request('DELETE', 'removeReply', { body: data }).subscribe({
+      next: (response) => {
         console.log('Reply removed successfully', response);
-        if (this.router.url.includes('/user-info')) {
-          const currentUrl = this.router.url;
+        const currentUrl = this.router.url;
+
+        if (currentUrl.includes('/user-info') || currentUrl.includes('/search')) {
           this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
             this.router.navigateByUrl(currentUrl);
           });
-        }else if(this.router.url.includes('/search')){
-          const currentUrl = this.router.url;
-          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-            this.router.navigateByUrl(currentUrl);
-          });
-        } else{
-          this.axiosService.getKvitterList();
+        } else {
+          this.apiService.getKvitterList();
         }
-      })
-      .catch((error) => {
-        console.error('Error removing reply', error);
-      });
+      },
+      error: (err) => {
+        console.error('Error removing reply', err);
+      }
+    });
   }
 
-  followUser() {
-    this.axiosService.followUser(this.reply.user);
+  followUser(): void {
+    this.apiService.followUser(this.reply.user);
   }
 
-  unFollowUser() {
-    this.axiosService.unFollowUser(this.reply.user);
+  unFollowUser(): void {
+    this.apiService.unFollowUser(this.reply.user);
   }
 
   ngOnInit(): void {
-    if (this.axiosService.getUsernameFromToken() === this.reply.user.userName) {
+    const username = this.apiService.getUsernameFromToken();
+    if (username === this.reply.user.userName) {
       this.showRemoveButton = true;
       this.showFollowButton = false;
       this.showUnFollowButton = false;
@@ -93,7 +91,8 @@ export class ReplyComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.axiosService.getUsernameFromToken() === this.reply.user.userName) {
+    const username = this.apiService.getUsernameFromToken();
+    if (username === this.reply.user.userName) {
       this.showRemoveButton = true;
       this.showFollowButton = false;
       this.showUnFollowButton = false;
@@ -109,16 +108,14 @@ export class ReplyComponent implements OnChanges {
     }
   }
 
-  sendReply() {
-    const message: string = this.replyToSend;
-    const kvitterId: string | null = this.reply.kvitter?.id ?? null;
-    const parentReplyId: string | null = this.reply.id;
+  sendReply(): void {
+    const message = this.replyToSend;
+    const kvitterId = this.reply.kvitter?.id ?? null;
+    const parentReplyId = this.reply.id;
 
-    this.axiosService
-      .postReply(message, kvitterId, parentReplyId)
+    this.apiService.postReply(message, kvitterId, parentReplyId)
       .then(() => {
         this.replyToSend = '';
-        this.showReplyBarContent = false;
         this.showReplyBarContent = false;
       })
       .catch((error) => {

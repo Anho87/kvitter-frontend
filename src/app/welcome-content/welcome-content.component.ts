@@ -1,12 +1,12 @@
 import { Component, computed, inject, OnDestroy, OnInit } from '@angular/core';
-import { AxiosService } from '../services/axios.service';
 import { CommonModule } from '@angular/common';
 import { ButtonComponent } from '../button/button.component';
 import { LoginRegisterFormComponent } from '../login-register-form/login-register-form.component';
-import { KvitterComponent } from "../models/kvitter/kvitter.component";
+import { KvitterComponent } from '../models/kvitter/kvitter.component';
 import { Kvitter } from '../models/kvitter/kvitter.model';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
+import { ApiService } from '../services/api-service.service';
 
 @Component({
   selector: 'app-content',
@@ -16,15 +16,16 @@ import { Title } from '@angular/platform-browser';
     ButtonComponent,
     LoginRegisterFormComponent,
     KvitterComponent,
-],
+  ],
   templateUrl: './welcome-content.component.html',
   styleUrl: './welcome-content.component.css',
 })
 export class WelcomeContentComponent implements OnInit, OnDestroy {
-  private axiosService = inject(AxiosService);
+  private apiService = inject(ApiService);
   private titleService = inject(Title);
   private router = inject(Router);
-  kvitters = computed<Kvitter[]>(() => this.axiosService.tenPublicKvitterList());
+
+  kvitters = computed<Kvitter[]>(() => this.apiService.tenPublicKvitterList());
   private dataLoaded = false;
   currentKvitterIndex: number = 0;
   private intervalId: any;
@@ -32,7 +33,7 @@ export class WelcomeContentComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     if (!this.dataLoaded) {
-      this.axiosService.welcomePageKvitter(); 
+      this.apiService.welcomePageKvitter();
       this.dataLoaded = true;
     }
     this.startInterval();
@@ -44,7 +45,7 @@ export class WelcomeContentComponent implements OnInit, OnDestroy {
     }
   }
 
-  startInterval(){
+  startInterval(): void {
     this.intervalId = setInterval(() => {
       this.cycleThroughKvitter();
     }, 5000);
@@ -65,7 +66,7 @@ export class WelcomeContentComponent implements OnInit, OnDestroy {
     this.formToShow = this.formToShow === inFormToShow ? 'welcome' : inFormToShow;
   }
 
-  onLogin(input: any) {
+  onLogin(input: any): void {
     const actions: { [key: string]: (input: any) => void } = {
       login: this.login.bind(this),
       register: this.register.bind(this),
@@ -73,36 +74,50 @@ export class WelcomeContentComponent implements OnInit, OnDestroy {
     actions[input.event]?.(input);
   }
 
-  login(input: any) {
-    this.axiosService
-      .request('POST', '/login', {
+  login(input: any): void {
+    this.apiService.http.post<{ accessToken: string }>(
+      'login',
+      {
         userName: input.userName,
         password: input.password,
-      })
-      .then((response) => {
-        this.axiosService.setAccessToken(response.data.accessToken);
-        this.axiosService.authorized.set(true);
-        let userName = this.axiosService.getUsernameFromToken();
+      },
+      { withCredentials: true }
+    ).subscribe({
+      next: (response) => {
+        this.apiService.setAccessToken(response.accessToken);
+        this.apiService.authorized.set(true);
+        const userName = this.apiService.getUsernameFromToken();
         this.titleService.setTitle(`Kvitter - ${userName}`);
-        this.ngOnDestroy()
+        this.ngOnDestroy();
         this.router.navigate([`user/${userName}`]);
-      });
+      },
+      error: (err) => {
+        console.error('Login failed:', err);
+      }
+    });
   }
 
-  register(input: any) {
-    this.axiosService
-      .request('POST', '/register', {
+  register(input: any): void {
+    this.apiService.http.post<{ accessToken: string }>(
+      'register',
+      {
         email: input.email,
         userName: input.userName,
         password: input.password,
-      })
-      .then((response) => {
-        this.axiosService.setAccessToken(response.data.accessToken);
-        this.axiosService.authorized.set(true);
-        let userName = this.axiosService.getUsernameFromToken();
+      },
+      { withCredentials: true }
+    ).subscribe({
+      next: (response) => {
+        this.apiService.setAccessToken(response.accessToken);
+        this.apiService.authorized.set(true);
+        const userName = this.apiService.getUsernameFromToken();
         this.titleService.setTitle(`Kvitter - ${userName}`);
-        this.ngOnDestroy()
+        this.ngOnDestroy();
         this.router.navigate([`user/${userName}`]);
-      });
+      },
+      error: (err) => {
+        console.error('Registration failed:', err);
+      }
+    });
   }
 }

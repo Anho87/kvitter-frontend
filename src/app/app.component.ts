@@ -1,11 +1,11 @@
-import { Component, computed, inject, OnInit, ViewChild } from '@angular/core';
-import { AxiosService } from './services/axios.service';
+import { Component, computed, inject, OnInit } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { HeaderComponent } from "./header/header.component";
 import { RightSideBarComponent } from "./right-side-bar/right-side-bar.component";
 import { CommonModule } from '@angular/common';
 import { LeftSideBarComponent } from "./left-side-bar/left-side-bar.component";
+import { ApiService } from './services/api-service.service';
 
 @Component({
   selector: 'app-root',
@@ -14,17 +14,18 @@ import { LeftSideBarComponent } from "./left-side-bar/left-side-bar.component";
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
-export class AppComponent implements OnInit{
-  private axiosService = inject(AxiosService);
+export class AppComponent implements OnInit {
+  private apiService = inject(ApiService);
   private titleService = inject(Title);
   private router = inject(Router);
-  authorized = computed(() => this.axiosService.authorized());
+
+  authorized = computed(() => this.apiService.authorized());
 
   ngOnInit(): void {
-    this.axiosService.autoLogin().then(loggedIn => {
+    this.apiService.autoLogin().then(loggedIn => {
       if (loggedIn) {
         console.log('User successfully auto-logged in.');
-        let userName = this.axiosService.getUsernameFromToken();
+        const userName = this.apiService.getUsernameFromToken();
         this.titleService.setTitle(`Kvitter - ${userName}`);
         this.router.navigate([`user/${userName}`]);
       } else {

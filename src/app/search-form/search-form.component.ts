@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, inject, Output } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { AxiosService } from '../services/axios.service';
 
 @Component({
   selector: 'app-search-form',
@@ -11,7 +10,6 @@ import { AxiosService } from '../services/axios.service';
   styleUrl: './search-form.component.css',
 })
 export class SearchFormComponent {
-   private axiosService = inject(AxiosService);
   @Output() close = new EventEmitter<void>();
   @Output() onSearched = new EventEmitter<{ category: string; searchWord: string }>();
   category: string = "";

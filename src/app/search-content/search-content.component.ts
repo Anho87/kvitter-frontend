@@ -1,10 +1,10 @@
 import { Component, inject, Input, OnInit } from '@angular/core';
 import { KvitterListComponent } from '../kvitter-list/kvitter-list.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AxiosService } from '../services/axios.service';
 import { ButtonComponent } from "../button/button.component";
 import { SearchFormComponent } from "../search-form/search-form.component";
 import { CommonModule } from '@angular/common';
+import { ApiService } from '../services/api-service.service';
 
 @Component({
   selector: 'app-search-content',
@@ -15,28 +15,31 @@ import { CommonModule } from '@angular/common';
 })
 export class SearchContentComponent implements OnInit {
   private route = inject(ActivatedRoute);
-  private axiosService = inject(AxiosService);
+  private apiService = inject(ApiService);
   private router = inject(Router);
+
   isSearching: boolean = false;
   @Input() category: string = "";
   @Input() searched: string = "";
 
-  onSearched(event: any){
+  onSearched(event: any): void {
     this.category = event.category;
     this.searched = event.searchWord;
     this.fetchSearchResults(this.category, this.searched);
-    this.router.navigate(['/search'],{ queryParams: { category: this.category, searched: this.searched} });
+    this.router.navigate(['/search'], {
+      queryParams: { category: this.category, searched: this.searched }
+    });
   }
 
-  onIsSearching(){
+  onIsSearching(): void {
     this.isSearching = true;
   }
 
-  onCloseIsSearching(){
+  onCloseIsSearching(): void {
     this.isSearching = false;
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
       const category = params['category'];
       const searched = params['searched'];
@@ -48,7 +51,7 @@ export class SearchContentComponent implements OnInit {
     });
   }
 
-  fetchSearchResults(category: string, searched: string) {
-    this.axiosService.getSearchResults(category, searched);
+  fetchSearchResults(category: string, searched: string): void {
+    this.apiService.getSearchResults(category, searched);
   }
 }

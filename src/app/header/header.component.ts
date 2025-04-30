@@ -1,19 +1,20 @@
 import { Component, inject } from '@angular/core';
-import { AxiosService } from '../services/axios.service';
-import { Router} from '@angular/router';
+import { Router } from '@angular/router';
+import { ApiService } from '../services/api-service.service';
 
 @Component({
   selector: 'app-header',
   standalone: true,
   imports: [],
   templateUrl: './header.component.html',
-  styleUrl: './header.component.css'
+  styleUrl: './header.component.css',
 })
 export class HeaderComponent {
-  private axiosService = inject(AxiosService);
-   private router = inject(Router);
-  navigateToStart(){
-    let userName = this.axiosService.getUsernameFromToken();
+  private apiService = inject(ApiService);
+  private router = inject(Router);
+
+  navigateToStart(): void {
+    const userName = this.apiService.getUsernameFromToken();
     this.router.navigate([`user/${userName}`]);
   }
 }
