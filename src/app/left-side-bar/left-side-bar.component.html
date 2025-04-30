@@ -26,7 +26,7 @@
                     @if (hashtags()) {
                     @for (hashtag of hashtags(); track hashtag.id) {
                     <li class="hashtag-item">
-                        <app-hashtag [hashtag]="hashtag"></app-hashtag>
+                        <app-hashtag (clicked)="hashTagClicked()" [hashtag]="hashtag"></app-hashtag>
                     </li>
                     }
                     } @else {

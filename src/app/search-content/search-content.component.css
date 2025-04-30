@@ -6,3 +6,13 @@ h1, h6{
     color: white;
     text-align: center;
 }
+
+.btn{
+    width: 600px;
+}
+
+@media (max-width: 550px) {
+    .content {
+      width: auto;
+    }
+}

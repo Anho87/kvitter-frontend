@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { inject, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { Kvitter } from '../models/kvitter/kvitter.model';
 import { jwtDecode } from 'jwt-decode';
 import { Title } from '@angular/platform-browser';
@@ -8,8 +8,9 @@ import { Router } from '@angular/router';
 import { Rekvitt } from '../models/rekvitt/rekvitt.model';
 import { Reply } from '../models/reply/reply.model';
 import { MiniUserDto } from '../models/user/mini-user-dto.model';
-import { Hashtag } from '../models/hashtag/hashtag.model';
 import { MiniHashtagDto } from '../models/hashtag/mini-hashtag-dto.model';
+import { FilterService } from './filter-service.service';
+
 
 type DetailedDto = Kvitter | Rekvitt;
 
@@ -17,6 +18,7 @@ type DetailedDto = Kvitter | Rekvitt;
   providedIn: 'root',
 })
 export class AxiosService {
+  private filterService = inject(FilterService);
   private titleService = inject(Title);
   private router = inject(Router);
   private accessToken: string | null = null;
@@ -24,6 +26,7 @@ export class AxiosService {
   tenPublicKvitterList = signal<Kvitter[]>([]);
   trendingHashtags = signal<MiniHashtagDto[]>([]);
   authorized = signal<boolean>(false);
+   selectedOption = computed(() => this.filterService.selectedOption())
 
   constructor() {
     axios.defaults.baseURL = environment.apiUrl;
@@ -69,7 +72,12 @@ export class AxiosService {
           this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
             this.router.navigateByUrl(currentUrl);
           });
-        }else{
+        }else if(this.router.url.includes('/search')){
+          const currentUrl = this.router.url;
+          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+            this.router.navigateByUrl(currentUrl);
+          });
+        } else{
           this.getKvitterList();
         }
       })
@@ -89,7 +97,12 @@ export class AxiosService {
           this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
             this.router.navigateByUrl(currentUrl);
           });
-        }else{
+        }else if(this.router.url.includes('/search')){
+          const currentUrl = this.router.url;
+          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+            this.router.navigateByUrl(currentUrl);
+          });
+        } else{
           this.getKvitterList();
         }
       })
@@ -98,14 +111,6 @@ export class AxiosService {
       });
   }
 
-  getSearchResults(category: string, searched: string){
-    const queryParams = category && searched ? `?category=${category}&searched=${searched}` : '';
-    this.request('GET', `/search${queryParams}`)
-      .then((response) => {
-        this.kvitterList.set(response.data);
-      });
-      console.log(this.kvitterList());
-  }
 
   async postReply( message: string, kvitterId: string | null = null, parentReplyId: string | null = null): Promise<void> {
     const data = {
@@ -121,7 +126,12 @@ export class AxiosService {
         this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
           this.router.navigateByUrl(currentUrl);
         });
-      } else {
+      }else if(this.router.url.includes('/search')){
+        const currentUrl = this.router.url;
+        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+          this.router.navigateByUrl(currentUrl);
+        });
+      }  else {
         this.getKvitterList();
       }
     } catch (error) {
@@ -162,6 +172,11 @@ export class AxiosService {
       if (this.router.url.includes('/user-info')) {
         const currentUrl = this.router.url;
         this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+        this.router.navigateByUrl(currentUrl);
+        });
+      } else if(this.router.url.includes('/search')){
+        const currentUrl = this.router.url;
+        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
           this.router.navigateByUrl(currentUrl);
         });
       } else {
@@ -183,9 +198,26 @@ export class AxiosService {
       });
   }
 
-  getKvitterList(userName?: string): void {
-    const queryParams = userName ? `?userName=${userName}` : '';
+  getSearchResults(category: string, searched: string){
+    const queryParams = category && searched ? `?category=${category}&searched=${searched}` : '';
+    this.request('GET', `/search${queryParams}`)
+      .then((response) => {
+        this.kvitterList.set(response.data);
+        console.log(this.kvitterList());
+      });
+  }
 
+  getKvitterList(option?: string, userName?: string): void {
+    let filterOption;
+    if (option != null) {
+      filterOption = option;
+    }else{
+      filterOption = this.filterService.selectedOption();
+    }
+    const filterOptionNoSpaces = filterOption.replace(/\s+/g, '');
+
+    const queryParams = `?filterOption=${filterOptionNoSpaces}${userName ? `&userName=${userName}` : ''}`;
+   
     this.request('GET', `/kvitterList${queryParams}`)
     .then((response) => {
       const detailedList: DetailedDto[] = response.data.map((item: any) => {
@@ -196,8 +228,9 @@ export class AxiosService {
             user: item.user,
             createdDateAndTime: item.createdDateAndTime,
             hashtags: item.hashtags,
-            private: item.isPrivate,
+            isPrivate: item.isPrivate,
             isActive: item.isActive,
+            likes: item.likes,
             replies: item.replies.map((reply: any) => this.mapReply(reply)),
             rekvitts: item.rekvitts,
             isFollowing: item.isFollowing,

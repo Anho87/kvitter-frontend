@@ -1,5 +1,6 @@
 import {
   Component,
+  computed,
   EventEmitter,
   HostListener,
   inject,
@@ -17,6 +18,7 @@ import { Kvitter } from './kvitter.model';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ReplyComponent } from '../reply/reply.component';
+import { FilterService } from 'src/app/services/filter-service.service';
 
 @Component({
   selector: 'app-kvitter',
@@ -35,6 +37,7 @@ import { ReplyComponent } from '../reply/reply.component';
 export class KvitterComponent implements OnInit, OnChanges {
   private axiosService = inject(AxiosService);
   private router = inject(Router);
+  private filterService = inject(FilterService);
   @Output() userClicked = new EventEmitter<string>();
   @Input({ required: true }) kvitter!: Kvitter;
   @Input({ required: true }) showPrivateMark!: boolean;
@@ -52,12 +55,18 @@ export class KvitterComponent implements OnInit, OnChanges {
   showReplyBarContent: boolean = false;
   reply: string = '';
   isUpvoted = false;
+  likeCount: number = 0;
 
   showReplyBar() {
     this.showReplyBarContent = this.showReplyBarContent === true ? false : true;
   }
 
   upvote() {
+    if (this.isUpvoted) {
+      this.likeCount--;
+    }else{
+      this.likeCount++;
+    }
     this.isUpvoted = !this.isUpvoted;
     this.axiosService.upvoteKvitter(this.kvitter.id, this.isUpvoted);
     this.axiosService.updateKvitterUpvoteStatus(
@@ -98,6 +107,7 @@ export class KvitterComponent implements OnInit, OnChanges {
   }
 
   navigateToUserInfo() {
+    this.filterService.selectedOption.set('user-info');
     this.router.navigate([`user-info/${this.kvitter.user.userName}`]);
   }
 
@@ -116,6 +126,11 @@ export class KvitterComponent implements OnInit, OnChanges {
             .then(() => {
               this.router.navigateByUrl(currentUrl);
             });
+        } else if(this.router.url.includes('/search')){
+          const currentUrl = this.router.url;
+          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+            this.router.navigateByUrl(currentUrl);
+          });
         } else {
           this.axiosService.getKvitterList();
         }
@@ -134,6 +149,7 @@ export class KvitterComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
+    this.likeCount = this.kvitter.likes.length;
     this.checkScreenSize();
     if (
       this.axiosService.getUsernameFromToken() === this.kvitter.user.userName
@@ -147,7 +163,7 @@ export class KvitterComponent implements OnInit, OnChanges {
         this.showRemoveButton = true;
       }
     }
-    if (this.kvitter.private) {
+    if (this.kvitter.isPrivate) {
       this.showRekvittButton = false;
     }
     if (!this.kvitter.isActive) {

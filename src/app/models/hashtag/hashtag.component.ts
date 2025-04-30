@@ -1,4 +1,4 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { MiniHashtagDto } from './mini-hashtag-dto.model';
 import { AxiosService } from 'src/app/services/axios.service';
 import { Router } from '@angular/router';
@@ -12,11 +12,13 @@ import { Router } from '@angular/router';
 })
 export class HashtagComponent {
   private axiosService = inject(AxiosService);
-  @Input({required:true}) hashtag!: MiniHashtagDto;
   private router = inject(Router);
+  @Input({required:true}) hashtag!: MiniHashtagDto;
+  @Output() clicked = new EventEmitter<void>();
 
 
   onHashtagClick() {
     this.router.navigate(['/search'],{ queryParams: { category: 'hashtag', searched: this.hashtag.hashtag } });
+    this.clicked.emit();
     }
 }

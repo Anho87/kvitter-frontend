@@ -1,10 +1,11 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, computed, inject, Input, OnInit } from '@angular/core';
 import { Rekvitt } from './rekvitt.model';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { KvitterComponent } from "../kvitter/kvitter.component";
-import { ButtonComponent } from "../../button/button.component";
+import { KvitterComponent } from '../kvitter/kvitter.component';
+import { ButtonComponent } from '../../button/button.component';
 import { AxiosService } from 'src/app/services/axios.service';
+import { FilterService } from 'src/app/services/filter-service.service';
 
 @Component({
   selector: 'app-rekvitt',
@@ -13,9 +14,10 @@ import { AxiosService } from 'src/app/services/axios.service';
   templateUrl: './rekvitt.component.html',
   styleUrl: './rekvitt.component.css',
 })
-export class RekvittComponent implements OnInit{
+export class RekvittComponent implements OnInit {
   private axiosService = inject(AxiosService);
   private router = inject(Router);
+  private filterService = inject(FilterService);
   @Input({ required: true }) rekvitt!: Rekvitt;
   @Input() showRemoveButton: boolean = false;
   @Input() class = '';
@@ -31,27 +33,35 @@ export class RekvittComponent implements OnInit{
         console.log('Rekvitt removed successfully', response);
         if (this.router.url.includes('/user-info')) {
           const currentUrl = this.router.url;
+          this.router
+            .navigateByUrl('/', { skipLocationChange: true })
+            .then(() => {
+              this.router.navigateByUrl(currentUrl);
+            });
+        } else if(this.router.url.includes('/search')){
+          const currentUrl = this.router.url;
           this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
             this.router.navigateByUrl(currentUrl);
           });
-        }else{
+        } else {
           this.axiosService.getKvitterList();
         }
       })
       .catch((error) => {
         console.error('Error removing Rekvitt', error);
       });
-    }
+  }
 
   navigateToUserInfo(username: string) {
-    console.log(username);
+    this.filterService.selectedOption.set('user-info');
     this.router.navigate([`user-info/${username}`]);
   }
 
   ngOnInit(): void {
-    if ( this.axiosService.getUsernameFromToken() === this.rekvitt.user.userName){
+    if (
+      this.axiosService.getUsernameFromToken() === this.rekvitt.user.userName
+    ) {
       this.showRemoveButton = true;
     }
   }
-
 }

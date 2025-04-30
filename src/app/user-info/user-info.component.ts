@@ -3,6 +3,7 @@ import { KvitterListComponent } from '../kvitter-list/kvitter-list.component';
 import { AxiosService } from '../services/axios.service';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
+import { FilterService } from '../services/filter-service.service';
 
 @Component({
   selector: 'app-user-info',
@@ -14,6 +15,7 @@ import { Location } from '@angular/common';
 export class UserInfoComponent implements OnInit {
   userName!: string;
   private axiosService = inject(AxiosService);
+    private filterService = inject(FilterService);
   private route = inject(ActivatedRoute);
   private location = inject(Location);
 
@@ -21,7 +23,8 @@ export class UserInfoComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.userName = params['userName'];
     });
-    this.axiosService.getKvitterList(this.userName);
+    this.filterService.selectedOption.set('user-info');
+    this.axiosService.getKvitterList('user-info',this.userName);
   }
 
   onLogout(): void {

@@ -14,6 +14,11 @@
   cursor: pointer;
 } */
 
+h6{
+  display: flex;
+  align-items: center;
+}
+
 .upvote-btn {
   background: none;
   border: none;

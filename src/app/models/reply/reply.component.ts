@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import {
   Component,
+  computed,
   inject,
   Input,
   OnChanges,
@@ -11,6 +12,7 @@ import { ButtonComponent } from 'src/app/button/button.component';
 import { AxiosService } from 'src/app/services/axios.service';
 import { Reply } from './reply.model';
 import { Router } from '@angular/router';
+import { FilterService } from 'src/app/services/filter-service.service';
 
 @Component({
   selector: 'app-reply',
@@ -20,6 +22,7 @@ import { Router } from '@angular/router';
   styleUrl: './reply.component.css',
 })
 export class ReplyComponent implements OnChanges {
+  private filterService = inject(FilterService);
   @Input({ required: true }) reply!: Reply;
   @Input() showRemoveButton: boolean = false;
   @Input() showFollowButton: boolean = true;
@@ -33,7 +36,7 @@ export class ReplyComponent implements OnChanges {
   replyToSend: string = '';
 
   navigateToUserInfo() {
-    console.log(this.reply.user.userName);
+    this.filterService.selectedOption.set('user-info');
     this.router.navigate([`user-info/${this.reply.user.userName}`]);
   }
 
@@ -55,7 +58,12 @@ export class ReplyComponent implements OnChanges {
           this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
             this.router.navigateByUrl(currentUrl);
           });
-        }else{
+        }else if(this.router.url.includes('/search')){
+          const currentUrl = this.router.url;
+          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+            this.router.navigateByUrl(currentUrl);
+          });
+        } else{
           this.axiosService.getKvitterList();
         }
       })

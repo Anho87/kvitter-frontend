@@ -40,6 +40,10 @@ export class LeftSideBarComponent implements OnInit{
     }
   }
 
+  hashTagClicked(){
+    this.isSidebarVisible = false;
+  }
+
   toggleSidebar() {
     this.isSidebarVisible = !this.isSidebarVisible;
   }

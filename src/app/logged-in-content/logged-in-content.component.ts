@@ -1,10 +1,11 @@
-import { Component, HostListener, inject, OnInit } from '@angular/core';
+import { Component, computed, HostListener, inject, OnInit } from '@angular/core';
 import { AddKvitterComponent } from '../add-kvitter/add-kvitter.component';
 import { AxiosService } from '../services/axios.service';
 import { KvitterListComponent } from '../kvitter-list/kvitter-list.component';
 import { CommonModule } from '@angular/common';
 import { Location } from '@angular/common';
 import { ButtonComponent } from '../button/button.component';
+import { FilterService } from '../services/filter-service.service';
 
 @Component({
   selector: 'app-logged-in',
@@ -20,17 +21,20 @@ import { ButtonComponent } from '../button/button.component';
 })
 export class LoggedInContentComponent implements OnInit {
   private axiosService = inject(AxiosService);
+  private filterService = inject(FilterService);
   private location = inject(Location);
   isAddingKvitter: boolean = false;
   isSmallScreen = false;
 
   isOpen = false;
-  selectedOption: string = 'Popular';
+  selectedOption: string = 'Latest';
+  
 
-  options = ['Popular', 'Following', 'Latest'];
+  options = ['Latest', 'Popular', 'Following', 'My Activity'];
 
   ngOnInit() {
     this.checkScreenSize();
+    this.filterService.selectedOption.set(this.selectedOption);
     this.axiosService.getKvitterList();
   }
   @HostListener('window:resize')
@@ -52,6 +56,8 @@ export class LoggedInContentComponent implements OnInit {
 
   selectOption(option: string) {
     this.selectedOption = option;
+    this.filterService.selectedOption.set(option);
+    this.axiosService.getKvitterList();
     this.isOpen = false;
   }
 

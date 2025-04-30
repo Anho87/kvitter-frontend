@@ -1,9 +1,20 @@
+@if (isSearching) {
+    <app-search-form (close)="onCloseIsSearching()" (onSearched)="onSearched($event)"></app-search-form>
+}
+
 <div class="container content">
-    <h1>Search Kvitter</h1>
-    @if (category && searched) {
-        <h6>Category: {{ category }} | Searchword: {{ searched }}</h6>
-        <div class="kvitter-list">
-            <app-kvitter-list />
-        </div>
-    }
+    <h1>Search for Kvitter's</h1>
+    <div class="d-flex" [ngClass]="category && searched ? 'justify-content-between' : 'justify-content-center'">
+        @if (category && searched) {
+            <div class="d-flex  align-items-end">
+                <h6>Category: {{ category }} | Searchword: {{ searched }}</h6>
+            </div>
+        }
+            <app-button (buttonEvent)="onIsSearching()" ><i class="bi bi-search"></i> Search</app-button>
+    </div>
+        @if (category && searched) {
+            <div class="kvitter-list">
+                <app-kvitter-list />
+            </div>
+        }
 </div>

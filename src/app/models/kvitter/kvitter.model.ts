@@ -9,8 +9,9 @@ export interface Kvitter{
     user: MiniUserDto;
     createdDateAndTime: string;
     hashtags: MiniHashtagDto[];
-    private: Boolean;
+    isPrivate: Boolean;
     isActive: Boolean;
+    likes: MiniUserDto[];
     replies: Reply[];
     rekvitts: MiniRekvittDto[];
     isFollowing: Boolean;

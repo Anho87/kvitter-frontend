@@ -42,13 +42,14 @@
         }
         <div class="d-flex align-items-end">
             @if (showUpvoteButton) {
+            <h6>{{likeCount}}</h6>
             <button (click)="upvote()" class="upvote-btn" [class.filled]="isUpvoted">
                 <i class="bi" [ngClass]="isUpvoted ? 'bi-hand-thumbs-up-fill' : 'bi-hand-thumbs-up'"></i>
             </button>
             }
 
             <p class="date">{{ kvitter.createdDateAndTime | date: 'HH:mm dd-MM-yy' }}</p>
-            @if (showPrivateMark && kvitter.private) {
+            @if (showPrivateMark && kvitter.isPrivate) {
             <div class="private-mark">
                 P
             </div>
