@@ -2,14 +2,13 @@ import { computed, inject, Injectable, signal } from '@angular/core';
 import { Kvitter } from '../models/kvitter/kvitter.model';
 import { jwtDecode } from 'jwt-decode';
 import { Title } from '@angular/platform-browser';
-import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 import { Rekvitt } from '../models/rekvitt/rekvitt.model';
 import { Reply } from '../models/reply/reply.model';
 import { MiniUserDto } from '../models/user/mini-user-dto.model';
 import { MiniHashtagDto } from '../models/hashtag/mini-hashtag-dto.model';
 import { FilterService } from './filter-service.service';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { lastValueFrom, Observable, switchMap } from 'rxjs';
 
 type DetailedDto = Kvitter | Rekvitt;
