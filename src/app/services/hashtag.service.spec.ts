@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { FilterService } from './filter-service.service';
+import { HashtagService } from './hashtag.service';
 
-describe('FilterService', () => {
-  let service: FilterService;
+describe('HashtagService', () => {
+  let service: HashtagService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(FilterService);
+    service = TestBed.inject(HashtagService);
   });
 
   it('should be created', () => {

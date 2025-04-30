@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { ApiService } from '../services/api-service.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -10,11 +10,11 @@ import { ApiService } from '../services/api-service.service';
   styleUrl: './header.component.css',
 })
 export class HeaderComponent {
-  private apiService = inject(ApiService);
+  private authService = inject(AuthService);
   private router = inject(Router);
 
   navigateToStart(): void {
-    const userName = this.apiService.getUsernameFromToken();
+    const userName = this.authService.getUsernameFromToken();
     this.router.navigate([`user/${userName}`]);
   }
 }

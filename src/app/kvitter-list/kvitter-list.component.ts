@@ -14,7 +14,7 @@ import { Kvitter } from '../models/kvitter/kvitter.model';
 import { KvitterComponent } from '../models/kvitter/kvitter.component';
 import { Rekvitt } from '../models/rekvitt/rekvitt.model';
 import { RekvittComponent } from '../models/rekvitt/rekvitt.component';
-import { ApiService } from '../services/api-service.service';
+import { AuthService } from '../services/auth.service';
 
 type DetailedDto = Kvitter | Rekvitt;
 
@@ -25,22 +25,18 @@ type DetailedDto = Kvitter | Rekvitt;
   templateUrl: './kvitter-list.component.html',
   styleUrl: './kvitter-list.component.css',
 })
-export class KvitterListComponent implements OnInit, OnChanges {
-  private apiService = inject(ApiService);
+export class KvitterListComponent implements OnChanges {
+  private authService = inject(AuthService);
 
   @Input() userName: string = '';
   @Output() userClicked = new EventEmitter<string>();
 
-  kvitters = computed<DetailedDto[]>(() => this.apiService.kvitterList());
+  kvitters = computed<DetailedDto[]>(() => this.authService.kvitterList());
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['userName'] && !changes['userName'].firstChange) {
-      this.apiService.getKvitterList(this.userName);
+      this.authService.getKvitterList(this.userName);
     }
-  }
-
-  ngOnInit(): void {
-    // this.apiService.getKvitterList(this.userName); // valfritt att aktivera
   }
 
   isKvitter(dto: DetailedDto): dto is Kvitter {

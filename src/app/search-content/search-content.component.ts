@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonComponent } from "../button/button.component";
 import { SearchFormComponent } from "../search-form/search-form.component";
 import { CommonModule } from '@angular/common';
-import { ApiService } from '../services/api-service.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-search-content',
@@ -15,7 +15,7 @@ import { ApiService } from '../services/api-service.service';
 })
 export class SearchContentComponent implements OnInit {
   private route = inject(ActivatedRoute);
-  private apiService = inject(ApiService);
+  private authService = inject(AuthService);
   private router = inject(Router);
 
   isSearching: boolean = false;
@@ -52,6 +52,6 @@ export class SearchContentComponent implements OnInit {
   }
 
   fetchSearchResults(category: string, searched: string): void {
-    this.apiService.getSearchResults(category, searched);
+    this.authService.getSearchResults(category, searched);
   }
 }

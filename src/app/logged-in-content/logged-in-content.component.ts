@@ -4,8 +4,8 @@ import { KvitterListComponent } from '../kvitter-list/kvitter-list.component';
 import { CommonModule } from '@angular/common';
 import { Location } from '@angular/common';
 import { ButtonComponent } from '../button/button.component';
-import { FilterService } from '../services/filter-service.service';
-import { ApiService } from '../services/api-service.service';
+import { FilterService } from '../services/filter.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-logged-in',
@@ -20,7 +20,7 @@ import { ApiService } from '../services/api-service.service';
   styleUrl: './logged-in-content.component.css',
 })
 export class LoggedInContentComponent implements OnInit {
-  private apiService = inject(ApiService);
+  private authService = inject(AuthService);
   private filterService = inject(FilterService);
   private location = inject(Location);
 
@@ -34,7 +34,7 @@ export class LoggedInContentComponent implements OnInit {
   ngOnInit(): void {
     this.checkScreenSize();
     this.filterService.selectedOption.set(this.selectedOption);
-    this.apiService.getKvitterList();
+    this.authService.getKvitterList();
   }
 
   @HostListener('window:resize')
@@ -57,7 +57,7 @@ export class LoggedInContentComponent implements OnInit {
   selectOption(option: string): void {
     this.selectedOption = option;
     this.filterService.selectedOption.set(option);
-    this.apiService.getKvitterList();
+    this.authService.getKvitterList();
     this.isOpen = false;
   }
 
@@ -71,7 +71,7 @@ export class LoggedInContentComponent implements OnInit {
   }
 
   onLogout(): void {
-    this.apiService.logout();
+    this.authService.logout();
   }
 
   back(): void {

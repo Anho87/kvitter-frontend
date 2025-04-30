@@ -1,8 +1,8 @@
 import { Component, computed, EventEmitter, inject, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { FilterService } from '../services/filter-service.service';
-import { ApiService } from '../services/api-service.service';
+import { FilterService } from '../services/filter.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-add-kvitter',
@@ -12,7 +12,7 @@ import { ApiService } from '../services/api-service.service';
   styleUrl: './add-kvitter.component.css',
 })
 export class AddKvitterComponent {
-  private apiService = inject(ApiService);
+  private authService = inject(AuthService);
   private filterService = inject(FilterService);
 
   selectedOption = computed(() => this.filterService.selectedOption());
@@ -37,11 +37,11 @@ export class AddKvitterComponent {
       isPrivate: this.private,
     };
 
-    this.apiService.http.post('postKvitter', data).subscribe({
+    this.authService.http.post('postKvitter', data).subscribe({
       next: (response) => {
         console.log('Kvitter posted successfully', response);
         this.close.emit();
-        this.apiService.getKvitterList(this.selectedOption());
+        this.authService.getKvitterList(this.selectedOption());
       },
       error: (err) => {
         console.error('Error posting kvitter', err);

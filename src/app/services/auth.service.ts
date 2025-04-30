@@ -7,7 +7,7 @@ import { Rekvitt } from '../models/rekvitt/rekvitt.model';
 import { Reply } from '../models/reply/reply.model';
 import { MiniUserDto } from '../models/user/mini-user-dto.model';
 import { MiniHashtagDto } from '../models/hashtag/mini-hashtag-dto.model';
-import { FilterService } from './filter-service.service';
+import { FilterService } from './filter.service';
 import { HttpClient } from '@angular/common/http';
 import { lastValueFrom, Observable, switchMap } from 'rxjs';
 
@@ -16,7 +16,7 @@ type DetailedDto = Kvitter | Rekvitt;
 @Injectable({
   providedIn: 'root',
 })
-export class ApiService {
+export class AuthService {
   http = inject(HttpClient);
   private filterService = inject(FilterService);
   private titleService = inject(Title);

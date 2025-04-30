@@ -7,11 +7,11 @@ import {
   HttpErrorResponse
 } from '@angular/common/http';
 import { Observable, catchError, throwError, switchMap } from 'rxjs';
-import { ApiService } from '../services/api-service.service';
+import { AuthService } from '../services/auth.service';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  const apiService = inject(ApiService);
-  const token = apiService.getAccessToken();
+  const authService = inject(AuthService);
+  const token = authService.getAccessToken();
 
   const authReq = token
     ? req.clone({ setHeaders: { Authorization: `Bearer ${token}` }, withCredentials: true })
@@ -20,7 +20,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   return next(authReq).pipe(
     catchError((error: HttpErrorResponse) => {
       if (error.status === 401) {
-        return apiService.refreshAccessToken().pipe(
+        return authService.refreshAccessToken().pipe(
           switchMap((newToken) => {
             const retryReq = req.clone({
               setHeaders: { Authorization: `Bearer ${newToken}` },
@@ -30,7 +30,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
           })
         );
       } else if (error.status === 403) {
-        apiService.logoutUser();
+        authService.logoutUser();
       }
       return throwError(() => error);
     })

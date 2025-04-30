@@ -4,8 +4,8 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { KvitterComponent } from '../kvitter/kvitter.component';
 import { ButtonComponent } from '../../button/button.component';
-import { FilterService } from 'src/app/services/filter-service.service';
-import { ApiService } from 'src/app/services/api-service.service';
+import { FilterService } from 'src/app/services/filter.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-rekvitt',
@@ -15,7 +15,7 @@ import { ApiService } from 'src/app/services/api-service.service';
   styleUrl: './rekvitt.component.css',
 })
 export class RekvittComponent implements OnInit {
-  private apiService = inject(ApiService);
+  private authService = inject(AuthService);
   private router = inject(Router);
   private filterService = inject(FilterService);
 
@@ -28,7 +28,7 @@ export class RekvittComponent implements OnInit {
   removeRekvitt(): void {
     const data = { rekvittId: this.rekvitt.id };
 
-    this.apiService.http.request('DELETE', 'removeRekvitt', { body: data }).subscribe({
+    this.authService.http.request('DELETE', 'removeRekvitt', { body: data }).subscribe({
       next: (response) => {
         console.log('Rekvitt removed successfully', response);
         const currentUrl = this.router.url;
@@ -38,7 +38,7 @@ export class RekvittComponent implements OnInit {
             this.router.navigateByUrl(currentUrl);
           });
         } else {
-          this.apiService.getKvitterList();
+          this.authService.getKvitterList();
         }
       },
       error: (err) => {
@@ -53,7 +53,7 @@ export class RekvittComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const username = this.apiService.getUsernameFromToken();
+    const username = this.authService.getUsernameFromToken();
     if (username === this.rekvitt.user.userName) {
       this.showRemoveButton = true;
     }

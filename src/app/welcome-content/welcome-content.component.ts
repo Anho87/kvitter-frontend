@@ -6,7 +6,7 @@ import { KvitterComponent } from '../models/kvitter/kvitter.component';
 import { Kvitter } from '../models/kvitter/kvitter.model';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
-import { ApiService } from '../services/api-service.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-content',
@@ -21,11 +21,11 @@ import { ApiService } from '../services/api-service.service';
   styleUrl: './welcome-content.component.css',
 })
 export class WelcomeContentComponent implements OnInit, OnDestroy {
-  private apiService = inject(ApiService);
+  private authService = inject(AuthService);
   private titleService = inject(Title);
   private router = inject(Router);
 
-  kvitters = computed<Kvitter[]>(() => this.apiService.tenPublicKvitterList());
+  kvitters = computed<Kvitter[]>(() => this.authService.tenPublicKvitterList());
   private dataLoaded = false;
   currentKvitterIndex: number = 0;
   private intervalId: any;
@@ -33,7 +33,7 @@ export class WelcomeContentComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     if (!this.dataLoaded) {
-      this.apiService.welcomePageKvitter();
+      this.authService.welcomePageKvitter();
       this.dataLoaded = true;
     }
     this.startInterval();
@@ -75,7 +75,7 @@ export class WelcomeContentComponent implements OnInit, OnDestroy {
   }
 
   login(input: any): void {
-    this.apiService.http.post<{ accessToken: string }>(
+    this.authService.http.post<{ accessToken: string }>(
       'login',
       {
         userName: input.userName,
@@ -84,9 +84,9 @@ export class WelcomeContentComponent implements OnInit, OnDestroy {
       { withCredentials: true }
     ).subscribe({
       next: (response) => {
-        this.apiService.setAccessToken(response.accessToken);
-        this.apiService.authorized.set(true);
-        const userName = this.apiService.getUsernameFromToken();
+        this.authService.setAccessToken(response.accessToken);
+        this.authService.authorized.set(true);
+        const userName = this.authService.getUsernameFromToken();
         this.titleService.setTitle(`Kvitter - ${userName}`);
         this.ngOnDestroy();
         this.router.navigate([`user/${userName}`]);
@@ -98,7 +98,7 @@ export class WelcomeContentComponent implements OnInit, OnDestroy {
   }
 
   register(input: any): void {
-    this.apiService.http.post<{ accessToken: string }>(
+    this.authService.http.post<{ accessToken: string }>(
       'register',
       {
         email: input.email,
@@ -108,9 +108,9 @@ export class WelcomeContentComponent implements OnInit, OnDestroy {
       { withCredentials: true }
     ).subscribe({
       next: (response) => {
-        this.apiService.setAccessToken(response.accessToken);
-        this.apiService.authorized.set(true);
-        const userName = this.apiService.getUsernameFromToken();
+        this.authService.setAccessToken(response.accessToken);
+        this.authService.authorized.set(true);
+        const userName = this.authService.getUsernameFromToken();
         this.titleService.setTitle(`Kvitter - ${userName}`);
         this.ngOnDestroy();
         this.router.navigate([`user/${userName}`]);

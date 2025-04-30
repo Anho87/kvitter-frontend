@@ -5,7 +5,7 @@ import { HeaderComponent } from "./header/header.component";
 import { RightSideBarComponent } from "./right-side-bar/right-side-bar.component";
 import { CommonModule } from '@angular/common';
 import { LeftSideBarComponent } from "./left-side-bar/left-side-bar.component";
-import { ApiService } from './services/api-service.service';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -15,17 +15,17 @@ import { ApiService } from './services/api-service.service';
   styleUrl: './app.component.css',
 })
 export class AppComponent implements OnInit {
-  private apiService = inject(ApiService);
+  private authService = inject(AuthService);
   private titleService = inject(Title);
   private router = inject(Router);
 
-  authorized = computed(() => this.apiService.authorized());
+  authorized = computed(() => this.authService.authorized());
 
   ngOnInit(): void {
-    this.apiService.autoLogin().then(loggedIn => {
+    this.authService.autoLogin().then(loggedIn => {
       if (loggedIn) {
         console.log('User successfully auto-logged in.');
-        const userName = this.apiService.getUsernameFromToken();
+        const userName = this.authService.getUsernameFromToken();
         this.titleService.setTitle(`Kvitter - ${userName}`);
         this.router.navigate([`user/${userName}`]);
       } else {

@@ -4,7 +4,7 @@ import { ButtonComponent } from '../button/button.component';
 import { Router } from '@angular/router';
 import { HashtagComponent } from '../models/hashtag/hashtag.component';
 import { MiniHashtagDto } from '../models/hashtag/mini-hashtag-dto.model';
-import { ApiService } from '../services/api-service.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-left-side-bar',
@@ -14,10 +14,10 @@ import { ApiService } from '../services/api-service.service';
   styleUrl: './left-side-bar.component.css',
 })
 export class LeftSideBarComponent implements OnInit {
-  private apiService = inject(ApiService);
+  private authService = inject(AuthService);
   private router = inject(Router);
 
-  hashtags = computed<MiniHashtagDto[]>(() => this.apiService.trendingHashtags());
+  hashtags = computed<MiniHashtagDto[]>(() => this.authService.trendingHashtags());
 
   isSidebarVisible = true;
   isSmallScreen = false;
@@ -28,7 +28,7 @@ export class LeftSideBarComponent implements OnInit {
 
   ngOnInit(): void {
     this.checkScreenSize();
-    this.apiService.fetchTrendingHashtags();
+    this.authService.fetchTrendingHashtags();
   }
 
   @HostListener('window:resize')
@@ -46,7 +46,7 @@ export class LeftSideBarComponent implements OnInit {
   }
 
   onHome(): void {
-    const userName = this.apiService.getUsernameFromToken();
+    const userName = this.authService.getUsernameFromToken();
     this.router.navigate([`user/${userName}`]);
     this.isSidebarVisible = false;
   }
@@ -57,6 +57,6 @@ export class LeftSideBarComponent implements OnInit {
   }
 
   onLogout(): void {
-    this.apiService.logout();
+    this.authService.logout();
   }
 }

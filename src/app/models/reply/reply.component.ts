@@ -11,8 +11,8 @@ import { FormsModule } from '@angular/forms';
 import { ButtonComponent } from 'src/app/button/button.component';
 import { Reply } from './reply.model';
 import { Router } from '@angular/router';
-import { FilterService } from 'src/app/services/filter-service.service';
-import { ApiService } from 'src/app/services/api-service.service';
+import { FilterService } from 'src/app/services/filter.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-reply',
@@ -23,7 +23,7 @@ import { ApiService } from 'src/app/services/api-service.service';
 })
 export class ReplyComponent implements OnInit, OnChanges {
   private filterService = inject(FilterService);
-  private apiService = inject(ApiService);
+  private authService = inject(AuthService);
   private router = inject(Router);
 
   @Input({ required: true }) reply!: Reply;
@@ -50,7 +50,7 @@ export class ReplyComponent implements OnInit, OnChanges {
   removeReply(): void {
     const data = { id: this.reply.id };
 
-    this.apiService.http.request('DELETE', 'removeReply', { body: data }).subscribe({
+    this.authService.http.request('DELETE', 'removeReply', { body: data }).subscribe({
       next: (response) => {
         console.log('Reply removed successfully', response);
         const currentUrl = this.router.url;
@@ -60,7 +60,7 @@ export class ReplyComponent implements OnInit, OnChanges {
             this.router.navigateByUrl(currentUrl);
           });
         } else {
-          this.apiService.getKvitterList();
+          this.authService.getKvitterList();
         }
       },
       error: (err) => {
@@ -70,15 +70,15 @@ export class ReplyComponent implements OnInit, OnChanges {
   }
 
   followUser(): void {
-    this.apiService.followUser(this.reply.user);
+    this.authService.followUser(this.reply.user);
   }
 
   unFollowUser(): void {
-    this.apiService.unFollowUser(this.reply.user);
+    this.authService.unFollowUser(this.reply.user);
   }
 
   ngOnInit(): void {
-    const username = this.apiService.getUsernameFromToken();
+    const username = this.authService.getUsernameFromToken();
     if (username === this.reply.user.userName) {
       this.showRemoveButton = true;
       this.showFollowButton = false;
@@ -91,7 +91,7 @@ export class ReplyComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const username = this.apiService.getUsernameFromToken();
+    const username = this.authService.getUsernameFromToken();
     if (username === this.reply.user.userName) {
       this.showRemoveButton = true;
       this.showFollowButton = false;
@@ -113,7 +113,7 @@ export class ReplyComponent implements OnInit, OnChanges {
     const kvitterId = this.reply.kvitter?.id ?? null;
     const parentReplyId = this.reply.id;
 
-    this.apiService.postReply(message, kvitterId, parentReplyId)
+    this.authService.postReply(message, kvitterId, parentReplyId)
       .then(() => {
         this.replyToSend = '';
         this.showReplyBarContent = false;

@@ -9,7 +9,7 @@ import {
 import { ButtonComponent } from '../button/button.component';
 import { CommonModule, Location } from '@angular/common';
 import { Router } from '@angular/router';
-import { ApiService } from '../services/api-service.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-right-side-bar',
@@ -19,7 +19,7 @@ import { ApiService } from '../services/api-service.service';
   styleUrl: './right-side-bar.component.css',
 })
 export class RightSideBarComponent implements OnInit {
-  private apiService = inject(ApiService);
+  private authService = inject(AuthService);
   private location = inject(Location);
   private router = inject(Router);
 
@@ -30,7 +30,7 @@ export class RightSideBarComponent implements OnInit {
   showBackButton: boolean = true;
 
   onLogout(): void {
-    this.apiService.logout();
+    this.authService.logout();
   }
 
   back(): void {
