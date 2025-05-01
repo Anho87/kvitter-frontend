@@ -6,6 +6,7 @@ import { KvitterComponent } from '../kvitter/kvitter.component';
 import { ButtonComponent } from '../../button/button.component';
 import { FilterService } from 'src/app/services/filter.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { RekvittService } from 'src/app/services/rekvitt.service';
 
 @Component({
   selector: 'app-rekvitt',
@@ -16,6 +17,7 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class RekvittComponent implements OnInit {
   private authService = inject(AuthService);
+  private rekvittSerivce = inject(RekvittService);
   private router = inject(Router);
   private filterService = inject(FilterService);
 
@@ -26,25 +28,7 @@ export class RekvittComponent implements OnInit {
   isUpvoted = false;
 
   removeRekvitt(): void {
-    const data = { rekvittId: this.rekvitt.id };
-
-    this.authService.http.request('DELETE', 'removeRekvitt', { body: data }).subscribe({
-      next: (response) => {
-        console.log('Rekvitt removed successfully', response);
-        const currentUrl = this.router.url;
-
-        if (currentUrl.includes('/user-info') || currentUrl.includes('/search')) {
-          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-            this.router.navigateByUrl(currentUrl);
-          });
-        } else {
-          this.authService.getKvitterList();
-        }
-      },
-      error: (err) => {
-        console.error('Error removing Rekvitt', err);
-      }
-    });
+    this.rekvittSerivce.removeRekvitt(this.rekvitt.id);
   }
 
   navigateToUserInfo(username: string): void {

@@ -5,6 +5,7 @@ import { ButtonComponent } from "../button/button.component";
 import { SearchFormComponent } from "../search-form/search-form.component";
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../services/auth.service';
+import { KvitterService } from '../services/kvitter.service';
 
 @Component({
   selector: 'app-search-content',
@@ -15,7 +16,7 @@ import { AuthService } from '../services/auth.service';
 })
 export class SearchContentComponent implements OnInit {
   private route = inject(ActivatedRoute);
-  private authService = inject(AuthService);
+  private kvitterService = inject(KvitterService);
   private router = inject(Router);
 
   isSearching: boolean = false;
@@ -52,6 +53,6 @@ export class SearchContentComponent implements OnInit {
   }
 
   fetchSearchResults(category: string, searched: string): void {
-    this.authService.getSearchResults(category, searched);
+    this.kvitterService.getSearchResults(category, searched);
   }
 }

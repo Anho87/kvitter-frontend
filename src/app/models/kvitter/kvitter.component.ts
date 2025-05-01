@@ -18,6 +18,10 @@ import { FormsModule } from '@angular/forms';
 import { ReplyComponent } from '../reply/reply.component';
 import { FilterService } from 'src/app/services/filter.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { KvitterService } from 'src/app/services/kvitter.service';
+import { UserService } from 'src/app/services/user.service';
+import { ReplyService } from 'src/app/services/reply.service';
+import { RekvittService } from 'src/app/services/rekvitt.service';
 
 @Component({
   selector: 'app-kvitter',
@@ -34,6 +38,10 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class KvitterComponent implements OnInit, OnChanges {
   private authService = inject(AuthService);
+  private kvitterService = inject(KvitterService);
+  private userService = inject(UserService);
+  private replyService = inject(ReplyService);
+  private rekvittService = inject(RekvittService);
   private router = inject(Router);
   private filterService = inject(FilterService);
 
@@ -65,13 +73,13 @@ export class KvitterComponent implements OnInit, OnChanges {
     this.isUpvoted = !this.isUpvoted;
     this.likeCount += this.isUpvoted ? 1 : -1;
 
-    this.authService.upvoteKvitter(this.kvitter.id, this.isUpvoted);
-    this.authService.updateKvitterUpvoteStatus(this.kvitter.id, this.isUpvoted);
+    this.kvitterService.upvoteKvitter(this.kvitter.id, this.isUpvoted);
+    this.kvitterService.updateKvitterUpvoteStatus(this.kvitter.id, this.isUpvoted);
   }
 
   rekvitt(): void {
     const kvitterId = this.kvitter.id;
-    this.authService.postRekvitt(kvitterId)
+    this.rekvittService.postRekvitt(kvitterId)
       .then(() => {
         this.reply = '';
         this.showReplyBarContent = false;
@@ -86,7 +94,7 @@ export class KvitterComponent implements OnInit, OnChanges {
     const kvitterId = this.kvitter.id;
     const parentReplyId = '';
 
-    this.authService.postReply(message, kvitterId, parentReplyId)
+    this.replyService.postReply(message, kvitterId, parentReplyId)
       .then(() => {
         this.reply = '';
         this.showReplyBarContent = false;
@@ -102,33 +110,15 @@ export class KvitterComponent implements OnInit, OnChanges {
   }
 
   removeKvitter(): void {
-    const data = { id: this.kvitter.id };
-
-    this.authService.http.request('DELETE', 'removeKvitter', { body: data }).subscribe({
-      next: (response) => {
-        console.log('Kvitter removed successfully', response);
-        const currentUrl = this.router.url;
-
-        if (currentUrl.includes('/user-info') || currentUrl.includes('/search')) {
-          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-            this.router.navigateByUrl(currentUrl);
-          });
-        } else {
-          this.authService.getKvitterList();
-        }
-      },
-      error: (err) => {
-        console.error('Error removing kvitter', err);
-      }
-    });
+    this.kvitterService.removeKvitter(this.kvitter.id);
   }
 
   followUser(): void {
-    this.authService.followUser(this.kvitter.user);
+    this.userService.followUser(this.kvitter.user);
   }
 
   unFollowUser(): void {
-    this.authService.unFollowUser(this.kvitter.user);
+    this.userService.unFollowUser(this.kvitter.user);
   }
 
   ngOnInit(): void {

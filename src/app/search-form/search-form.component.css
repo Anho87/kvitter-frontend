@@ -1,45 +1,60 @@
 .backdrop {
-    background-color: rgba(0, 0, 0, 0.9);
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    z-index: 1000;
-  }
+  background-color: rgba(0, 0, 0, 0.3);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 1000;
+}
 
 dialog {
-    width: 90%;
-    max-width: 30rem;
-    background-color: #e6e3e9;
-    border-radius: 6px;
-    border: none;
-    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
-    overflow: hidden;
-    padding: 1rem;
-    top: 5rem;
-    z-index: 1000;
-  }
+  width: 90%;
+  max-width: 30rem;
+  background: #fff;
+  border-radius: 6px;
+  border: none;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  padding: 1rem;
+  top: 5rem;
+  z-index: 1000;
+}
+option {
+  background-color: #fff;
+}
+select {
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  box-sizing: border-box;
+}
+input[type="text"] {
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  box-sizing: border-box;
+}
 
-  button {
-    background-color: indigo;
-    color: white;
-    margin: 0px;
-    padding: 10px 15px;
-    font-size: 16px;
-    font-weight: bold;
-    border: 1px solid black;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.3s ease, transform 0.2s ease;
-  }
+button {
+  background-color: indigo;
+  color: white;
+  margin: 0px;
+  padding: 10px 15px;
+  font-size: 16px;
+  font-weight: bold;
+  border: 1px solid black;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
 
-  button:hover {
-    background-color: rebeccapurple;
-    transform: scale(1.05);
-  }
-  
-  button:active {
-    background-color: blueviolet;
-    transform: scale(0.98);
-  }
+button:hover {
+  background-color: rebeccapurple;
+  transform: scale(1.05);
+}
+
+button:active {
+  background-color: blueviolet;
+  transform: scale(0.98);
+}

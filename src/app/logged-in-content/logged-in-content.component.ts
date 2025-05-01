@@ -6,6 +6,7 @@ import { Location } from '@angular/common';
 import { ButtonComponent } from '../button/button.component';
 import { FilterService } from '../services/filter.service';
 import { AuthService } from '../services/auth.service';
+import { KvitterService } from '../services/kvitter.service';
 
 @Component({
   selector: 'app-logged-in',
@@ -21,6 +22,7 @@ import { AuthService } from '../services/auth.service';
 })
 export class LoggedInContentComponent implements OnInit {
   private authService = inject(AuthService);
+  private kvitterService = inject(KvitterService);
   private filterService = inject(FilterService);
   private location = inject(Location);
 
@@ -34,7 +36,7 @@ export class LoggedInContentComponent implements OnInit {
   ngOnInit(): void {
     this.checkScreenSize();
     this.filterService.selectedOption.set(this.selectedOption);
-    this.authService.getKvitterList();
+    this.kvitterService.getKvitterList();
   }
 
   @HostListener('window:resize')
@@ -57,7 +59,7 @@ export class LoggedInContentComponent implements OnInit {
   selectOption(option: string): void {
     this.selectedOption = option;
     this.filterService.selectedOption.set(option);
-    this.authService.getKvitterList();
+    this.kvitterService.getKvitterList();
     this.isOpen = false;
   }
 

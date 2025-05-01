@@ -3,8 +3,13 @@
     <app-button (buttonEvent)="showForm('login')"><i class=""></i>Login</app-button>
 </div>
 
-<div class="forms">
+<!-- <div class="forms">
     <app-login-register-form [formToShow]="formToShow" (onSubmitLoginEvent)="onLogin($event)"
+        (navigateToRegisterEvent)="showForm($event)" />
+</div> -->
+
+<div class="forms">
+    <app-login-register-form [formToShow]="formToShow"
         (navigateToRegisterEvent)="showForm($event)" />
 </div>
 

@@ -7,7 +7,6 @@
     <div class="d-flex justify-content-end">
 
       
-      @if (!isAddingKvitter) {
           <div class="dropdown">
                 <button class="dropdown-toggle" (click)="toggleDropdown()">
                   @if (!isSmallScreen) {
@@ -25,11 +24,9 @@
                   </ul>
                 }
           </div>
-      }
 
 
         <div class="row add-kvitter">
-            @if (!isAddingKvitter) {
             <app-button [hoverText]="'Add Kvitter'" class="add-btn" (buttonEvent)="onAddingKvitter()">
                 @if (isSmallScreen) {
                     <i class="bi bi-signpost"></i>
@@ -37,7 +34,6 @@
                     Add Kvitter
                 }
             </app-button>
-            }
           </div>
 
     </div>

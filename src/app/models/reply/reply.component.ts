@@ -13,6 +13,9 @@ import { Reply } from './reply.model';
 import { Router } from '@angular/router';
 import { FilterService } from 'src/app/services/filter.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { ReplyService } from 'src/app/services/reply.service';
+import { UserService } from 'src/app/services/user.service';
+import { KvitterService } from 'src/app/services/kvitter.service';
 
 @Component({
   selector: 'app-reply',
@@ -22,8 +25,11 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrl: './reply.component.css',
 })
 export class ReplyComponent implements OnInit, OnChanges {
-  private filterService = inject(FilterService);
   private authService = inject(AuthService);
+  private filterService = inject(FilterService);
+  private userService = inject(UserService);
+  private replyService = inject(ReplyService);
+  private kvitterService = inject(KvitterService);
   private router = inject(Router);
 
   @Input({ required: true }) reply!: Reply;
@@ -48,33 +54,15 @@ export class ReplyComponent implements OnInit, OnChanges {
   }
 
   removeReply(): void {
-    const data = { id: this.reply.id };
-
-    this.authService.http.request('DELETE', 'removeReply', { body: data }).subscribe({
-      next: (response) => {
-        console.log('Reply removed successfully', response);
-        const currentUrl = this.router.url;
-
-        if (currentUrl.includes('/user-info') || currentUrl.includes('/search')) {
-          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-            this.router.navigateByUrl(currentUrl);
-          });
-        } else {
-          this.authService.getKvitterList();
-        }
-      },
-      error: (err) => {
-        console.error('Error removing reply', err);
-      }
-    });
+    this.replyService.removeReply(this.reply.id);
   }
 
   followUser(): void {
-    this.authService.followUser(this.reply.user);
+    this.userService.followUser(this.reply.user);
   }
 
   unFollowUser(): void {
-    this.authService.unFollowUser(this.reply.user);
+    this.userService.unFollowUser(this.reply.user);
   }
 
   ngOnInit(): void {
@@ -113,7 +101,7 @@ export class ReplyComponent implements OnInit, OnChanges {
     const kvitterId = this.reply.kvitter?.id ?? null;
     const parentReplyId = this.reply.id;
 
-    this.authService.postReply(message, kvitterId, parentReplyId)
+    this.replyService.postReply(message, kvitterId, parentReplyId)
       .then(() => {
         this.replyToSend = '';
         this.showReplyBarContent = false;

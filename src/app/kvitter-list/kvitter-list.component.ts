@@ -15,6 +15,7 @@ import { KvitterComponent } from '../models/kvitter/kvitter.component';
 import { Rekvitt } from '../models/rekvitt/rekvitt.model';
 import { RekvittComponent } from '../models/rekvitt/rekvitt.component';
 import { AuthService } from '../services/auth.service';
+import { KvitterService } from '../services/kvitter.service';
 
 type DetailedDto = Kvitter | Rekvitt;
 
@@ -27,15 +28,16 @@ type DetailedDto = Kvitter | Rekvitt;
 })
 export class KvitterListComponent implements OnChanges {
   private authService = inject(AuthService);
+  private kvitterService = inject(KvitterService);
 
   @Input() userName: string = '';
   @Output() userClicked = new EventEmitter<string>();
 
-  kvitters = computed<DetailedDto[]>(() => this.authService.kvitterList());
+  kvitters = computed<DetailedDto[]>(() => this.kvitterService.kvitterList());
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['userName'] && !changes['userName'].firstChange) {
-      this.authService.getKvitterList(this.userName);
+      this.kvitterService.getKvitterList(this.userName);
     }
   }
 

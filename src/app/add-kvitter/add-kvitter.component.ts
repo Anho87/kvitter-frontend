@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FilterService } from '../services/filter.service';
 import { AuthService } from '../services/auth.service';
+import { KvitterService } from '../services/kvitter.service';
 
 @Component({
   selector: 'app-add-kvitter',
@@ -13,6 +14,7 @@ import { AuthService } from '../services/auth.service';
 })
 export class AddKvitterComponent {
   private authService = inject(AuthService);
+  private kvitterService = inject(KvitterService);
   private filterService = inject(FilterService);
 
   selectedOption = computed(() => this.filterService.selectedOption());
@@ -36,18 +38,10 @@ export class AddKvitterComponent {
       hashtags: this.hashtaglist,
       isPrivate: this.private,
     };
+   
+    this.kvitterService.postKvitter(data);
 
-    this.authService.http.post('postKvitter', data).subscribe({
-      next: (response) => {
-        console.log('Kvitter posted successfully', response);
-        this.close.emit();
-        this.authService.getKvitterList(this.selectedOption());
-      },
-      error: (err) => {
-        console.error('Error posting kvitter', err);
-      },
-    });
-
+    this.close.emit();
     this.message = '';
     this.hashtags = '';
     this.private = false;

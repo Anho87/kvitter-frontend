@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { HashtagComponent } from '../models/hashtag/hashtag.component';
 import { MiniHashtagDto } from '../models/hashtag/mini-hashtag-dto.model';
 import { AuthService } from '../services/auth.service';
+import { HashtagService } from '../services/hashtag.service';
 
 @Component({
   selector: 'app-left-side-bar',
@@ -15,9 +16,10 @@ import { AuthService } from '../services/auth.service';
 })
 export class LeftSideBarComponent implements OnInit {
   private authService = inject(AuthService);
+  private hashtagService = inject(HashtagService);
   private router = inject(Router);
 
-  hashtags = computed<MiniHashtagDto[]>(() => this.authService.trendingHashtags());
+  hashtags = computed<MiniHashtagDto[]>(() => this.hashtagService.trendingHashtags());
 
   isSidebarVisible = true;
   isSmallScreen = false;
@@ -28,7 +30,7 @@ export class LeftSideBarComponent implements OnInit {
 
   ngOnInit(): void {
     this.checkScreenSize();
-    this.authService.fetchTrendingHashtags();
+    this.hashtagService.fetchTrendingHashtags();
   }
 
   @HostListener('window:resize')

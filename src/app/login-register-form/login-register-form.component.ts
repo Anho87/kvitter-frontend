@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-login-register-form',
@@ -10,8 +11,9 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './login-register-form.component.css',
 })
 export class LoginRegisterFormComponent {
+  private authService = inject(AuthService);
   @Input() formToShow: string = '';
-  @Output() onSubmitLoginEvent = new EventEmitter();
+  // @Output() onSubmitLoginEvent = new EventEmitter();
   @Output() navigateToRegisterEvent = new EventEmitter();
 
   userName: string = 'mario';
@@ -27,12 +29,18 @@ export class LoginRegisterFormComponent {
   onSubmitRegister() {
     if (this.isMismatch) return;
 
-    this.onSubmitLoginEvent.emit({
-      event: this.formToShow,
+    this.authService.register({
       email: this.email,
       userName: this.userName,
       password: this.password,
-    });
+    })
+
+    // this.onSubmitLoginEvent.emit({
+    //   event: this.formToShow,
+    //   email: this.email,
+    //   userName: this.userName,
+    //   password: this.password,
+    // });
 
     this.userName = '';
     this.email = '';
@@ -42,11 +50,17 @@ export class LoginRegisterFormComponent {
   }
 
   onSubmitLogin() {
-    this.onSubmitLoginEvent.emit({
-      event: this.formToShow,
+
+    this.authService.login({
       userName: this.userName,
       password: this.password,
-    });
+    })
+
+    // this.onSubmitLoginEvent.emit({
+    //   event: this.formToShow,
+    //   userName: this.userName,
+    //   password: this.password,
+    // });
 
     this.userName = '';
     this.email = '';

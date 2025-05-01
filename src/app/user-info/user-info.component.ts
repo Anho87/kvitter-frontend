@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { FilterService } from '../services/filter.service';
 import { AuthService } from '../services/auth.service';
+import { KvitterService } from '../services/kvitter.service';
 
 @Component({
   selector: 'app-user-info',
@@ -16,7 +17,7 @@ import { AuthService } from '../services/auth.service';
 export class UserInfoComponent implements OnInit {
   userName!: string;
 
-  private authService = inject(AuthService);
+  private kvitterService = inject(KvitterService);
   private filterService = inject(FilterService);
   private route = inject(ActivatedRoute);
   private location = inject(Location);
@@ -25,15 +26,8 @@ export class UserInfoComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.userName = params['userName'];
       this.filterService.selectedOption.set('user-info');
-      this.authService.getKvitterList('user-info', this.userName);
+      this.kvitterService.getKvitterList('user-info', this.userName);
     });
   }
 
-  onLogout(): void {
-    this.authService.logout();
-  }
-
-  back(): void {
-    this.location.back();
-  }
 }
