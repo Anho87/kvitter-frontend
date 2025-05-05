@@ -6,11 +6,12 @@ import { RightSideBarComponent } from "./right-side-bar/right-side-bar.component
 import { CommonModule } from '@angular/common';
 import { LeftSideBarComponent } from "./left-side-bar/left-side-bar.component";
 import { AuthService } from './services/auth.service';
+import { SnackbarComponent } from "./snackbar/snackbar.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HeaderComponent, RightSideBarComponent, CommonModule, LeftSideBarComponent],
+  imports: [RouterOutlet, HeaderComponent, RightSideBarComponent, CommonModule, LeftSideBarComponent, SnackbarComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })

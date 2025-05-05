@@ -5,59 +5,67 @@ import { FilterService } from './filter.service';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { KvitterService } from './kvitter.service';
+import { SnackbarService } from './snackbar.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class RekvittService {
-    private http = inject(HttpClient);
-    private filterService = inject(FilterService);
-    private titleService = inject(Title);
-    private router = inject(Router);
-    private kvitterService = inject(KvitterService);
+  private http = inject(HttpClient);
+  private filterService = inject(FilterService);
+  private titleService = inject(Title);
+  private router = inject(Router);
+  private kvitterService = inject(KvitterService);
+  private snackbar = inject(SnackbarService);
 
   async postRekvitt(kvitterId: string): Promise<void> {
     const data = { kvitterId };
-  
-    try {
-      const response = await lastValueFrom(
-        this.http.post('/postRekvitt', data)
-      );
-      console.log('Successfully posted rekvitt', response);
-  
-      const currentUrl = this.router.url;
-  
-      if (currentUrl.includes('/user-info') || currentUrl.includes('/search')) {
-        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-          this.router.navigateByUrl(currentUrl);
-        });
-      } else {
-        this.kvitterService.getKvitterList();
-      }
-    } catch (error) {
-      console.error('Error posting rekvitt', error);
-    }
-  }
 
-  async removeRekvitt(id: string){
-    const data = { rekvittId: id };
-
-    this.http.request('DELETE', '/removeRekvitt', { body: data }).subscribe({
+    this.http.post<{ message: string }>('/postRekvitt', data).subscribe({
       next: (response) => {
-        console.log('Rekvitt removed successfully', response);
+        this.snackbar.show(response.message);
+
         const currentUrl = this.router.url;
 
-        if (currentUrl.includes('/user-info') || currentUrl.includes('/search')) {
-          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-            this.router.navigateByUrl(currentUrl);
-          });
+        if (
+          currentUrl.includes('/user-info') ||
+          currentUrl.includes('/search')
+        ) {
+          this.router
+            .navigateByUrl('/', { skipLocationChange: true })
+            .then(() => {
+              this.router.navigateByUrl(currentUrl);
+            });
         } else {
           this.kvitterService.getKvitterList();
         }
       },
-      error: (err) => {
-        console.error('Error removing Rekvitt', err);
-      }
+      error: (err) => this.snackbar.handleError(err),
+    });
+  }
+
+  async removeRekvitt(id: string) {
+    const data = { rekvittId: id };
+
+    this.http.request<{ message: string }>('DELETE', '/removeRekvitt', { body: data }).subscribe({
+      next: (response) => {
+        this.snackbar.show(response.message);
+        const currentUrl = this.router.url;
+
+        if (
+          currentUrl.includes('/user-info') ||
+          currentUrl.includes('/search')
+        ) {
+          this.router
+            .navigateByUrl('/', { skipLocationChange: true })
+            .then(() => {
+              this.router.navigateByUrl(currentUrl);
+            });
+        } else {
+          this.kvitterService.getKvitterList();
+        }
+      },
+      error: (err) => this.snackbar.handleError(err),
     });
   }
 }

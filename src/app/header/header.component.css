@@ -12,7 +12,6 @@ a{
     font-size: 60px;
     font-weight: bold;
     color: indigo;
-    /* -webkit-text-stroke: 1.5px blueviolet; */
     font-family: 'Poppins', sans-serif;
     letter-spacing: 2px;
     text-transform: uppercase;
@@ -28,7 +27,6 @@ a{
         margin-top: 0px;
         font-size: 40px;
         background-color: indigo;
-        /* -webkit-text-stroke: 0px transparent; */
         color: white;
     }
   }

@@ -1,7 +1,7 @@
 <div class="backdrop" (click)="onCancel()"></div>
 <dialog open>
     <form (ngSubmit)="search()" #searchForm="ngForm">
-            <div class="d-flex justify-content-between">
+            <div class="form d-flex justify-content-between">
             <select name="category" [(ngModel)]="category" required>
                 <option value="" disabled selected>Choose category</option>
                 <option value="user">User</option>

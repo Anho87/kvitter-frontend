@@ -15,6 +15,10 @@
   .add-kvitter {
     width: auto;
   }
+  .dropdown-menu {
+    left: 50%;
+    transform: translateX(-50%);
+  }
 }
 
 @media (min-width: 768px) {

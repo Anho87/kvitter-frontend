@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { Rekvitt } from '../models/rekvitt/rekvitt.model';
 import { Reply } from '../models/reply/reply.model';
 import { lastValueFrom } from 'rxjs';
+import { SnackbarService } from './snackbar.service';
 
 type DetailedDto = Kvitter | Rekvitt;
 
@@ -18,6 +19,7 @@ export class KvitterService {
   private filterService = inject(FilterService);
   private titleService = inject(Title);
   private router = inject(Router);
+  private snackbar = inject(SnackbarService);
   tenPublicKvitterList = signal<Kvitter[]>([]);
   kvitterList = signal<DetailedDto[]>([]);
   selectedOption = computed(() => this.filterService.selectedOption());
@@ -74,23 +76,21 @@ export class KvitterService {
       isPrivate: input.isPrivate,
     };
 
-    this.http.post('/postKvitter', data).subscribe({
+    this.http.post<{ message: string }>('/postKvitter', data).subscribe({
       next: (response) => {
-        console.log('Kvitter posted successfully', response);
+        this.snackbar.show(response.message);
         this.getKvitterList(this.selectedOption());
       },
-      error: (err) => {
-        console.error('Error posting kvitter', err);
-      },
+      error: (err) => this.snackbar.handleError(err),
     });
   }
 
   async removeKvitter(id: string){
     const data = { id: id };
 
-    this.http.request('DELETE', '/removeKvitter', { body: data }).subscribe({
+    this.http.request<{ message: string }>('DELETE', '/removeKvitter', { body: data }).subscribe({
       next: (response) => {
-        console.log('Kvitter removed successfully', response);
+        this.snackbar.show(response.message);
         const currentUrl = this.router.url;
 
         if (currentUrl.includes('/user-info') || currentUrl.includes('/search')) {
@@ -101,9 +101,7 @@ export class KvitterService {
           this.getKvitterList();
         }
       },
-      error: (err) => {
-        console.error('Error removing kvitter', err);
-      }
+      error: (err) => this.snackbar.handleError(err),
     });
   }
 
@@ -111,23 +109,19 @@ export class KvitterService {
     const data = { kvitterId };
 
     if (upvote) {
-      try {
-        const response = await lastValueFrom(
-          this.http.post('/upvoteKvitter', data)
-        );
-        console.log('Upvote on kvitter successful', response);
-      } catch (error) {
-        console.log('Error upvoting kvitter', error);
-      }
+      this.http.post<{message: string}>('/upvoteKvitter', data).subscribe({
+        next: (response) => {
+          this.snackbar.show(response.message)
+        },
+        error: (err) => this.snackbar.handleError(err),
+      })
     } else {
-      try {
-        const response = await lastValueFrom(
-          this.http.request('DELETE', '/removeUpvoteOnKvitter', { body: data })
-        );
-        console.log('Removed upvote on kvitter successful', response);
-      } catch (error) {
-        console.log('Error removing upvote on kvitter', error);
-      }
+      this.http.request<{message: string}>('DELETE', '/removeUpvoteOnKvitter', { body: data }).subscribe({
+        next: (response) => {
+          this.snackbar.show(response.message);
+        },
+        error: (err) => this.snackbar.handleError(err),
+      })
     }
   }
 

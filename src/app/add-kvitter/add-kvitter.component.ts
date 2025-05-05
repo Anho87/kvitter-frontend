@@ -1,9 +1,10 @@
 import { Component, computed, EventEmitter, inject, Output } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FilterService } from '../services/filter.service';
 import { AuthService } from '../services/auth.service';
 import { KvitterService } from '../services/kvitter.service';
+import { SnackbarService } from '../services/snackbar.service';
 
 @Component({
   selector: 'app-add-kvitter',
@@ -16,6 +17,7 @@ export class AddKvitterComponent {
   private authService = inject(AuthService);
   private kvitterService = inject(KvitterService);
   private filterService = inject(FilterService);
+  private snackbar= inject(SnackbarService);
 
   selectedOption = computed(() => this.filterService.selectedOption());
 
@@ -30,7 +32,11 @@ export class AddKvitterComponent {
     this.close.emit();
   }
 
-  kvitt(): void {
+  kvitt(form: NgForm): void {
+    if (form.invalid) {
+      this.snackbar.show('Message can\'t be empty.');
+      return;
+    }
     this.splitHashtags();
 
     const data = {

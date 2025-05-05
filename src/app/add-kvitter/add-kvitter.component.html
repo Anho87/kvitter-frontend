@@ -1,6 +1,6 @@
 <div class="backdrop" (click)="onCancel()"></div>
 <dialog open>
-<form (ngSubmit)="kvitt()" #kvittForm="ngForm">
+<form (ngSubmit)="kvitt(kvittForm)" #kvittForm="ngForm">
     <div class="upper-area">
         <div class="row text-area">
             <label class="enter-label" for="kvitter">Enter your kvitter:</label>
@@ -25,7 +25,7 @@
         </div>
         
         <div class="col-4 button-div">
-            <button type="submit" [disabled]="kvittForm.invalid">Kvitt!</button>
+            <button type="submit" >Kvitt!</button>
         </div>
     </div>
 </form>

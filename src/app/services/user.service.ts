@@ -5,6 +5,7 @@ import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { MiniUserDto } from '../models/user/mini-user-dto.model';
 import { KvitterService } from './kvitter.service';
+import { SnackbarService } from './snackbar.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,14 +16,15 @@ export class UserService {
   private titleService = inject(Title);
   private router = inject(Router);
   private kvitterService = inject(KvitterService);
+  private snackbar = inject(SnackbarService);
 
 
    followUser(user?: MiniUserDto): void {
       const data = { userEmail: user?.email };
     
-      this.http.post('/followUser', data).subscribe({
+      this.http.post<{message: string}>('/followUser', data).subscribe({
         next: (response) => {
-          console.log('Successfully following user', response);
+          this.snackbar.show(user?.userName + response.message);
     
           const currentUrl = this.router.url;
     
@@ -34,18 +36,16 @@ export class UserService {
             this.kvitterService.getKvitterList();
           }
         },
-        error: (err) => {
-          console.error('Error following user:', err);
-        }
+        error: (err) => this.snackbar.handleError(err),
       });
     }
 
     unFollowUser(user?: MiniUserDto): void {
       const data = { userEmail: user?.email };
     
-      this.http.request('DELETE', '/unFollowUser', { body: data }).subscribe({
+      this.http.request<{message: string}>('DELETE', '/unFollowUser', { body: data }).subscribe({
         next: (response) => {
-          console.log('Successfully unfollowed user', response);
+          this.snackbar.show(user?.userName + response.message);
     
           const currentUrl = this.router.url;
     
@@ -57,9 +57,7 @@ export class UserService {
             this.kvitterService.getKvitterList();
           }
         },
-        error: (err) => {
-          console.error('Error unfollowing user:', err);
-        }
+        error: (err) => this.snackbar.handleError(err),
       });
     }
  
