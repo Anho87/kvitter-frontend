@@ -3,11 +3,14 @@ import { WelcomeContentComponent } from './welcome-content/welcome-content.compo
 import { LoggedInContentComponent } from './logged-in-content/logged-in-content.component';
 import { UserInfoComponent } from './user-info/user-info.component';
 import { SearchContentComponent } from './search-content/search-content.component';
+import { authGuard } from './guards/auth.guard';
+
 
 export const routes: Routes = [
   {
     path: 'welcome',
     component: WelcomeContentComponent,
+    canActivate: [authGuard],
   },
   {
     path: 'user/:userName',
