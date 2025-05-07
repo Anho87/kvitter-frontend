@@ -15,14 +15,17 @@ export const routes: Routes = [
   {
     path: 'user/:userName',
     component: LoggedInContentComponent,
+    canActivate: [authGuard],
   },
   {
     path: 'user-info/:userName',
     component: UserInfoComponent,
+    canActivate: [authGuard],
   },
   {
     path: 'search',
-    component: SearchContentComponent
+    component: SearchContentComponent,
+    canActivate: [authGuard],
   },
   {
     path: '',
