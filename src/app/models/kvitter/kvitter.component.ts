@@ -85,7 +85,7 @@ export class KvitterComponent implements OnInit, OnChanges {
         this.showReplyBarContent = false;
       })
       .catch((error) => {
-        console.error('Failed to rekvitt:', error);
+        // console.error('Failed to rekvitt:', error);
       });
   }
 
@@ -100,7 +100,7 @@ export class KvitterComponent implements OnInit, OnChanges {
         this.showReplyBarContent = false;
       })
       .catch((error) => {
-        console.error('Failed to send reply:', error);
+        // console.error('Failed to send reply:', error);
       });
   }
 

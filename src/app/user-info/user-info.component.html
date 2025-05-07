@@ -1,4 +1,16 @@
 <div class="container content">
-    <h1>{{userName}}'s Page!</h1>
+    <div class="user-info">
+      <h1>{{ userName }}'s Page!</h1>
+      <div class="stats">
+        <div class="stat"><strong>Kvitter:</strong> {{ user()?.kvitterList?.length || 0 }}</div>
+        <div class="stat"><strong>Replies:</strong> {{ user()?.replies?.length || 0 }}</div>
+        <div class="stat"><strong>Following:</strong> {{ user()?.following?.length || 0 }}</div>
+        <div class="stat"><strong>Followers:</strong> {{ user()?.followers?.length || 0 }}</div>
+        <div class="stat"><strong>Rekvitts:</strong> {{ user()?.rekvitts?.length || 0 }}</div>
+      </div>
+      
+    </div>
+  
     <app-kvitter-list [userName]="userName" />
-</div>
+  </div>
+  

@@ -56,7 +56,7 @@ export class WelcomeContentComponent implements OnInit, OnDestroy {
   cycleThroughKvitter(): void {
     if (this.kvitters().length > 0) {
       this.currentKvitterIndex = (this.currentKvitterIndex + 1) % this.kvitters().length;
-      console.log(this.currentKvitterIndex);
+      // console.log(this.currentKvitterIndex);
     }
   }
 
@@ -68,58 +68,4 @@ export class WelcomeContentComponent implements OnInit, OnDestroy {
     this.formToShow = this.formToShow === inFormToShow ? 'welcome' : inFormToShow;
   }
 
-  // onLogin(input: any): void {
-  //   const actions: { [key: string]: (input: any) => void } = {
-  //     login: this.login.bind(this),
-  //     register: this.register.bind(this),
-  //   };
-  //   actions[input.event]?.(input);
-  // }
-
-  // login(input: any): void {
-  //   this.authService.http.post<{ accessToken: string }>(
-  //     'login',
-  //     {
-  //       userName: input.userName,
-  //       password: input.password,
-  //     },
-  //     { withCredentials: true }
-  //   ).subscribe({
-  //     next: (response) => {
-  //       this.authService.setAccessToken(response.accessToken);
-  //       this.authService.authorized.set(true);
-  //       const userName = this.authService.getUsernameFromToken();
-  //       this.titleService.setTitle(`Kvitter - ${userName}`);
-  //       this.ngOnDestroy();
-  //       this.router.navigate([`user/${userName}`]);
-  //     },
-  //     error: (err) => {
-  //       console.error('Login failed:', err);
-  //     }
-  //   });
-  // }
-
-  // register(input: any): void {
-  //   this.authService.http.post<{ accessToken: string }>(
-  //     'register',
-  //     {
-  //       email: input.email,
-  //       userName: input.userName,
-  //       password: input.password,
-  //     },
-  //     { withCredentials: true }
-  //   ).subscribe({
-  //     next: (response) => {
-  //       this.authService.setAccessToken(response.accessToken);
-  //       this.authService.authorized.set(true);
-  //       const userName = this.authService.getUsernameFromToken();
-  //       this.titleService.setTitle(`Kvitter - ${userName}`);
-  //       this.ngOnDestroy();
-  //       this.router.navigate([`user/${userName}`]);
-  //     },
-  //     error: (err) => {
-  //       console.error('Registration failed:', err);
-  //     }
-  //   });
-  // }
 }

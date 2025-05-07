@@ -31,12 +31,12 @@ export class AuthService {
       );
       this.logoutUser();
     } catch (error) {
-      console.error('Error logging out:', error);
+      // console.error('Error logging out:', error);
     }
   }
 
   async autoLogin(): Promise<boolean> {
-    console.log('autologin triggered');
+    // console.log('autologin triggered');
     try {
       const response = await lastValueFrom(
         this.http.post<{ accessToken: string }>('/refresh-token', {})
@@ -45,7 +45,7 @@ export class AuthService {
       this.setAccessToken(response.accessToken);
       return true;
     } catch (error) {
-      console.warn('Auto-login failed:', error);
+      // console.warn('Auto-login failed:', error);
       this.logoutUser();
       return false;
     }
@@ -68,7 +68,7 @@ export class AuthService {
         this.router.navigate([`user/${userName}`]);
       },
       error: (err) => {
-        console.error('Login failed:', err);
+        // console.error('Login failed:', err);
       }
     });
   }
@@ -91,7 +91,7 @@ export class AuthService {
         this.router.navigate([`user/${userName}`]);
       },
       error: (err) => {
-        console.error('Registration failed:', err);
+        // console.error('Registration failed:', err);
       }
     });
   }
@@ -115,7 +115,7 @@ export class AuthService {
   getUsernameFromToken(): string {
     const token = this.getAccessToken();
     if (!token) {
-      console.error('No access token found');
+      // console.error('No access token found');
       return '';
     }
 
@@ -123,13 +123,13 @@ export class AuthService {
       const decodedToken: any = jwtDecode(token);
       return decodedToken.iss || '';
     } catch (error) {
-      console.error('Error decoding token:', error);
+      // console.error('Error decoding token:', error);
       return '';
     }
   }
 
   logoutUser(): void {
-    console.warn('User logged out');
+    // console.warn('User logged out');
     this.clearAccessToken();
     this.authorized.set(false);
     this.router.navigate(['/welcome']);

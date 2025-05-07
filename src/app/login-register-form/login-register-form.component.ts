@@ -35,13 +35,6 @@ export class LoginRegisterFormComponent {
       password: this.password,
     })
 
-    // this.onSubmitLoginEvent.emit({
-    //   event: this.formToShow,
-    //   email: this.email,
-    //   userName: this.userName,
-    //   password: this.password,
-    // });
-
     this.userName = '';
     this.email = '';
     this.password = '';
@@ -55,12 +48,6 @@ export class LoginRegisterFormComponent {
       userName: this.userName,
       password: this.password,
     })
-
-    // this.onSubmitLoginEvent.emit({
-    //   event: this.formToShow,
-    //   userName: this.userName,
-    //   password: this.password,
-    // });
 
     this.userName = '';
     this.email = '';

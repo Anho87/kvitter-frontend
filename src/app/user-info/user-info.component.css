@@ -13,3 +13,36 @@ h1{
         
     }
   }
+
+  .user-info {
+    background: rgba(255, 255, 255, 0.06);
+    padding: 1.5rem;
+    border-radius: 1rem;
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    color: #fff;
+    max-width: 600px;
+    margin: 2rem auto;
+    text-align: center;
+  }
+  
+  .user-info h1 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    gap: 0.5rem 2rem;
+    justify-content: center;
+    margin-top: 1rem;
+  }
+  
+  .stat {
+    color: #ddd;
+    font-size: 1.1rem;
+  }
+  
+  

@@ -107,7 +107,7 @@ export class ReplyComponent implements OnInit, OnChanges {
         this.showReplyBarContent = false;
       })
       .catch((error) => {
-        console.error('Failed to send reply:', error);
+        // console.error('Failed to send reply:', error);
       });
   }
 }

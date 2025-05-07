@@ -61,10 +61,10 @@ export class KvitterService {
         });
 
         this.kvitterList.set(detailedList);
-        console.log(this.kvitterList());
+        // console.log(this.kvitterList());
       },
       error: (err) => {
-        console.error('Error fetching kvitters:', err);
+        // console.error('Error fetching kvitters:', err);
       },
     });
   }
@@ -153,10 +153,10 @@ export class KvitterService {
     this.http.get<DetailedDto[]>(`/search${queryParams}`).subscribe({
       next: (data) => {
         this.kvitterList.set(data);
-        console.log(this.kvitterList());
+        // console.log(this.kvitterList());
       },
       error: (err) => {
-        console.error('Error fetching search results:', err);
+        // console.error('Error fetching search results:', err);
       },
     });
   }
@@ -167,7 +167,7 @@ export class KvitterService {
         this.tenPublicKvitterList.set(data);
       },
       error: (err) => {
-        console.error('Error fetching welcome page kvitters:', err);
+        // console.error('Error fetching welcome page kvitters:', err);
       },
     });
   }

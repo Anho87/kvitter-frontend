@@ -9,7 +9,7 @@ export class SnackbarService {
   show(msg: string) {
     this.message.set(msg);
 
-    setTimeout(() => this.message.set(null), 3000);
+    setTimeout(() => this.message.set(null), 1000);
   }
 
   handleError(err: any) {

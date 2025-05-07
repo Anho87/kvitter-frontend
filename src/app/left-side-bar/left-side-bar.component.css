@@ -98,3 +98,19 @@
 .hashtag-item {
   list-style: none;
 }
+
+.following-list{
+  margin-bottom: 20px;
+}
+
+.following-item {
+  list-style: none;
+}
+
+
+.username {
+  color: white;  
+  text-decoration: none; 
+  cursor: pointer; 
+}
+

@@ -10,20 +10,30 @@
     @if (isSmallScreen && isSidebarVisible) {
     <app-button (buttonEvent)="toggleSidebar()"><i class="bi bi-x-lg inside-sidebar-btn"></i></app-button>
     }
-    <div class="d-flex flex-column justify-content-between test">
+    <div class="d-flex flex-column justify-content-between">
         <ul class="sidebar-menu">
             <li><a href="javascript:void(0)" (click)="onHome()">Home</a></li>
             <li><a href="javascript:void(0)" (click)="onSearch()">Search</a></li>
-            <!-- <li><a href="javascript:void(0)" (click)="onHome()">Messages</a></li>
-            <li><a href="javascript:void(0)" (click)="onHome()">Notifications</a></li> -->
             <li><a href="javascript:void(0)" (click)="onLogout()">Logout</a></li>
         </ul>
+        <div class="following-list">
+            <div class="title">Following</div>
+            @if (userFollowingList().length > 0) {
+                @for (miniUser of userFollowingList(); track miniUser.id) {
+                    <li class="following-item">
+                        <a href="javascript:void(0)" class="username" (click)="navigateToUserInfo(miniUser.userName)">{{ miniUser.userName }}</a>
+                    </li>
+                }
+            }@else {
+                <a class="username" >Not following anyone yet.</a>
+            }
+        </div>
 
         <div class="trending">
             <div class="title">Latest Hashtags#</div>
             <div class="hashtags">
                 <ul class="list-unstyled d-flex flex-wrap">
-                    @if (hashtags()) {
+                    @if (hashtags().length > 0) {
                     @for (hashtag of hashtags(); track hashtag.id) {
                     <li class="hashtag-item">
                         <app-hashtag (clicked)="hashTagClicked()" [hashtag]="hashtag"></app-hashtag>

@@ -19,10 +19,10 @@ export class HashtagService {
     this.http.get<MiniHashtagDto[]>('/trendingHashtags').subscribe({
       next: (data) => {
         this.trendingHashtags.set(data);
-        console.log(data);
+        // console.log(data);
       },
       error: (err) => {
-        console.error('Error fetching trending hashtags:', err);
+        // console.error('Error fetching trending hashtags:', err);
       },
     });
   }

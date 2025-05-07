@@ -25,12 +25,12 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.authService.autoLogin().then(loggedIn => {
       if (loggedIn) {
-        console.log('User successfully auto-logged in.');
+        // console.log('User successfully auto-logged in.');
         const userName = this.authService.getUsernameFromToken();
         this.titleService.setTitle(`Kvitter - ${userName}`);
         this.router.navigate([`user/${userName}`]);
       } else {
-        console.log('User not logged in.');
+        // console.log('User not logged in.');
         this.router.navigate(['/welcome']);
       }
     });

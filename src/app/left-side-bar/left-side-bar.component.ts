@@ -6,6 +6,9 @@ import { HashtagComponent } from '../models/hashtag/hashtag.component';
 import { MiniHashtagDto } from '../models/hashtag/mini-hashtag-dto.model';
 import { AuthService } from '../services/auth.service';
 import { HashtagService } from '../services/hashtag.service';
+import { UserService } from '../services/user.service';
+import { MiniUserDto } from '../models/user/mini-user-dto.model';
+import { FilterService } from '../services/filter.service';
 
 @Component({
   selector: 'app-left-side-bar',
@@ -17,8 +20,11 @@ import { HashtagService } from '../services/hashtag.service';
 export class LeftSideBarComponent implements OnInit {
   private authService = inject(AuthService);
   private hashtagService = inject(HashtagService);
+  private userService = inject(UserService);
+  private filterService = inject(FilterService);
   private router = inject(Router);
 
+  userFollowingList = computed<MiniUserDto[]>(() => this.userService.userFollowingList());
   hashtags = computed<MiniHashtagDto[]>(() => this.hashtagService.trendingHashtags());
 
   isSidebarVisible = true;
@@ -31,6 +37,13 @@ export class LeftSideBarComponent implements OnInit {
   ngOnInit(): void {
     this.checkScreenSize();
     this.hashtagService.fetchTrendingHashtags();
+    this.userService.fetchFollowing();
+  }
+
+  navigateToUserInfo(userName: string): void {
+    this.isSidebarVisible = false;
+    this.filterService.selectedOption.set('user-info');
+    this.router.navigate([`user-info/${userName}`]);
   }
 
   @HostListener('window:resize')
