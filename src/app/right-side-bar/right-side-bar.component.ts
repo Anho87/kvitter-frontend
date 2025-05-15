@@ -8,7 +8,6 @@ import {
 } from '@angular/core';
 import { ButtonComponent } from '../button/button.component';
 import { CommonModule, Location } from '@angular/common';
-import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
 @Component({
@@ -21,7 +20,6 @@ import { AuthService } from '../services/auth.service';
 export class RightSideBarComponent implements OnInit {
   private authService = inject(AuthService);
   private location = inject(Location);
-  private router = inject(Router);
 
   @Output() loggingOut = new EventEmitter();
 

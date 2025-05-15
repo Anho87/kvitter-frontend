@@ -1,5 +1,4 @@
 import { MiniHashtagDto } from "../hashtag/mini-hashtag-dto.model";
-import { MiniRekvittDto } from "../rekvitt/mini-rekvitt-dto.model";
 import { MiniUserDto } from "../user/mini-user-dto.model";
 
 export interface MiniKvitterDto{

@@ -1,7 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
-import { FilterService } from './filter.service';
-import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { MiniUserDto } from '../models/user/mini-user-dto.model';
 import { KvitterService } from './kvitter.service';
@@ -13,8 +11,6 @@ import { User } from '../models/user/user.model';
 })
 export class UserService {
   private http = inject(HttpClient);
-  private filterService = inject(FilterService);
-  private titleService = inject(Title);
   private router = inject(Router);
   private kvitterService = inject(KvitterService);
   private snackbar = inject(SnackbarService);

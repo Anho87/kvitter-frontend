@@ -1,12 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { FilterService } from './filter.service';
-import { Title } from '@angular/platform-browser';
 import { Kvitter } from '../models/kvitter/kvitter.model';
 import { Router } from '@angular/router';
 import { Rekvitt } from '../models/rekvitt/rekvitt.model';
 import { Reply } from '../models/reply/reply.model';
-import { lastValueFrom } from 'rxjs';
 import { SnackbarService } from './snackbar.service';
 
 type DetailedDto = Kvitter | Rekvitt;
@@ -17,14 +15,15 @@ type DetailedDto = Kvitter | Rekvitt;
 export class KvitterService {
   private http = inject(HttpClient);
   private filterService = inject(FilterService);
-  private titleService = inject(Title);
   private router = inject(Router);
   private snackbar = inject(SnackbarService);
   tenPublicKvitterList = signal<Kvitter[]>([]);
   kvitterList = signal<DetailedDto[]>([]);
   selectedOption = computed(() => this.filterService.selectedOption());
+  isLoadingKvitters = signal<boolean>(false);
 
   getKvitterList(option?: string, userName?: string): void {
+    this.isLoadingKvitters.set(true);
     const filterOption = option ?? this.filterService.selectedOption();
     const filterOptionNoSpaces = filterOption.replace(/\s+/g, '');
 
@@ -61,9 +60,11 @@ export class KvitterService {
         });
 
         this.kvitterList.set(detailedList);
+        this.isLoadingKvitters.set(false);
         // console.log(this.kvitterList());
       },
       error: (err) => {
+        this.isLoadingKvitters.set(false);
         // console.error('Error fetching kvitters:', err);
       },
     });
@@ -148,25 +149,31 @@ export class KvitterService {
   }
 
   getSearchResults(category: string, searched: string): void {
+    this.isLoadingKvitters.set(true);
     const queryParams = category && searched ? `?category=${category}&searched=${searched}` : '';
 
     this.http.get<DetailedDto[]>(`/search${queryParams}`).subscribe({
       next: (data) => {
         this.kvitterList.set(data);
+         this.isLoadingKvitters.set(false);
         // console.log(this.kvitterList());
       },
       error: (err) => {
+        this.isLoadingKvitters.set(false);
         // console.error('Error fetching search results:', err);
       },
     });
   }
 
   welcomePageKvitter(mode?: string): void {
+    this.isLoadingKvitters.set(true);
     this.http.get<Kvitter[]>('/welcomePageKvitterList').subscribe({
       next: (data) => {
         this.tenPublicKvitterList.set(data);
+        this.isLoadingKvitters.set(false);
       },
       error: (err) => {
+        this.isLoadingKvitters.set(false);
         // console.error('Error fetching welcome page kvitters:', err);
       },
     });
@@ -196,5 +203,5 @@ export class KvitterService {
     };
   }
 
-  
+
 }

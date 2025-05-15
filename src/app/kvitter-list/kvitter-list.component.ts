@@ -4,7 +4,6 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnInit,
   Output,
   SimpleChanges,
   inject
@@ -14,7 +13,6 @@ import { Kvitter } from '../models/kvitter/kvitter.model';
 import { KvitterComponent } from '../models/kvitter/kvitter.component';
 import { Rekvitt } from '../models/rekvitt/rekvitt.model';
 import { RekvittComponent } from '../models/rekvitt/rekvitt.component';
-import { AuthService } from '../services/auth.service';
 import { KvitterService } from '../services/kvitter.service';
 
 type DetailedDto = Kvitter | Rekvitt;
@@ -27,13 +25,12 @@ type DetailedDto = Kvitter | Rekvitt;
   styleUrl: './kvitter-list.component.css',
 })
 export class KvitterListComponent implements OnChanges {
-  private authService = inject(AuthService);
   private kvitterService = inject(KvitterService);
-
   @Input() userName: string = '';
   @Output() userClicked = new EventEmitter<string>();
 
   kvitters = computed<DetailedDto[]>(() => this.kvitterService.kvitterList());
+  isLoadingKvitters = computed<boolean>(() => this.kvitterService.isLoadingKvitters());
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['userName'] && !changes['userName'].firstChange) {

@@ -1,8 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { lastValueFrom } from 'rxjs';
-import { FilterService } from './filter.service';
-import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { KvitterService } from './kvitter.service';
 import { SnackbarService } from './snackbar.service';
@@ -12,8 +9,6 @@ import { SnackbarService } from './snackbar.service';
 })
 export class RekvittService {
   private http = inject(HttpClient);
-  private filterService = inject(FilterService);
-  private titleService = inject(Title);
   private router = inject(Router);
   private kvitterService = inject(KvitterService);
   private snackbar = inject(SnackbarService);

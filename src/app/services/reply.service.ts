@@ -1,9 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { FilterService } from './filter.service';
-import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { lastValueFrom } from 'rxjs';
 import { KvitterService } from './kvitter.service';
 import { SnackbarService } from './snackbar.service';
 
@@ -12,8 +9,6 @@ import { SnackbarService } from './snackbar.service';
 })
 export class ReplyService {
   private http = inject(HttpClient);
-  private filterService = inject(FilterService);
-  private titleService = inject(Title);
   private router = inject(Router);
   private kvitterService = inject(KvitterService);
   private snackbarService = inject(SnackbarService);
@@ -25,13 +20,13 @@ export class ReplyService {
       parentReplyId: string | null = null
     ): Promise<void> {
       const data = { message, kvitterId, parentReplyId };
-    
+
 
       this.http.post<{message: string}>('/postReply', data).subscribe({
         next: (response) => {
           this.snackbarService.show(response.message);
           const currentUrl = this.router.url;
-    
+
         if (currentUrl.includes('/user-info') || currentUrl.includes('/search')) {
           this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
             this.router.navigateByUrl(currentUrl);
@@ -51,7 +46,7 @@ export class ReplyService {
         next: (response) => {
           this.snackbarService.show(response.message);
           const currentUrl = this.router.url;
-  
+
           if (currentUrl.includes('/user-info') || currentUrl.includes('/search')) {
             this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
               this.router.navigateByUrl(currentUrl);

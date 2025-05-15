@@ -1,28 +1,22 @@
-import { computed, inject, Injectable, signal } from '@angular/core';
-import { Kvitter } from '../models/kvitter/kvitter.model';
+import { inject, Injectable, signal } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { Rekvitt } from '../models/rekvitt/rekvitt.model';
-import { Reply } from '../models/reply/reply.model';
-import { MiniUserDto } from '../models/user/mini-user-dto.model';
-import { MiniHashtagDto } from '../models/hashtag/mini-hashtag-dto.model';
-import { FilterService } from './filter.service';
 import { HttpClient } from '@angular/common/http';
 import { lastValueFrom, Observable, switchMap } from 'rxjs';
 
-type DetailedDto = Kvitter | Rekvitt;
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   private http = inject(HttpClient);
-  private filterService = inject(FilterService);
   private titleService = inject(Title);
   private router = inject(Router);
   private accessToken: string | null = null;
   authorized = signal<boolean>(false);
+
+    isLoading = signal<boolean>(false);
 
   async logout(): Promise<void> {
     try {
@@ -52,6 +46,7 @@ export class AuthService {
   }
 
   login(input:any){
+    this.isLoading.set(true);
     this.http.post<{ accessToken: string }>(
       '/login',
       {
@@ -66,14 +61,17 @@ export class AuthService {
         const userName = this.getUsernameFromToken();
         this.titleService.setTitle(`Kvitter - ${userName}`);
         this.router.navigate([`user/${userName}`]);
+        this.isLoading.set(false);
       },
       error: (err) => {
+        this.isLoading.set(false);
         // console.error('Login failed:', err);
       }
     });
   }
 
   register(input: any){
+    this.isLoading.set(true);
     this.http.post<{ accessToken: string }>(
       '/register',
       {
@@ -89,8 +87,10 @@ export class AuthService {
         const userName = this.getUsernameFromToken();
         this.titleService.setTitle(`Kvitter - ${userName}`);
         this.router.navigate([`user/${userName}`]);
+        this.isLoading.set(false);
       },
       error: (err) => {
+        this.isLoading.set(false);
         // console.error('Registration failed:', err);
       }
     });

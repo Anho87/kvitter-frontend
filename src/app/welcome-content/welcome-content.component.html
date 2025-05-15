@@ -8,9 +8,18 @@
         (navigateToRegisterEvent)="showForm($event)" />
 </div>
 
+
+
 <div class="kvitters">
-    @if (currentKvitter) {
-        <app-kvitter  [class]="'transparent'" [showPrivateMark]="false" [kvitter]="currentKvitter"
-        [showButtonBar]="false" [showReplies]="false" [showUpvoteButton]="false" />
+    @if (isLoadingKvitters()) {
+        <div class="spinner-container">
+         <div class="spinner"></div>
+         <p>Loading...</p>
+       </div>
+    }@else {
+        @if (currentKvitter) {
+            <app-kvitter  [class]="'transparent'" [showPrivateMark]="false" [kvitter]="currentKvitter"
+            [showButtonBar]="false" [showReplies]="false" [showUpvoteButton]="false" />
+        }
     }
 </div>

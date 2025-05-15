@@ -4,9 +4,6 @@ import { ButtonComponent } from '../button/button.component';
 import { LoginRegisterFormComponent } from '../login-register-form/login-register-form.component';
 import { KvitterComponent } from '../models/kvitter/kvitter.component';
 import { Kvitter } from '../models/kvitter/kvitter.model';
-import { Router } from '@angular/router';
-import { Title } from '@angular/platform-browser';
-import { AuthService } from '../services/auth.service';
 import { KvitterService } from '../services/kvitter.service';
 
 @Component({
@@ -22,12 +19,10 @@ import { KvitterService } from '../services/kvitter.service';
   styleUrl: './welcome-content.component.css',
 })
 export class WelcomeContentComponent implements OnInit, OnDestroy {
-  private authService = inject(AuthService);
-  private kvitterService = inject(KvitterService)
-  private titleService = inject(Title);
-  private router = inject(Router);
+  private kvitterService = inject(KvitterService);
 
   kvitters = computed<Kvitter[]>(() => this.kvitterService.tenPublicKvitterList());
+  isLoadingKvitters = computed<boolean>(() => this.kvitterService.isLoadingKvitters());
   private dataLoaded = false;
   currentKvitterIndex: number = 0;
   private intervalId: any;

@@ -4,7 +4,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonComponent } from "../button/button.component";
 import { SearchFormComponent } from "../search-form/search-form.component";
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../services/auth.service';
 import { KvitterService } from '../services/kvitter.service';
 
 @Component({

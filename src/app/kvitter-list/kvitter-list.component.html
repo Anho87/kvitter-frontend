@@ -1,11 +1,18 @@
 <div>
-    <ul class="list-container">
-      @for (dto of kvitters(); track dto.id) {
-        @if (isKvitter(dto)){
-          <app-kvitter [class]="'transparent'" [kvitter]="dto" [showPrivateMark]="true"/>
-        }@else {
-          <app-rekvitt [class]="'transparent'" [rekvitt]="dto" [showRemoveButton]="false"/>
-        }
+  @if (isLoadingKvitters()) {
+    <div class="spinner-container">
+      <div class="spinner"></div>
+      <p>Loading...</p>
+    </div>
+  }@else {
+        <ul class="list-container">
+          @for (dto of kvitters(); track dto.id) {
+            @if (isKvitter(dto)){
+              <app-kvitter [class]="'transparent'" [kvitter]="dto" [showPrivateMark]="true"/>
+            }@else {
+              <app-rekvitt [class]="'transparent'" [rekvitt]="dto" [showRemoveButton]="false"/>
+            }
+          }
+        </ul>
       }
-    </ul>
   </div>

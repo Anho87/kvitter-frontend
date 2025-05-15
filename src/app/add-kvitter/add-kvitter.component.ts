@@ -2,7 +2,6 @@ import { Component, computed, EventEmitter, inject, Output } from '@angular/core
 import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FilterService } from '../services/filter.service';
-import { AuthService } from '../services/auth.service';
 import { KvitterService } from '../services/kvitter.service';
 import { SnackbarService } from '../services/snackbar.service';
 
@@ -14,7 +13,6 @@ import { SnackbarService } from '../services/snackbar.service';
   styleUrl: './add-kvitter.component.css',
 })
 export class AddKvitterComponent {
-  private authService = inject(AuthService);
   private kvitterService = inject(KvitterService);
   private filterService = inject(FilterService);
   private snackbar= inject(SnackbarService);

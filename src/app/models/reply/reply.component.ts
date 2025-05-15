@@ -15,7 +15,6 @@ import { FilterService } from 'src/app/services/filter.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { ReplyService } from 'src/app/services/reply.service';
 import { UserService } from 'src/app/services/user.service';
-import { KvitterService } from 'src/app/services/kvitter.service';
 
 @Component({
   selector: 'app-reply',
@@ -29,7 +28,6 @@ export class ReplyComponent implements OnInit, OnChanges {
   private filterService = inject(FilterService);
   private userService = inject(UserService);
   private replyService = inject(ReplyService);
-  private kvitterService = inject(KvitterService);
   private router = inject(Router);
 
   @Input({ required: true }) reply!: Reply;
