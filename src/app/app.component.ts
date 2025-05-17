@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { LeftSideBarComponent } from "./left-side-bar/left-side-bar.component";
 import { AuthService } from './services/auth.service';
 import { SnackbarComponent } from "./snackbar/snackbar.component";
+import { NavigationService } from './services/navigation.service';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +19,7 @@ import { SnackbarComponent } from "./snackbar/snackbar.component";
 export class AppComponent implements OnInit {
   private authService = inject(AuthService);
   private titleService = inject(Title);
+  private NavigationService = inject(NavigationService);
   private router = inject(Router);
 
   authorized = computed(() => this.authService.authorized());
@@ -26,9 +28,14 @@ export class AppComponent implements OnInit {
     this.authService.autoLogin().then(loggedIn => {
       if (loggedIn) {
         // console.log('User successfully auto-logged in.');
+        const lastVisitedRoute = sessionStorage.getItem('lastVisitedRoute');
         const userName = this.authService.getUsernameFromToken();
         this.titleService.setTitle(`Kvitter - ${userName}`);
-        this.router.navigate([`user/${userName}`]);
+        if (lastVisitedRoute && lastVisitedRoute !== '/' && lastVisitedRoute !== '/welcome') {
+          this.router.navigateByUrl(lastVisitedRoute);
+        }else{
+          this.router.navigate([`user/${userName}`]);
+        }
       } else {
         // console.log('User not logged in.');
         this.router.navigate(['/welcome']);

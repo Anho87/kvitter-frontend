@@ -9,7 +9,10 @@ export const authGuard: CanActivateFn = (route, state) => {
 
   if (authService.authorized()) {
     if (state.url === '/welcome') {
-      router.navigate(['/user', authService.getUsernameFromToken()]);
+      const username = authService.getUsernameFromToken();
+      setTimeout(() => {
+        router.navigate(['/user', username]);
+      }, 50);
       return false; 
     }
     return true;

@@ -134,6 +134,7 @@ export class AuthService {
     this.authorized.set(false);
     this.router.navigate(['/welcome']);
     this.titleService.setTitle(`Kvitter`);
+    sessionStorage.clear();
   }
 
   getAccessToken(): string | null {
